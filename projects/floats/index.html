@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Float Layout Lab</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Classic Float Layout Laboratory</h1>
+        <p>Learn float-based layouts before flexbox and grid</p>
+        <button id="toggleOutlines" class="toggle-btn">Toggle Float Outlines</button>
+    </header>
+
+    <main>
+        <!-- Two-Column Layout Demo -->
+        <section class="layout-demo two-column">
+            <h2>Two-Column Layout</h2>
+            <p>Demonstrates sidebar + main content using float</p>
+            
+            <!-- Without fix - collapsing parent -->
+            <div class="demo-container no-fix">
+                <h3>Problem: Collapsing Parent</h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>This content flows around the floated sidebar, but the parent container collapses because floated elements are removed from normal document flow.</p>
+                </div>
+            </div>
+
+            <!-- With overflow fix -->
+            <div class="demo-container overflow-fix">
+                <h3>Fix: overflow: hidden</h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>This parent container has overflow: hidden, which creates a new block formatting context and contains the floats.</p>
+                </div>
+            </div>
+
+            <!-- With clearfix fix -->
+            <div class="demo-container clearfix-fix">
+                <h3>Fix: Clearfix</h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>This parent container uses the clearfix technique to contain floated elements.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </section>
+
+        <!-- Three-Column Layout Demo -->
+        <section class="layout-demo three-column">
+            <h2>Three-Column News Layout</h2>
+            <p>Classic newspaper-style layout using floats</p>
+            
+            <div class="news-container">
+                <div class="column article">
+                    <h3>Main Article</h3>
+                    <p>This is the main article content that takes up the full width of its column.</p>
+                </div>
+                <div class="column sidebar">
+                    <h3>Sidebar</h3>
+                    <p>Secondary content in the sidebar column.</p>
+                </div>
+                <div class="column ads">
+                    <h3>Advertisements</h3>
+                    <p>Advertisement space in the third column.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </section>
+
+        <!-- Image Wrap Demo -->
+        <section class="layout-demo image-wrap">
+            <h2>Image with Text Wrap</h2>
+            <p>Demonstrates how text wraps around floated images</p>
+            
+            <div class="article-container">
+                <img src="https://via.placeholder.com/150x150/4CAF50/FFFFFF?text=Image" alt="Sample image">
+                <div class="article-content">
+                    <h3>Article Title</h3>
+                    <p>This text wraps around the floated image. The image is removed from normal document flow and positioned to the left, allowing text to flow around it. This technique was commonly used for magazine-style layouts before modern CSS layout methods became available.</p>
+                    <p>Notice how the text naturally wraps around the image. You can control the amount of space around the image using margin properties.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
