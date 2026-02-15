@@ -1,0 +1,445 @@
+/* Box Model Hack - Ensures consistent sizing across all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Clear fix hack - Solves collapsing parent container issue with floats */
+.clearfix:after {
+     content: ".";
+     display: block;
+     clear: both;
+     visibility: hidden;
+     line-height: 0;
+     height: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+/* Sets base styles for the entire document */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+}
+
+/******************************************
+/* HEADER LAYOUT - BBC News
+/*******************************************/
+/* Main header container for BBC News */
+.bbc-header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+}
+
+/* Float-based layout - active
+ * Why floats are used: 
+ * - BBC header has a complex multi-column layout requiring precise positioning
+ * - Floats allow for the two-column top bar structure (left nav + right actions)
+ * - Enables the main content area to have a featured story + supporting stories layout
+ * - Provides consistent cross-browser support for news site layout patterns
+ * - Allows content to flow naturally around positioned elements
+ */
+
+/* Top bar - two-column layout using floats */
+.top-bar {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  
+  /* Left navigation column */
+  .nav-left {
+    float: left;
+    width: 70%;
+    
+    .bbc-logo {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: bold;
+      color: #000;
+      text-decoration: none;
+      margin-right: 30px;
+      padding: 15px 0;
+    }
+    
+    .primary-nav {
+      display: inline-block;
+      
+      .nav-menu {
+        list-style: none;
+        display: inline-flex;
+        gap: 25px;
+        
+        .nav-item {
+          .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 15px 0;
+            transition: color 0.3s;
+            
+            &:hover {
+              color: #0056b3;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /* Right actions column */
+  .nav-right {
+    float: right;
+    width: 30%;
+    
+    .search-section {
+      float: left;
+      margin-right: 20px;
+      
+      .search-link {
+        color: #333;
+        text-decoration: none;
+        padding: 15px 0;
+        font-weight: 500;
+        
+        &:hover {
+          color: #0056b3;
+        }
+      }
+    }
+    
+    .user-actions {
+      float: right;
+      
+      .sign-in {
+        color: #0056b3;
+        text-decoration: none;
+        padding: 15px 0;
+        font-weight: 500;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  
+  /* Clearfix to contain floated elements */
+  .clearfix {
+    clear: both;
+  }
+}
+
+/* Main content area */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  /* Breaking news banner */
+  .breaking-news {
+    background: #ff6600;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    
+    .breaking-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    
+    .breaking-text {
+      font-size: 14px;
+      margin-top: 2px;
+    }
+  }
+  
+  /* Headline section - featured story + supporting stories */
+  .headline-section {
+    
+    /* Featured story - left column */
+    .featured-story {
+      float: left;
+      width: 65%;
+      padding-right: 30px;
+      
+      .story-category {
+        color: #0056b3;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      
+      .main-headline {
+        font-size: 32px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 15px;
+        line-height: 1.2;
+      }
+      
+      .story-meta {
+        color: #666;
+        font-size: 14px;
+        
+        .time-stamp {
+          margin-right: 15px;
+        }
+        
+        .author {
+          font-style: italic;
+        }
+      }
+    }
+    
+    /* Supporting stories - right column */
+    .supporting-stories {
+      float: right;
+      width: 35%;
+      
+      .story-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .story-headline {
+          font-size: 18px;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 8px;
+          line-height: 1.3;
+        }
+        
+        .story-meta {
+          color: #666;
+          font-size: 12px;
+          
+          .time-stamp {
+            margin-right: 10px;
+          }
+          
+          .category-tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+    
+    /* Clearfix to contain floated elements */
+    .clearfix {
+      clear: both;
+    }
+  }
+}
+
+/******************************************
+/* FLEXBOX ALTERNATIVE - COMMENTED OUT
+/*******************************************/
+/* Flexbox-based layout - commented out
+ * What this alternative would change:
+ * - More modern and maintainable code structure
+ * - Automatic container containment (no need for clearfix hacks)
+ * - Easier vertical alignment and spacing control
+ * - Better responsive behavior with flex properties
+ * - Cleaner code with less float-related complexity
+ * - Better accessibility with semantic flex containers
+ */
+
+/*
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 70%;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 30%;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.headline-section {
+  display: flex;
+  gap: 30px;
+}
+
+.featured-story {
+  flex: 0 0 65%;
+}
+
+.supporting-stories {
+  flex: 0 0 35%;
+}
+*/
+
+/******************************************
+/* MEDIA QUERIES FOR RESPONSIVENESS
+/*******************************************/
+/* Mobile-first responsive design approach */
+
+/* Mobile Layout - Screens smaller than 768px */
+@media screen and (max-width: 767px) {
+  /* Float-based layout adjustments for mobile */
+  .top-bar {
+    .nav-left {
+      float: none;
+      width: 100%;
+      
+      .bbc-logo {
+        margin-right: 15px;
+      }
+      
+      .primary-nav {
+        width: calc(100% - 120px);
+        
+        .nav-menu {
+          gap: 15px;
+          
+          .nav-item {
+            .nav-link {
+              font-size: 14px;
+              padding: 12px 0;
+            }
+          }
+        }
+      }
+    }
+    
+    .nav-right {
+      float: none;
+      width: 100%;
+      margin-top: 10px;
+      
+      .search-section {
+        float: left;
+        margin-right: 15px;
+      }
+      
+      .user-actions {
+        float: right;
+      }
+    }
+  }
+  
+  .main-content {
+    padding: 15px;
+    
+    .headline-section {
+      
+      .featured-story {
+        float: none;
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 20px;
+        
+        .main-headline {
+          font-size: 24px;
+        }
+      }
+      
+      .supporting-stories {
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Tablet Layout - Screens between 768px and 1024px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Float-based layout adjustments for tablet */
+  .top-bar {
+    .nav-left {
+      width: 65%;
+      
+      .bbc-logo {
+        margin-right: 20px;
+      }
+    }
+    
+    .nav-right {
+      width: 35%;
+    }
+  }
+  
+  .main-content {
+    padding: 18px;
+    
+    .headline-section {
+      
+      .featured-story {
+        width: 60%;
+        padding-right: 25px;
+        
+        .main-headline {
+          font-size: 28px;
+        }
+      }
+      
+      .supporting-stories {
+        width: 40%;
+      }
+    }
+  }
+}
+
+/* Desktop Layout - Screens 1024px and larger */
+@media screen and (min-width: 1024px) {
+  /* Full desktop float-based layout - no changes needed as this is the base layout */
+  .top-bar {
+    .nav-left {
+      width: 70%;
+    }
+    
+    .nav-right {
+      width: 30%;
+    }
+  }
+  
+  .main-content {
+    padding: 20px;
+    
+    .headline-section {
+      
+      .featured-story {
+        width: 65%;
+        padding-right: 30px;
+      }
+      
+      .supporting-stories {
+        width: 35%;
+      }
+    }
+  }
+}
