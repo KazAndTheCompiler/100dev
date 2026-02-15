@@ -1,0 +1,5 @@
+| Site         | Sections | Articles          | Why                           |
+| ------------ | -------- | ----------------- | ----------------------------- |
+| BBC          | Many     | Many              | Curated news + categories     |
+| Khan Academy | Few      | Few               | Mission first, content second |
+| TechCrunch   | Minimal  | Almost everything | Feed = product                |

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Classic Float Layout Demo</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header sits in normal document flow -->
+    <header>
+        <h1>Classic Float Layout Tutorial</h1>
+        <p>Learn how websites were built before flexbox and grid</p>
+    </header>
+
+    <div class="container">
+        <!-- Main content area with two-column layout -->
+        <main>
+            <h2>Understanding Floats</h2>
+            
+            <!-- Left column for content -->
+            <div class="content">
+                <p>This is the main content area. In classic layouts, we use floats to create column-based designs.</p>
+                
+                <!-- Image with float - this will wrap around the text -->
+                <img src="https://via.placeholder.com/200x150/4CAF50/FFFFFF?text=Sample+Image" alt="Sample image for float demonstration">
+                
+                <p>When we apply float: left to an image, it removes the image from normal document flow and allows text to wrap around it. This is how we traditionally created magazine-style layouts.</p>
+                
+                <p>The float property takes the element out of normal document flow and positions it to the left or right of its containing block. Other inline elements (like text) will then wrap around the floated element.</p>
+                
+                <p>Remember: floated elements are taken out of normal document flow, which means they don't affect the height of their container. This is why we need clearfix techniques to contain floats properly.</p>
+                
+                <p>Without proper containment, parent containers can collapse, leading to layout issues. The clearfix hack solves this by forcing the container to expand and contain its floated children.</p>
+            </div>
+
+            <!-- Right sidebar column -->
+            <aside class="sidebar">
+                <h3>Sidebar</h3>
+                <p>This sidebar is floated to create a two-column layout. By applying float: right, it positions itself to the right side of the container.</p>
+                
+                <ul>
+                    <li>Layout Techniques</li>
+                    <li>Float Methods</li>
+                    <li>Clearfix Solutions</li>
+                    <li>Best Practices</li>
+                </ul>
+                
+                <p>Floats were the primary method for creating multi-column layouts before flexbox became widely supported. Understanding them is still valuable for maintaining older codebases and for specific layout scenarios.</p>
+            </aside>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Classic Layout Tutorial | Educational Purposes Only</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

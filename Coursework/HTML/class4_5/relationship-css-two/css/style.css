@@ -1,0 +1,85 @@
+/* NO classes or IDs */
+/* Please Make only World and Zebra Blue */
+section{
+    color: blue;
+}
+/* Please Make only Zebra Purple */
+section h2+h2 {
+    color: purple;
+}
+/* Please Make only Hufflepuff Gold */
+section article {
+    color: gold;
+}
+/* Please keep Hufflepuff Gold and make ONLY Unicorn Gray  */
+section article h2+h2 {
+    color: grey;
+}
+
+/* =========================
+   ALTERNATE STRUCTURAL SOLUTION
+   (NO classes / NO IDs)
+   ========================= */
+
+/* World = blue */
+section h2:first-child {
+    color: blue;
+}
+
+/* Zebra = purple */
+section h2:last-child {
+    color: purple;
+}
+
+/* Hufflepuff = gold */
+section article h2:last-child {
+    color: gold;
+}
+
+/* Unicorn = gray */
+section article h2:first-child {
+    color: grey;
+}
+/* =========================
+   PRIMARY SOLUTION (Leon-style)
+   ========================= */
+
+section{
+    color: blue;
+}
+
+section h2+h2 {
+    color: purple;
+}
+
+section article {
+    color: gold;
+}
+
+section article h2+h2 {
+    color: grey;
+}
+
+
+/* =========================
+   ALTERNATE SOLUTION
+   (structural selectors)
+   ========================= */
+
+/*
+section h2:first-child {
+    color: blue;
+}
+
+section h2:last-child {
+    color: purple;
+}
+
+section article h2:last-child {
+    color: gold;
+}
+
+section article h2:first-child {
+    color: grey;
+}
+*/

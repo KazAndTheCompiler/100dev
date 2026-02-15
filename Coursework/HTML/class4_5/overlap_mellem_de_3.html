@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML/CSS/JS Overlap Demo - Best Practices Active</title>
+    
+    <style>
+        /* ===========================================
+           CSS STYLING (BEST PRACTICE - ACTIVE)
+           =========================================== */
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 8px;
+        }
+        
+        .section h2 {
+            color: #e74c3c;
+            font-size: 1.8rem;
+        }
+        
+        /* Links styling with CSS */
+        .styled-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .styled-link:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Image styling with CSS */
+        .styled-image {
+            width: 300px;
+            height: 200px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .styled-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Button styling with CSS */
+        .styled-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .styled-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        /* Text styling with CSS */
+        .fancy-text {
+            font-size: 1.2rem;
+            color: #16a085;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* List styling with CSS */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .styled-list li {
+            background: #1abc9c;
+            color: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .styled-list li:hover {
+            background: #16a085;
+            transform: translateX(10px);
+        }
+        
+        /* Hidden/Show with CSS */
+        .css-hidden {
+            display: none;
+        }
+        
+        .css-visible {
+            display: block;
+        }
+        
+        /* Animation with CSS */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .animated-box {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            animation: slideIn 1s ease-out;
+        }
+        
+        code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 HTML/CSS/JavaScript Overlap Demo</h1>
+        <p style="text-align: center; font-size: 1.1rem;">
+            <strong>Active Method:</strong> CSS (Best Practice) | 
+            <span class="comment">Commented: HTML Attributes & JavaScript</span>
+        </p>
+
+        <!-- ============================================
+             SECTION 1: FONTS
+             ============================================ -->
+        <div class="section">
+            <h2>📝 1. Font Styling</h2>
+            
+            <!-- METHOD 1: HTML (Deprecated - Commented Out) -->
+            <!-- <font face="Arial" size="5" color="red">This text uses HTML font tag (DEPRECATED)</font> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <p class="fancy-text">This text is styled with CSS classes (BEST PRACTICE ✅)</p>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <p id="js-font"></p> -->
+            <!-- <script>
+                document.getElementById('js-font').style.fontFamily = 'Arial';
+                document.getElementById('js-font').style.fontSize = '1.2rem';
+                document.getElementById('js-font').style.color = '#16a085';
+                document.getElementById('js-font').textContent = 'This text is styled with JavaScript';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .fancy-text { font-size: 1.2rem; color: #16a085; font-weight: 600; }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 2: COLORS & BACKGROUNDS
+             ============================================ -->
+        <div class="section">
+            <h2>🎨 2. Colors & Backgrounds</h2>
+            
+            <!-- METHOD 1: HTML (Deprecated - Commented Out) -->
+            <!-- <body bgcolor="#f4f4f9" text="#333"> -->
+            <!-- <p><font color="#e74c3c">Red text with HTML</font></p> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <div class="animated-box">
+                This box has a gradient background applied with CSS (BEST PRACTICE ✅)
+            </div>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <div id="js-color"></div> -->
+            <!-- <script>
+                const jsDiv = document.getElementById('js-color');
+                jsDiv.style.background = 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)';
+                jsDiv.style.color = 'white';
+                jsDiv.style.padding = '20px';
+                jsDiv.textContent = 'This uses JavaScript for styling';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 3: LINKS
+             ============================================ -->
+        <div class="section">
+            <h2>🔗 3. Link Styling</h2>
+            
+            <!-- METHOD 1: HTML (Limited options - Commented Out) -->
+            <!-- <a href="https://example.com" style="color: blue; text-decoration: underline;">HTML inline styled link</a> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <a href="https://example.com" class="styled-link">Hover over this CSS-styled link (BEST PRACTICE ✅)</a>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <a href="https://example.com" id="js-link">JavaScript styled link</a> -->
+            <!-- <script>
+                const jsLink = document.getElementById('js-link');
+                jsLink.style.color = '#3498db';
+                jsLink.style.textDecoration = 'none';
+                jsLink.style.fontWeight = 'bold';
+                jsLink.addEventListener('mouseover', () => {
+                    jsLink.style.backgroundColor = '#3498db';
+                    jsLink.style.color = 'white';
+                });
+                jsLink.addEventListener('mouseout', () => {
+                    jsLink.style.backgroundColor = 'transparent';
+                    jsLink.style.color = '#3498db';
+                });
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .styled-link { color: #3498db; transition: all 0.3s ease; }<br>
+                .styled-link:hover { background-color: #3498db; color: white; }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 4: IMAGES
+             ============================================ -->
+        <div class="section">
+            <h2>🖼️ 4. Image Styling</h2>
+            
+            <!-- METHOD 1: HTML (Basic attributes - Commented Out) -->
+            <!-- <img src="https://via.placeholder.com/300x200" width="300" height="200" border="5" alt="HTML styled"> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <img src="https://via.placeholder.com/300x200/3498db/ffffff?text=CSS+Styled" 
+                 alt="CSS styled image" 
+                 class="styled-image">
+            <p><small>Hover over the image to see CSS transform effect! (BEST PRACTICE ✅)</small></p>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <img src="https://via.placeholder.com/300x200" id="js-image" alt="JS styled"> -->
+            <!-- <script>
+                const jsImage = document.getElementById('js-image');
+                jsImage.style.width = '300px';
+                jsImage.style.borderRadius = '15px';
+                jsImage.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .styled-image { border-radius: 15px; transition: transform 0.3s; }<br>
+                .styled-image:hover { transform: scale(1.05); }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 5: BUTTONS
+             ============================================ -->
+        <div class="section">
+            <h2>🔘 5. Button Styling</h2>
+            
+            <!-- METHOD 1: HTML (Very limited - Commented Out) -->
+            <!-- <button style="background-color: blue; color: white; padding: 10px;">HTML Styled Button</button> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <button class="styled-button">Hover Me! CSS Styled Button (BEST PRACTICE ✅)</button>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <button id="js-button">JavaScript Styled Button</button> -->
+            <!-- <script>
+                const jsButton = document.getElementById('js-button');
+                jsButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                jsButton.style.color = 'white';
+                jsButton.style.padding = '12px 30px';
+                jsButton.style.border = 'none';
+                jsButton.style.borderRadius = '25px';
+                jsButton.style.cursor = 'pointer';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .styled-button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }<br>
+                .styled-button:hover { transform: translateY(-2px); }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 6: LISTS
+             ============================================ -->
+        <div class="section">
+            <h2>📋 6. List Styling</h2>
+            
+            <!-- METHOD 1: HTML (Very basic - Commented Out) -->
+            <!-- <ul type="square">
+                <li><font color="blue">Item 1</font></li>
+                <li><font color="blue">Item 2</font></li>
+            </ul> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <ul class="styled-list">
+                <li>CSS Styled List Item 1 (Hover me!)</li>
+                <li>CSS Styled List Item 2 (Hover me!)</li>
+                <li>CSS Styled List Item 3 (Hover me!)</li>
+            </ul>
+            <p><small>(BEST PRACTICE ✅)</small></p>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <ul id="js-list">
+                <li>JS Item 1</li>
+                <li>JS Item 2</li>
+            </ul> -->
+            <!-- <script>
+                const jsList = document.getElementById('js-list');
+                jsList.style.listStyle = 'none';
+                jsList.style.padding = '0';
+                Array.from(jsList.children).forEach(li => {
+                    li.style.background = '#1abc9c';
+                    li.style.color = 'white';
+                    li.style.margin = '10px 0';
+                    li.style.padding = '15px';
+                    li.style.borderRadius = '5px';
+                });
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .styled-list li { background: #1abc9c; color: white; padding: 15px; }<br>
+                .styled-list li:hover { transform: translateX(10px); }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 7: SHOW/HIDE ELEMENTS
+             ============================================ -->
+        <div class="section">
+            <h2>👁️ 7. Show/Hide Elements</h2>
+            
+            <!-- METHOD 1: HTML (Not dynamically possible - Commented Out) -->
+            <!-- <p hidden>This is hidden with HTML hidden attribute</p> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <div class="css-visible">
+                <p>This element is visible using CSS display property (BEST PRACTICE ✅)</p>
+            </div>
+            <div class="css-hidden">
+                <p>This element is hidden using CSS display: none</p>
+            </div>
+            
+            <!-- METHOD 3: JavaScript (For dynamic toggling, but not for static - Commented Out) -->
+            <!-- <div id="js-hidden">Hidden with JavaScript</div> -->
+            <!-- <script>
+                document.getElementById('js-hidden').style.display = 'none';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                .css-hidden { display: none; }<br>
+                .css-visible { display: block; }
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 8: TEXT ALIGNMENT & FORMATTING
+             ============================================ -->
+        <div class="section">
+            <h2>📐 8. Text Alignment</h2>
+            
+            <!-- METHOD 1: HTML (Deprecated - Commented Out) -->
+            <!-- <center>
+                <p>This text is centered with HTML center tag (DEPRECATED)</p>
+            </center> -->
+            
+            <!-- METHOD 2: CSS (BEST PRACTICE - ACTIVE) -->
+            <p style="text-align: center;">This text is centered with CSS text-align (BEST PRACTICE ✅)</p>
+            <p style="text-align: right;">This text is right-aligned with CSS</p>
+            <p style="text-align: justify;">This is justified text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. CSS provides the best control over text alignment and formatting with clean, maintainable code.</p>
+            
+            <!-- METHOD 3: JavaScript (Over-engineering - Commented Out) -->
+            <!-- <p id="js-align">JavaScript aligned text</p> -->
+            <!-- <script>
+                document.getElementById('js-align').style.textAlign = 'center';
+            </script> -->
+            
+            <div class="code-block">
+                <strong>Active (CSS):</strong><br>
+                text-align: center; /* or left, right, justify */
+            </div>
+        </div>
+
+        <!-- ============================================
+             FOOTER SUMMARY
+             ============================================ -->
+        <div class="section" style="background: #34495e; color: white; text-align: center;">
+            <h2 style="color: #ecf0f1;">✨ Summary</h2>
+            <p><strong>Best Practice: CSS for styling!</strong></p>
+            <ul style="list-style: none; padding: 0;">
+                <li>✅ CSS: Separation of concerns, maintainable, reusable</li>
+                <li>❌ HTML Attributes: Deprecated, not maintainable</li>
+                <li>⚠️ JavaScript: Overkill for static styling, but great for dynamic changes</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT SECTION (for dynamic behavior)
+         ============================================ -->
+    <script>
+        // JavaScript is BEST for:
+        // - Dynamic interactions
+        // - Event handling
+        // - AJAX/API calls
+        // - Complex logic
+        
+        console.log('🎨 CSS handles styling (Best Practice)');
+        console.log('🏗️ HTML handles structure');
+        console.log('⚡ JavaScript handles behavior and interactivity');
+        
+        // Example: Button click interaction (JavaScript's proper use case)
+        document.querySelector('.styled-button').addEventListener('click', function() {
+            alert('Button clicked! This is where JavaScript shines - handling user interactions! 🎉');
+        });
+    </script>
+</body>
+</html>

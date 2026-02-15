@@ -1,0 +1,129 @@
+/* 
+ * Classic Float Layout Styles
+ * Demonstrates pre-flexbox/pre-grid layout techniques
+ */
+
+/* Box model hack - ensures consistent sizing across browsers */
+* {
+    box-sizing: border-box;
+}
+
+/* 
+ * Base Styles
+ * Reset default browser styles for consistent appearance
+ */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* 
+ * Header Styles
+ * Header sits in normal document flow and takes full width
+ */
+header {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* 
+ * Container
+ * Wraps the main content area and provides consistent spacing
+ */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* 
+ * Main Content Area
+ * Contains both the content and sidebar columns
+ */
+main {
+    margin-bottom: 2rem;
+}
+
+/* 
+ * Left Column (Main Content)
+ * This is the primary content area that will flow around floated elements
+ */
+.content {
+    margin-right: 250px; /* Create space for the floated sidebar */
+}
+
+/* 
+ * Floated Image
+ * Removes image from normal flow and allows text to wrap around it
+ */
+.content img {
+    float: left;               /* Float to the left of containing block */
+    margin: 0 20px 20px 0;     /* Space around the image: top right bottom left */
+    max-width: 200px;          /* Prevent image from becoming too large */
+}
+
+/* 
+ * Right Sidebar
+ * Floats to the right to create the two-column layout
+ */
+.sidebar {
+    float: right;             /* Float to the right of containing block */
+    width: 230px;             /* Fixed width for consistent column */
+    background: #ecf0f1;      /* Light background to distinguish sidebar */
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* 
+ * Footer Styles
+ * Footer sits in normal document flow, below all floated content
+ */
+footer {
+    background: #34495e;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+/* 
+ * Additional Styling for Readability
+ */
+h2, h3 {
+    color: #2c3e50;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+/* 
+ * Responsive Considerations
+ * Basic media query for smaller screens
+ */
+@media (max-width: 768px) {
+    /* On small screens, stack columns vertically */
+    .content {
+        margin-right: 0;
+    }
+    
+    .sidebar {
+        float: none;           /* Remove float on small screens */
+        width: 100%;           /* Take full width */
+        margin-bottom: 1rem;   /* Space below sidebar */
+    }
+    
+    .content img {
+        float: none;           /* Remove image float on small screens */
+        display: block;        /* Make image block-level */
+        margin: 0 auto 20px;   /* Center image and add space below */
+        max-width: 100%;       /* Allow image to resize with container */
+    }
+}
