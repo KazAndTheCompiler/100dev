@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BBC News Clone</title>
+
+    <!-- NORMALIZE FIRST -->
+    <link rel="stylesheet" href="normalize.css">
+
+    <!-- MAIN FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!--
+        TOP NAVIGATION BAR
+        Uses floats to align logo left and menu right.
+    -->
+    <nav class="main-nav clearfix">
+
+        <!-- Logo floated left -->
+        <div class="logo">BBC</div>
+
+        <!-- Navigation menu floated right -->
+        <ul class="nav-menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Sport</a></li>
+            <li><a href="#">Weather</a></li>
+        </ul>
+    </nav>
+
+    <!--
+        HERO SECTION
+        Two-column float layout:
+        - Featured article (left)
+        - Secondary headlines (right)
+    -->
+    <section class="hero clearfix">
+
+        <!-- Featured article -->
+        <article class="hero-main">
+            <h1>Major Headline Goes Here</h1>
+            <p>Large featured story with emphasis and visual weight.</p>
+        </article>
+
+        <!-- Side headlines -->
+        <aside class="hero-side">
+            <h3>Related Story</h3>
+            <p>Supporting article summary.</p>
+
+            <h3>Another Story</h3>
+            <p>More supporting content.</p>
+        </aside>
+    </section>
+
+    <!--
+        NEWS GRID
+        Float-based card grid.
+    -->
+    <section class="news-grid clearfix">
+
+        <!-- Individual article cards -->
+        <article class="news-card">
+            <h3>Article One</h3>
+            <p>Short summary text.</p>
+        </article>
+
+        <article class="news-card">
+            <h3>Article Two</h3>
+            <p>Short summary text.</p>
+        </article>
+
+        <article class="news-card">
+            <h3>Article Three</h3>
+            <p>Short summary text.</p>
+        </article>
+
+        <article class="news-card">
+            <h3>Article Four</h3>
+            <p>Short summary text.</p>
+        </article>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>BBC News Clone – Educational Use Only</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+/*
+    GLOBAL STYLES
+    These apply across the entire page.
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+/*
+    HEADER STYLES
+    No floats here. This is normal block layout.
+*/
+
+.site-header {
+    background-color: #222;
+    color: #fff;
+    padding: 30px;
+    text-align: center;
+}
+
+/*
+    MAIN CONTENT CONTAINER
+    This wraps floated columns.
+*/
+
+.content {
+    width: 90%;
+    margin: 40px auto;
+}
+
+/*
+    COLUMN STYLES (FLOAT-BASED LAYOUT)
+*/
+
+.column {
+    float: left; 
+    /*
+        float: left removes the element from normal flow
+        and pushes it as far left as possible inside the parent.
+    */
+
+    width: 31.33%;
+    /*
+        Three columns:
+        31.33% x 3 + margins ≈ 100%
+    */
+
+    margin-right: 3%;
+    /*
+        Creates horizontal spacing between columns.
+        The last column will have this removed below.
+    */
+
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/*
+    REMOVE EXTRA MARGIN ON LAST COLUMN
+    Prevents layout overflow.
+*/
+.column:last-child {
+    margin-right: 0;
+}
+
+/*
+    CLEARFIX TECHNIQUE
+    This prevents the parent (.content) from collapsing
+    when all children are floated.
+*/
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*
+    FOOTER STYLES
+*/
+
+.site-footer {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+/*
+    RESPONSIVE DESIGN
+    MOBILE FIRST APPROACH
+*/
+
+/*
+    MOBILE: 0px – 767px
+    Stack columns vertically.
+*/
+.column {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+}
+
+/*
+    TABLET: 768px and up
+    Switch to two-column layout.
+*/
+@media (min-width: 768px) {
+    .column {
+        float: left;
+        width: 48%;
+        margin-right: 4%;
+    }
+
+    .column:nth-child(2n) {
+        margin-right: 0;
+    }
+}
+
+/*
+    DESKTOP: 1025px and up
+    Three-column layout.
+*/
+@media (min-width: 1025px) {
+    .column {
+        width: 31.33%;
+        margin-right: 3%;
+    }
+
+    .column:last-child {
+        margin-right: 0;
+    }
+}
+
+/*
+    FLEXBOX ALTERNATIVE (COMMENTED OUT – FOR LEARNING ONLY)
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+}
+*/
+
+/*
+    GRID ALTERNATIVE (COMMENTED OUT – FOR LEARNING ONLY)
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+*/

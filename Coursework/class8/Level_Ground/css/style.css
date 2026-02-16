@@ -1,0 +1,638 @@
+/* Box Model Hack - Ensures consistent sizing across all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Clear fix hack - Solves collapsing parent container issue with floats */
+.clearfix:after {
+     content: ".";
+     display: block;
+     clear: both;
+     visibility: hidden;
+     line-height: 0;
+     height: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+/* Sets base styles for the entire document */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+}
+
+/******************************************
+/* HEADER LAYOUT - Level Ground
+/*******************************************/
+/* Main header container for community platform */
+.level-ground-header {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border-bottom: 3px solid #e74c3c;
+}
+
+/* Float-based layout - active
+ * Why floats are used: 
+ * - Provides stable left/right positioning for navigation elements
+ * - Allows content to wrap naturally around floated components
+ * - Consistent behavior across all browsers and devices
+ * - Traditional approach that works well for complex multi-column layouts
+ * - Better browser support for legacy browsers that may not support modern layout methods
+ * - Predictable spacing and alignment in header structures
+ * 
+ * This layout uses floats to position the brand/navigation section on the left, 
+ * and user actions on the right. The hero section uses floats to create 
+ * a two-column layout with content and visual elements.
+ */
+
+/* Top navigation bar - two-column layout using floats */
+.top-bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  /* Two-column layout with floats */
+  .brand-nav {
+    float: left;
+    width: 70%;
+    
+    .logo-section {
+      margin-bottom: 15px;
+      
+      .logo {
+        h1 {
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: #fff;
+        }
+        
+        p {
+          font-size: 14px;
+          opacity: 0.9;
+          color: #ecf0f1;
+        }
+      }
+    }
+    
+    .primary-nav {
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        
+        .nav-item {
+          .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 16px;
+            
+            &:hover {
+              color: #e74c3c;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .user-section {
+    float: right;
+    width: 30%;
+    
+    .search-box {
+      margin-bottom: 15px;
+      
+      .search-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 14px;
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        &:focus {
+          outline: none;
+          border-color: #e74c3c;
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+      
+      .search-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        font-size: 16px;
+      }
+    }
+    
+    .notifications {
+      position: relative;
+      margin-bottom: 15px;
+      
+      .notification-icon {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        transition: color 0.3s;
+        
+        &:hover {
+          color: #e74c3c;
+        }
+      }
+      
+      .notification-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+    }
+    
+    .user-profile {
+      margin-bottom: 15px;
+      
+      .profile-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        
+        &:hover {
+          color: #e74c3c;
+        }
+      }
+    }
+    
+    .auth-section {
+      .sign-in-btn {
+        background: #e74c3c;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: background 0.3s;
+        display: inline-block;
+        
+        &:hover {
+          background: #c0392b;
+        }
+      }
+    }
+  }
+  
+  /* Clearfix to contain floated elements */
+  .clearfix {
+    clear: both;
+  }
+}
+
+/* Hero section - content and visual layout using floats */
+.hero-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  
+  /* Left content section */
+  .hero-content {
+    float: left;
+    width: 55%;
+    padding-right: 40px;
+    
+    .welcome-section {
+      margin-bottom: 40px;
+      
+      h2 {
+        font-size: 36px;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+      
+      p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      .cta-buttons {
+        .primary-cta {
+          background: #e74c3c;
+          color: white;
+          padding: 12px 25px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 16px;
+          margin-right: 15px;
+          transition: background 0.3s;
+          display: inline-block;
+          
+          &:hover {
+            background: #c0392b;
+          }
+        }
+        
+        .secondary-cta {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          padding: 12px 25px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          transition: all 0.3s;
+          display: inline-block;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #e74c3c;
+          }
+        }
+      }
+    }
+    
+    .featured-communities {
+      h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #fff;
+      }
+      
+      .community-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        
+        .community-card {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 20px;
+          border-radius: 10px;
+          border-left: 3px solid #e74c3c;
+          
+          .community-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+          }
+          
+          h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #fff;
+          }
+          
+          p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+          }
+          
+          .join-btn {
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-block;
+            
+            &:hover {
+              background: #2980b9;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /* Right visual section */
+  .hero-visual {
+    float: right;
+    width: 45%;
+    
+    .platform-visual {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &::before {
+        content: "👥";
+        display: block;
+        font-size: 64px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+  
+  /* Clearfix to contain floated elements */
+  .clearfix {
+    clear: both;
+  }
+}
+
+/******************************************
+/* FLEXBOX ALTERNATIVE - COMMENTED OUT
+/*******************************************/
+/* Flexbox-based layout - commented out
+ * What this alternative would change:
+ * - More modern and maintainable code structure
+ * - Easier vertical alignment and distribution
+ * - Better responsive control with flexible sizing
+ * - Automatic container containment (no clearfix needed)
+ * - Cleaner gap management between elements
+ * - More intuitive alignment properties (justify-content, space-between)
+ * - Better support for dynamic content sizing
+ * - Easier reordering of elements without changing HTML structure
+ * - Better performance for complex layouts
+ * 
+ * This would replace float-based layout with flexbox containers:
+ * - .top-bar would use display: flex with justify-content: space-between
+ * - .hero-content and .hero-visual would use flex for better control
+ * - .community-grid would maintain CSS Grid for better 2D layout
+ * - .nav-menu would use flex with gap management
+ * - Easier responsive adjustments with flex-wrap and flex-basis
+ */
+
+/*
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand-nav {
+  flex: 0 0 70%;
+}
+
+.user-section {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.hero-section {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.hero-content {
+  flex: 0 0 55%;
+  padding-right: 40px;
+}
+
+.hero-visual {
+  flex: 0 0 45%;
+}
+*/
+
+/******************************************
+/* MEDIA QUERIES FOR RESPONSIVENESS
+/*******************************************/
+/* Mobile-first responsive design approach */
+
+/* Mobile Layout - Screens smaller than 768px */
+@media screen and (max-width: 767px) {
+  /* Float-based layout adjustments for mobile */
+  .top-bar {
+    padding: 15px;
+    
+    .brand-nav {
+      float: none;
+      width: 100%;
+      
+      .logo-section {
+        margin-bottom: 15px;
+        
+        .logo {
+          h1 {
+            font-size: 24px;
+          }
+          
+          p {
+            font-size: 12px;
+          }
+        }
+      }
+      
+      .primary-nav {
+        .nav-menu {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+      }
+    }
+    
+    .user-section {
+      float: none;
+      width: 100%;
+      
+      .search-box {
+        margin-bottom: 10px;
+        
+        .search-input {
+          font-size: 14px;
+        }
+      }
+      
+      .notifications {
+        margin-bottom: 10px;
+      }
+      
+      .user-profile {
+        margin-bottom: 10px;
+      }
+      
+      .auth-section {
+        text-align: center;
+        
+        .sign-in-btn {
+          display: inline-block;
+        }
+      }
+    }
+  }
+  
+  .hero-section {
+    padding: 30px 15px;
+    
+    .hero-content {
+      float: none;
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 30px;
+      
+      .welcome-section {
+        h2 {
+          font-size: 28px;
+        }
+        
+        p {
+          font-size: 16px;
+        }
+        
+        .cta-buttons {
+          text-align: center;
+          
+          .primary-cta, .secondary-cta {
+            display: block;
+            margin: 5px auto;
+            text-align: center;
+          }
+        }
+      }
+      
+      .featured-communities {
+        .community-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+    
+    .hero-visual {
+      float: none;
+      width: 100%;
+      
+      .platform-visual {
+        height: 250px;
+        
+        &::before {
+          font-size: 48px;
+        }
+      }
+    }
+  }
+}
+
+/* Tablet Layout - Screens between 768px and 1024px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Float-based layout adjustments for tablet */
+  .top-bar {
+    padding: 18px;
+    
+    .brand-nav {
+      width: 65%;
+      
+      .logo-section {
+        .logo {
+          h1 {
+            font-size: 26px;
+          }
+        }
+      }
+      
+      .primary-nav {
+        .nav-menu {
+          gap: 20px;
+        }
+      }
+    }
+    
+    .user-section {
+      width: 35%;
+    }
+  }
+  
+  .hero-section {
+    padding: 35px 20px;
+    
+    .hero-content {
+      width: 60%;
+      padding-right: 30px;
+      
+      .featured-communities {
+        .community-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+    
+    .hero-visual {
+      width: 40%;
+      
+      .platform-visual {
+        height: 350px;
+      }
+    }
+  }
+}
+
+/* Desktop Layout - Screens 1024px and larger */
+@media screen and (min-width: 1024px) {
+  /* Full desktop float-based layout - no changes needed as this is the base layout */
+  .top-bar {
+    padding: 20px;
+    
+    .brand-nav {
+      width: 70%;
+    }
+    
+    .user-section {
+      width: 30%;
+    }
+  }
+  
+  .hero-section {
+    padding: 40px 20px;
+    
+    .hero-content {
+      width: 55%;
+      padding-right: 40px;
+    }
+    
+    .hero-visual {
+      width: 45%;
+      
+      .platform-visual {
+        height: 400px;
+      }
+    }
+  }
+}

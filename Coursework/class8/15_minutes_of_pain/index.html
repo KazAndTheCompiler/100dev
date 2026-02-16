@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>15 Minutes of Pain</title>
+
+    <!--
+        NORMALIZE FIRST
+        normalize.css makes browsers behave consistently.
+        It does NOT remove all styles, just evens things out.
+    -->
+    <link rel="stylesheet" href="normalize.css">
+
+    <!--
+        MAIN STYLESHEET
+        Contains all float-based layout logic and tutorial comments.
+    -->
+    <link rel="stylesheet" href="style.css">
+
+    <!--
+        reset.css exists in the project folder but is intentionally
+        NOT linked. It is included for learning comparison only.
+    -->
+</head>
+<body>
+
+    <!--
+        SITE HEADER
+        This header spans the full width of the page.
+        No floats needed here, just block-level flow.
+    -->
+    <header class="site-header">
+        <h1>15 Minutes of Pain</h1>
+        <p>Learning CSS floats the hard way. Briefly.</p>
+    </header>
+
+    <!--
+        MAIN CONTENT WRAPPER
+        This container will hold floated columns.
+        IMPORTANT: When children are floated, the parent
+        will collapse unless we clear it.
+    -->
+    <main class="content clearfix">
+
+        <!--
+            COLUMN 1
+            Floated left to create a multi-column layout.
+        -->
+        <section class="column">
+            <h2>Why Floats Exist</h2>
+            <p>
+                Floats were originally designed to let text wrap around images.
+                Developers later abused them into full layout systems.
+            </p>
+        </section>
+
+        <!--
+            COLUMN 2
+            Identical width to column 1.
+            Float positioning makes them sit side by side.
+        -->
+        <section class="column">
+            <h2>The Pain</h2>
+            <p>
+                Floats are removed from normal document flow.
+                This causes parent containers to collapse unless cleared.
+            </p>
+        </section>
+
+        <!--
+            COLUMN 3
+            The third floated column completes the row.
+        -->
+        <section class="column">
+            <h2>The Lesson</h2>
+            <p>
+                Understanding floats helps you appreciate why Flexbox
+                and Grid were invented later.
+            </p>
+        </section>
+
+    </main>
+
+    <!--
+        FOOTER
+        Simple full-width footer.
+    -->
+    <footer class="site-footer">
+        <p>Educational demo. No JavaScript. No mercy.</p>
+    </footer>
+
+</body>
+</html>

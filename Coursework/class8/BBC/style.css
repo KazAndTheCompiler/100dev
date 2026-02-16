@@ -1,0 +1,187 @@
+/*
+    GLOBAL STYLES
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+}
+
+/*
+    NAVIGATION BAR
+*/
+
+.main-nav {
+    background: #000;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+/* Logo floated left */
+.logo {
+    float: left;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Navigation menu floated right */
+.nav-menu {
+    float: right;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    float: left;
+    margin-left: 20px;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/*
+    HERO SECTION
+*/
+
+.hero {
+    width: 90%;
+    margin: 30px auto;
+}
+
+/* Main featured story */
+.hero-main {
+    float: left;
+    width: 65%;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Side stories */
+.hero-side {
+    float: right;
+    width: 32%;
+    background: #eaeaea;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/*
+    NEWS GRID
+*/
+
+.news-grid {
+    width: 90%;
+    margin: 30px auto;
+}
+
+/* Individual news cards */
+.news-card {
+    float: left;
+    width: 48%;
+    margin-right: 4%;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Remove margin from every second card */
+.news-card:nth-child(2n) {
+    margin-right: 0;
+}
+
+/*
+    CLEARFIX
+*/
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*
+    FOOTER
+*/
+
+.site-footer {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+/*
+    RESPONSIVE DESIGN
+*/
+
+/* MOBILE */
+@media (max-width: 767px) {
+
+    .logo,
+    .nav-menu,
+    .nav-menu li {
+        float: none;
+        text-align: center;
+    }
+
+    .hero-main,
+    .hero-side,
+    .news-card {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+/* TABLET */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .hero-main {
+        width: 60%;
+    }
+
+    .hero-side {
+        width: 38%;
+    }
+
+    .news-card {
+        width: 48%;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1025px) {
+    /* Default float layout applies */
+}
+
+/*
+    FLEXBOX ALTERNATIVE (COMMENTED OUT)
+
+.hero {
+    display: flex;
+}
+
+.hero-main {
+    flex: 2;
+}
+
+.hero-side {
+    flex: 1;
+}
+*/
+
+/*
+    GRID ALTERNATIVE (COMMENTED OUT)
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+*/

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Khan Academy Clone</title>
+
+    <!-- NORMALIZE FIRST -->
+    <link rel="stylesheet" href="normalize.css">
+
+    <!-- MAIN FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!--
+        MAIN NAVIGATION BAR
+        Logo floats left, navigation and search float right.
+    -->
+    <nav class="main-nav clearfix">
+
+        <!-- Logo -->
+        <div class="logo">Khan Academy</div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Practice</a></li>
+            <li><a href="#">Login</a></li>
+        </ul>
+
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+        </div>
+    </nav>
+
+    <!--
+        HERO SECTION
+        Intro content with call-to-action buttons.
+    -->
+    <header class="hero">
+        <h1>Learn Anything</h1>
+        <p>Free education for everyone, everywhere.</p>
+
+        <!-- CTA Buttons -->
+        <div class="cta-buttons clearfix">
+            <a href="#" class="btn">Start Learning</a>
+            <a href="#" class="btn secondary">Teachers</a>
+        </div>
+    </header>
+
+    <!--
+        FEATURE CATEGORIES
+        Float-based card layout.
+    -->
+    <section class="features clearfix">
+
+        <article class="feature-card">
+            <h3>Math</h3>
+            <p>Arithmetic to calculus.</p>
+        </article>
+
+        <article class="feature-card">
+            <h3>Science</h3>
+            <p>Physics, chemistry, biology.</p>
+        </article>
+
+        <article class="feature-card">
+            <h3>Computing</h3>
+            <p>Programming and CS.</p>
+        </article>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>Khan Academy Clone – Educational Use</p>
+    </footer>
+
+</body>
+</html>
