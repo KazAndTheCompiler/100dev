@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive lab demonstrating CSS float-based layouts">
+    <title>Float Layout Lab</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Classic Float Layout Laboratory</h1>
+        <p>Learn float-based layouts before flexbox and grid</p>
+        <!--
+            This button triggers JS to add colored outlines
+            around every floated element so you can see exactly
+            what's been pulled out of normal document flow.
+        -->
+        <button id="toggleOutlines" class="toggle-btn">Toggle Float Outlines</button>
+    </header>
+
+    <main>
+
+        <!-- ============================================================
+             DEMO 1: TWO-COLUMN LAYOUT
+             Shows the collapsing-parent problem and two ways to fix it.
+             ============================================================ -->
+        <section class="layout-demo two-column">
+            <h2>Two-Column Layout</h2>
+            <p>Demonstrates sidebar + main content using <code>float</code></p>
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                 PROBLEM: No containment on the parent.
+                 Both children are floated so the parent has zero height —
+                 it "collapses" and any following content slides up behind it.
+                 - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="demo-container no-fix">
+                <h3>Problem: Collapsing Parent</h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>Floated elements are removed from normal document flow.
+                    The parent has no height, so it collapses to nothing.</p>
+                </div>
+                <!--
+                    NOTE: No clearfix here — intentionally showing the broken state.
+                    Inspect this element in DevTools to see the collapsed height.
+                -->
+            </div>
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                 FIX 1: overflow: hidden
+                 Setting overflow to anything other than "visible" forces
+                 the browser to create a new Block Formatting Context (BFC).
+                 A BFC always expands to contain its floated children.
+                 
+                 Downside: clips any content that intentionally overflows
+                 the box (e.g. dropdown menus, tooltips). Use with care.
+                 - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="demo-container overflow-fix">
+                <h3>Fix 1: <code>overflow: hidden</code></h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p><code>overflow: hidden</code> creates a new Block Formatting
+                    Context, forcing the parent to wrap around its floated children.</p>
+                </div>
+            </div>
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                 FIX 2: Clearfix (preferred)
+                 The ::after pseudo-element injects an invisible block-level
+                 element at the end of the container. clear: both forces it
+                 below all floats, stretching the parent to contain them.
+                 
+                 This is the recommended approach — no clipping side effects.
+                 The .clearfix class is defined once in the CSS and reused
+                 anywhere a float container needs containing.
+
+                 IMPORTANT: .clearfix belongs on the PARENT (the container),
+                 NOT on a separate empty <div> inside it. The old pattern of
+                 <div class="clearfix"></div> as the last child works but
+                 adds meaningless markup. The ::after pseudo-element approach
+                 does the same thing entirely in CSS.
+                 - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+            <div class="demo-container clearfix">
+                <h3>Fix 2: Clearfix (Recommended)</h3>
+                <div class="sidebar">Sidebar</div>
+                <div class="main-content">
+                    <h4>Main Content</h4>
+                    <p>The <code>.clearfix</code> class on the <em>parent</em>
+                    injects a pseudo-element after all content, forcing the
+                    container to expand around its floated children.</p>
+                </div>
+                <!--
+                    No empty <div class="clearfix"> needed here.
+                    The ::after pseudo-element handles it entirely in CSS.
+                -->
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+             DEMO 2: THREE-COLUMN NEWS LAYOUT
+             Classic newspaper layout: each column floated left,
+             widths add up to 100%, clearfix on the parent.
+             ============================================================ -->
+        <section class="layout-demo three-column">
+            <h2>Three-Column News Layout</h2>
+            <p>Classic newspaper-style layout using floats</p>
+
+            <!--
+                .clearfix is applied directly to the container.
+                No empty <div> needed inside.
+            -->
+            <div class="news-container clearfix">
+                <div class="column article">
+                    <h3>Main Article</h3>
+                    <p>The widest column. Takes up roughly half the container
+                    width to give the main story the most visual weight.</p>
+                </div>
+                <div class="column sidebar">
+                    <h3>Sidebar</h3>
+                    <p>Secondary content. Floated left alongside the main article.</p>
+                </div>
+                <div class="column ads">
+                    <h3>Advertisements</h3>
+                    <p>Narrowest column. All three columns float left and together
+                    fill 100% of the container width.</p>
+                </div>
+                <!--
+                    No empty clearfix div here.
+                    .clearfix on the parent (.news-container) handles it.
+                -->
+            </div>
+        </section>
+
+
+        <!-- ============================================================
+             DEMO 3: IMAGE WITH TEXT WRAP
+             The original, intended use case for float. Pulls an image
+             out of flow so surrounding text wraps around it — just like
+             a magazine or newspaper layout.
+             ============================================================ -->
+        <section class="layout-demo image-wrap">
+            <h2>Image with Text Wrap</h2>
+            <p>Demonstrates how text wraps around floated images — the
+            original purpose floats were designed for.</p>
+
+            <!--
+                No float containment needed here because the text content
+                (not floated) is tall enough to extend below the image.
+                If the text were short, we'd add .clearfix on .article-container.
+            -->
+            <div class="article-container">
+                <!--
+                    float: left on this image removes it from document flow.
+                    The surrounding paragraph text then wraps around it.
+                    margin-right and margin-bottom create breathing room
+                    between the image and the wrapping text.
+                -->
+                <img src="https://via.placeholder.com/150x150/4CAF50/FFFFFF?text=Image"
+                     alt="Placeholder image demonstrating float text-wrap">
+                <div class="article-content">
+                    <h3>Article Title</h3>
+                    <p>This text wraps around the floated image. The image has
+                    <code>float: left</code> applied, removing it from normal
+                    document flow and positioning it to the left of its container.</p>
+                    <p>This is the use case CSS floats were originally designed for —
+                    magazine-style text-wrap around images. Multi-column page layouts
+                    came later as developers found creative (mis)uses for the property.</p>
+                    <p>Notice how margin controls the space between the image and text.
+                    Without margin, the text would sit flush against the image edge.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
