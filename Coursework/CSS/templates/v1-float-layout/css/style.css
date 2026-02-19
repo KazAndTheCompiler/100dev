@@ -1,0 +1,166 @@
+/* =============================================
+   BOX MODEL
+   ============================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =============================================
+   CLEARFIX
+   Apply to any parent containing floated children
+   ============================================= */
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.clear {
+    clear: both;
+}
+
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+
+/* =============================================
+   HEADER
+   Full-width — sits in normal document flow
+   ============================================= */
+
+header {
+    background: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+header h1 {
+    color: #fff;
+    margin: 0 0 6px 0;
+}
+
+header p {
+    margin: 0;
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+
+/* =============================================
+   CONTAINER
+   Centers content and limits max width
+   ============================================= */
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+
+/* =============================================
+   TWO-COLUMN FLOAT LAYOUT
+   
+   How it works:
+   - .sidebar floats RIGHT with a fixed width
+   - .content uses margin-right to avoid sliding
+     under the floated sidebar
+   - .clearfix on the parent (main) contains both
+   ============================================= */
+
+/* RIGHT COLUMN: Sidebar
+   Float this first in the CSS so it renders
+   before the content block in older browsers */
+.sidebar {
+    float: right;           /* Pull out of flow, push to right */
+    width: 230px;           /* Fixed width — adjust as needed */
+    background: #ecf0f1;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    padding-left: 18px;
+    margin: 0 0 1rem;
+}
+
+/* LEFT COLUMN: Main content
+   margin-right must equal sidebar width + desired gap */
+.content {
+    margin-right: 250px;    /* 230px sidebar + 20px gap */
+}
+
+/* Floated image within content — text wraps around it */
+.content img {
+    float: left;            /* Pull image out of flow */
+    margin: 0 20px 16px 0;  /* Space: top right bottom left */
+    max-width: 200px;
+    display: block;
+}
+
+
+/* =============================================
+   FOOTER
+   Sits in normal flow below all floated content
+   ============================================= */
+
+footer {
+    background: #34495e;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+
+/* =============================================
+   RESPONSIVE
+   Stack columns vertically on small screens
+   ============================================= */
+
+@media (max-width: 768px) {
+
+    /* Remove sidebar float — stack it full width */
+    .sidebar {
+        float: none;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Remove content margin — no sidebar beside it */
+    .content {
+        margin-right: 0;
+    }
+
+    /* Remove image float — center it instead */
+    .content img {
+        float: none;
+        display: block;
+        margin: 0 auto 1rem;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,71 @@
+/* =============================================
+   BOX MODEL
+   Make sizing predictable on every element
+   ============================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =============================================
+   CLEARFIX
+   Apply .clearfix to any parent that contains
+   floated children so it doesn't collapse
+   ============================================= */
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Utility class for manual clears between sections */
+.clear {
+    clear: both;
+}
+
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+
+/* =============================================
+   LAYOUT
+   ============================================= */
+
+header {
+
+}
+
+main {
+
+}
+
+footer {
+
+}
+
+
+/* =============================================
+   COMPONENTS
+   ============================================= */
+
+
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+@media (max-width: 768px) {
+
+}

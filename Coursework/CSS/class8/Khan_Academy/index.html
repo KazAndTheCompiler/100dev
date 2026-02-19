@@ -3,78 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>Khan Academy Clone</title>
-
-    <!-- NORMALIZE FIRST -->
-    <link rel="stylesheet" href="normalize.css">
-
-    <!-- MAIN FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <!-- ===== NAVBAR ===== -->
     <!--
-        MAIN NAVIGATION BAR
-        Logo floats left, navigation and search float right.
+        Three-zone float layout:
+        - Left zone:  Courses + Search (floated left)
+        - Center:     Logo (centered with margin auto trick)
+        - Right zone: Donate / Login / Sign up (floated right)
     -->
     <nav class="main-nav clearfix">
 
-        <!-- Logo -->
-        <div class="logo">Khan Academy</div>
-
-        <!-- Navigation Links -->
-        <ul class="nav-links">
-            <li><a href="#">Courses</a></li>
-            <li><a href="#">Practice</a></li>
-            <li><a href="#">Login</a></li>
-        </ul>
-
-        <!-- Search Box -->
-        <div class="search-box">
-            <input type="text" placeholder="Search">
+        <div class="nav-left clearfix">
+            <a href="#" class="nav-courses">Courses &#9660;</a>
+            <div class="nav-search">
+                <input type="text" placeholder="Search">
+                <span class="search-icon">&#128269;</span>
+            </div>
         </div>
+
+        <div class="nav-center">
+            <!-- Khan Academy shield SVG approximated with emoji + text -->
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">&#127891;</span>
+                <span class="logo-text">Khan Academy</span>
+            </a>
+        </div>
+
+        <div class="nav-right clearfix">
+            <a href="#" class="nav-link">Donate</a>
+            <a href="#" class="nav-link">Login</a>
+            <a href="#" class="nav-link nav-signup">Sign up</a>
+        </div>
+
     </nav>
 
+    <!-- ===== HERO SECTION ===== -->
     <!--
-        HERO SECTION
-        Intro content with call-to-action buttons.
+        Two-column float layout:
+        - Left:  decorative image collage (floated left)
+        - Right: headline text + CTA buttons (floated right)
     -->
-    <header class="hero">
-        <h1>Learn Anything</h1>
-        <p>Free education for everyone, everywhere.</p>
+    <section class="hero clearfix">
 
-        <!-- CTA Buttons -->
-        <div class="cta-buttons clearfix">
-            <a href="#" class="btn">Start Learning</a>
-            <a href="#" class="btn secondary">Teachers</a>
+        <!-- Left: image collage with decorative blobs -->
+        <div class="hero-collage">
+
+            <!-- Decorative SVG blobs behind images -->
+            <div class="blob blob-navy"></div>
+            <div class="blob blob-teal"></div>
+            <div class="blob blob-coral"></div>
+            <div class="blob blob-pink"></div>
+
+            <!-- Dot grid decoration -->
+            <div class="dot-grid"></div>
+
+            <!-- Student photos layered on top -->
+            <img class="student student-main"    src="https://picsum.photos/seed/student1/200/260" alt="Student smiling">
+            <img class="student student-left"    src="https://picsum.photos/seed/student2/160/200" alt="Student writing">
+            <img class="student student-bottom"  src="https://picsum.photos/seed/student3/160/180" alt="Student on tablet">
+            <img class="student student-headset" src="https://picsum.photos/seed/student4/170/200" alt="Student with headset">
+
+            <!-- Squiggle line decoration -->
+            <svg class="squiggle" viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60 10 C80 40, 30 70, 60 100 C90 130, 30 160, 60 190" stroke="#14bf96" stroke-width="2.5" fill="none"/>
+            </svg>
+
         </div>
-    </header>
 
-    <!--
-        FEATURE CATEGORIES
-        Float-based card layout.
-    -->
-    <section class="features clearfix">
+        <!-- Right: headline + subtitle + buttons -->
+        <div class="hero-text">
+            <h1>For every student,<br>every classroom.<br>Real results.</h1>
+            <div class="hero-underline"></div>
+            <p>We're a nonprofit with the mission to provide a free, world-class education for anyone, anywhere.</p>
 
-        <article class="feature-card">
-            <h3>Math</h3>
-            <p>Arithmetic to calculus.</p>
-        </article>
-
-        <article class="feature-card">
-            <h3>Science</h3>
-            <p>Physics, chemistry, biology.</p>
-        </article>
-
-        <article class="feature-card">
-            <h3>Computing</h3>
-            <p>Programming and CS.</p>
-        </article>
+            <!-- Four CTA buttons floated inline -->
+            <div class="cta-buttons clearfix">
+                <a href="#" class="btn-cta">Learners</a>
+                <a href="#" class="btn-cta">Teachers</a>
+                <a href="#" class="btn-cta">Districts</a>
+                <a href="#" class="btn-cta">Parents</a>
+            </div>
+        </div>
 
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-        <p>Khan Academy Clone – Educational Use</p>
+        <p>Khan Academy Clone – Educational Use Only</p>
     </footer>
 
 </body>

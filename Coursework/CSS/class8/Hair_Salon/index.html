@@ -3,90 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <title>Ayesha Hair Salon</title>
-
-    <!-- NORMALIZE FIRST -->
     <link rel="stylesheet" href="normalize.css">
-
-    <!-- FLOAT-BASED STYLES -->
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!--
-        HEADER / HERO SECTION
-        Full-width section introducing the salon.
-    -->
-    <header class="hero">
-        <h1>Ayesha Hair Salon</h1>
-        <p>Style. Care. Precision.</p>
-    </header>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="main-nav clearfix">
+        <div class="nav-logo">Ayesha.</div>
+        <ul class="nav-links">
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">SERVICES</a></li>
+            <li><a href="#">LOOKBOOK</a></li>
+            <li><a href="#">NEWS</a></li>
+            <li><a href="#">CONTACT</a></li>
+            <li><a href="#" class="nav-icon">&#128269;</a></li>
+            <li><a href="#" class="nav-icon">&#128722;</a></li>
+        </ul>
+        <a href="#" class="nav-book">&rarr; BOOK ONLINE</a>
+    </nav>
 
-    <!--
-        SERVICES SECTION
-        Uses floated boxes to form a grid.
-    -->
-    <section class="services clearfix">
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero clearfix">
 
-        <h2>Our Services</h2>
+        <div class="hero-side-label">MON – SUN &nbsp;&nbsp; 7:00AM – 9:00PM</div>
 
-        <!-- Individual service cards -->
-        <div class="service-card">
-            <h3>Hair Styling</h3>
-            <p>Modern cuts and classic techniques.</p>
+        <div class="hero-content">
+            <h1 class="hero-title">BLONDE<br>&amp; HIGHLIGHT</h1>
+            <p class="hero-sub">DIVIDE YOUR UNIQUENESS BY YOUR HAIRS IN TYLE</p>
+            <a href="#" class="btn btn-dark">&rarr; OUR SERVICES</a>
+
+            <div class="promo-box">
+                <p class="promo-label">YOUR FIRST VISIT ?</p>
+                <p class="promo-percent">-20% <span>FOR THE FIRST</span></p>
+                <p class="promo-service">CLASSIC HAIR COLORING</p>
+                <a href="#" class="btn btn-dark btn-sm">&rarr; BOOK ONLINE</a>
+            </div>
         </div>
 
-        <div class="service-card">
-            <h3>Coloring</h3>
-            <p>Professional color treatments.</p>
+        <div class="hero-image">
+            <img src="https://picsum.photos/seed/haircolor/620/580" alt="Blonde and Highlight">
         </div>
 
-        <div class="service-card">
-            <h3>Treatments</h3>
-            <p>Repair and care services.</p>
+        <div class="hero-arrows">
+            <button class="arrow-btn">&#8592;</button>
+            <button class="arrow-btn">&#8594;</button>
         </div>
 
     </section>
 
-    <!--
-        TEAM SECTION
-        Float-based team member cards.
-    -->
+    <!-- ===== FEATURES STRIP ===== -->
+    <section class="features clearfix">
+
+        <div class="feature-item">
+            <div class="feature-icon">&#9920;</div>
+            <h4>EXPERT BEAUTICIANS</h4>
+            <p>Beauty Experts dolor sit amet semdasicing elit maecenas os fauibus melis expo said and beauty exten interdum.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">&#9977;</div>
+            <h4>QUALITY SERVICES</h4>
+            <p>Hair Styling Services sit amet semdasicing elit maecenas os fauibus melis expo said and beauty exten interdum.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">&#128138;</div>
+            <h4>BEAUTY PRODUCTS</h4>
+            <p>Hair color or Product sit amet semdasicing elit maecenas os fauibus melis expo said and beauty exten interdum.</p>
+        </div>
+
+    </section>
+
+    <!-- ===== TEAM SECTION ===== -->
     <section class="team clearfix">
 
-        <h2>Meet the Team</h2>
-
-        <article class="team-member">
-            <h3>Ayesha</h3>
-            <p>Founder & Lead Stylist</p>
+        <article class="team-card">
+            <img src="https://picsum.photos/seed/alita/270/320" alt="Alita Williams">
+            <div class="team-info">
+                <p class="team-name">ALITA WILLIMS</p>
+                <p class="team-role">– COLOURIST</p>
+            </div>
         </article>
 
-        <article class="team-member">
-            <h3>Sara</h3>
-            <p>Color Specialist</p>
+        <article class="team-card">
+            <img src="https://picsum.photos/seed/ayeshalake/270/320" alt="Ayesha Lake">
+            <div class="team-info">
+                <p class="team-name">AYESHA LAKE</p>
+                <p class="team-role">– STYLER</p>
+            </div>
         </article>
 
-        <article class="team-member">
-            <h3>Lina</h3>
-            <p>Hair Treatment Expert</p>
+        <article class="team-card">
+            <img src="https://picsum.photos/seed/smith/270/320" alt="Smith Michel">
+            <div class="team-info">
+                <p class="team-name">SMITH MICHEL</p>
+                <p class="team-role">– BEAUTICIAN</p>
+            </div>
         </article>
 
     </section>
 
-    <!--
-        PORTFOLIO GALLERY
-        Images are represented as boxes for layout learning.
-    -->
-    <section class="gallery clearfix">
+    <!-- ===== PROMO BANNER ===== -->
+    <section class="promo-banner clearfix">
 
-        <h2>Our Work</h2>
+        <div class="promo-text">
+            <p class="promo-tag">COLOUR DAY OFFER!</p>
+            <h2><span class="highlight">-10%</span> ON HAIRCUT<br>COLOR AND HIGHLIGHT</h2>
+            <a href="#" class="btn btn-dark btn-sm">&rarr; BOOK APPOINTMENT</a>
+        </div>
 
-        <div class="gallery-item">Image 1</div>
-        <div class="gallery-item">Image 2</div>
-        <div class="gallery-item">Image 3</div>
-        <div class="gallery-item">Image 4</div>
+        <div class="promo-img">
+            <img src="https://picsum.photos/seed/blonde/300/280" alt="Colour Offer">
+        </div>
 
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== LOOKBOOK ===== -->
+    <section class="lookbook">
+        <h2 class="section-title">OUR LOOKBOOK</h2>
+        <div class="title-divider"></div>
+
+        <div class="lookbook-grid clearfix">
+            <div class="look-col-left clearfix">
+                <div class="look-tall"><img src="https://picsum.photos/seed/look1/270/430" alt="Look 1"></div>
+            </div>
+            <div class="look-col-mid clearfix">
+                <div class="look-tall"><img src="https://picsum.photos/seed/look2/270/430" alt="Look 2"></div>
+            </div>
+            <div class="look-col-right clearfix">
+                <div class="look-small top"><img src="https://picsum.photos/seed/look3/270/205" alt="Look 3"></div>
+                <div class="look-small bottom"><img src="https://picsum.photos/seed/look4/270/205" alt="Look 4"></div>
+            </div>
+            <div class="look-col-far clearfix">
+                <div class="look-small top"><img src="https://picsum.photos/seed/look5/270/205" alt="Look 5"></div>
+                <div class="look-small bottom look-plus"><span>+</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MOMENTUM SECTION ===== -->
+    <section class="momentum clearfix">
+
+        <div class="momentum-text">
+            <h2>MAKE YOUR<br>OWN MOMENTUM</h2>
+            <p>Hair Salon volutpat ut nisl in hendrerit. Vestibulum ante ipsum oul primis in faucibus oos luctus et ultrices posuere cubilia Curasec. Etiam porttitor, lacus in luctus molestie. Mores justo ullamcorper nulla, sed lacinia erat metus eget diam. Morbi volutpat lectus sit amet massa vestibosso beauty products.</p>
+            <a href="#" class="btn btn-dark btn-sm">&rarr; READ MORE</a>
+        </div>
+
+        <div class="momentum-img">
+            <img src="https://picsum.photos/seed/salonwork/420/300" alt="Salon at work">
+            <div class="play-btn">&#9654;</div>
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-        <p>Ayesha Hair Salon – Educational
+        <p>Ayesha Hair Salon &copy; 2024 – Educational Use Only</p>
+    </footer>
+
+</body>
+</html>

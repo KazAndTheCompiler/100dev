@@ -2,85 +2,212 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Restaurant</title>
-
-    <!-- NORMALIZE FIRST -->
-    <link rel="stylesheet" href="normalize.css">
-
-    <!-- FLOAT-BASED STYLES -->
+    <title>Cuisine Restaurant</title>
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!--
-        NAVIGATION BAR
-        Logo floated left, menu floated right.
+    <!-- ===== NAVBAR =====
+         White bar: logo left, nav links center, cart + search right
     -->
     <nav class="main-nav clearfix">
-        <div class="logo">FoodPlace</div>
-
-        <ul class="nav-menu">
+        <div class="nav-logo">
+            <span class="logo-icon">&#127859;</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
             <li><a href="#">Menu</a></li>
-            <li><a href="#">Book</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#">Order Now</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Location</a></li>
         </ul>
+        <div class="nav-actions">
+            <a href="#" class="nav-icon-btn">&#128722;</a>
+            <a href="#" class="nav-icon-btn">&#128269;</a>
+        </div>
     </nav>
 
-    <!--
-        HERO SECTION
+    <!-- ===== HERO =====
+         Light background, text left, food image right
+         Social stats below heading
     -->
-    <header class="hero">
-        <h1>Fresh Food, Done Right</h1>
-        <p>Breakfast. Lunch. Dinner. Dessert.</p>
-    </header>
+    <section class="hero clearfix">
+        <div class="hero-text">
+            <h1>Welcome<br>To Our Cuisine<br>Restaurant</h1>
 
-    <!--
-        MAIN CONTENT AREA
-        Sidebar + content layout using floats.
+            <!-- Search bar -->
+            <div class="hero-search clearfix">
+                <input type="text" placeholder="Search here...">
+                <button class="btn-orange">Location &#9660;</button>
+            </div>
+
+            <!-- Social stats -->
+            <div class="hero-stats clearfix">
+                <span class="stat"><span class="stat-icon fb">f</span> 252k</span>
+                <span class="stat"><span class="stat-icon tw">t</span> 62k</span>
+                <span class="stat"><span class="stat-icon ig">&#9632;</span> 55k</span>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="https://picsum.photos/seed/foodhero/480/380" alt="Fresh cuisine">
+        </div>
+    </section>
+
+    <!-- ===== FOOD GALLERY STRIP =====
+         4 photos in a row
     -->
-    <main class="layout clearfix">
+    <section class="gallery-strip clearfix">
+        <div class="gallery-strip-inner clearfix">
+            <div class="gallery-thumb"><img src="https://picsum.photos/seed/food1/280/180" alt="Dish 1"></div>
+            <div class="gallery-thumb"><img src="https://picsum.photos/seed/food2/280/180" alt="Dish 2"></div>
+            <div class="gallery-thumb"><img src="https://picsum.photos/seed/food3/280/180" alt="Dish 3"></div>
+            <div class="gallery-thumb"><img src="https://picsum.photos/seed/food4/280/180" alt="Dish 4"></div>
+        </div>
+        <!-- Dots indicator -->
+        <div class="dots-indicator">
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <h3>Opening Hours</h3>
-            <p>Mon–Fri: 8am–10pm</p>
-            <p>Sat–Sun: 9am–11pm</p>
-        </aside>
+    <!-- ===== ABOUT + OPENING HOURS (side by side) =====
+         Left: about section with images
+         Right: opening hours card
+    -->
+    <section class="about-hours clearfix">
 
-        <!-- CONTENT -->
-        <section class="content">
+        <!-- About section -->
+        <div class="about-col clearfix">
+            <div class="about-images clearfix">
+                <div class="about-img-main">
+                    <img src="https://picsum.photos/seed/aboutfood1/300/340" alt="Restaurant food">
+                </div>
+                <div class="about-img-secondary">
+                    <img src="https://picsum.photos/seed/aboutfood2/220/260" alt="Restaurant food 2">
+                </div>
+            </div>
+            <div class="about-text">
+                <span class="tag-label">About us</span>
+                <h2>Discover Our<br>Restaurant Story</h2>
+                <p>Cuisine is a team work of Cuisine Restaurant Cafe, we aim at promoting the foodstuff industry through the branches, we establish and through the new dishes, and integrate between different cultures. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Aenean commodo ligula.</p>
+                <p>Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Aenean commodo ligula.</p>
+                <a href="#" class="btn-orange-outline">Discover Menu &nbsp;&rsaquo;</a>
+            </div>
+        </div>
 
-            <!-- MENU SECTION -->
-            <section class="menu clearfix">
-                <h2>Our Menu</h2>
+        <!-- Opening hours card -->
+        <div class="hours-col">
+            <span class="tag-label orange">Book Table</span>
+            <h2>Opening Hours</h2>
 
-                <div class="menu-item">Breakfast</div>
-                <div class="menu-item">Lunch</div>
-                <div class="menu-item">Dinner</div>
-                <div class="menu-item">Dessert</div>
-                <div class="menu-item">Shakes</div>
-            </section>
+            <div class="phone-block">
+                <span class="phone-icon">&#128222;</span>
+                <p class="call-label">Call Now</p>
+                <p class="phone-number">+12345 678 910</p>
+            </div>
 
-            <!-- TESTIMONIALS -->
-            <section class="testimonials clearfix">
-                <h2>What Customers Say</h2>
+            <div class="hours-grid clearfix">
+                <div class="hours-item">
+                    <p class="hours-day">Monday to Tuesday</p>
+                    <p class="hours-time">09:00 am – 22:00 pm</p>
+                </div>
+                <div class="hours-item">
+                    <p class="hours-day">Friday to Sunday</p>
+                    <p class="hours-time">11:00 am – 20:00 pm</p>
+                </div>
+            </div>
 
-                <article class="testimonial">
-                    <p>“Best food in town.”</p>
+            <!-- Bowl image -->
+            <div class="hours-food-img">
+                <img src="https://picsum.photos/seed/bowl/380/260" alt="Bowl of food">
+                <div class="hours-arrow">&#8250;</div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== SPECIALITY CUISINE =====
+         Centered heading + tabs + 4 food cards
+    -->
+    <section class="speciality">
+        <div class="speciality-inner">
+            <span class="tag-label orange center">Order Online Now</span>
+            <h2 class="section-title">Our Specility Cuisine</h2>
+
+            <!-- Tab navigation -->
+            <div class="cuisine-tabs clearfix">
+                <button class="tab active">Breakfast</button>
+                <button class="tab">Launch</button>
+                <button class="tab">Dinner</button>
+                <button class="tab">Dessert</button>
+                <button class="tab">Shake</button>
+            </div>
+
+            <!-- Food cards grid -->
+            <div class="food-grid clearfix">
+
+                <article class="food-card featured">
+                    <span class="food-badge">Online</span>
+                    <img src="https://picsum.photos/seed/dish1/280/200" alt="Contadina">
+                    <div class="food-card-overlay">
+                        <p class="food-price">$14.99</p>
+                        <div class="food-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <h4>Contadina</h4>
+                        <a href="#" class="btn-orange-sm">Order Now</a>
+                    </div>
                 </article>
 
-                <article class="testimonial">
-                    <p>“Worth every bite.”</p>
+                <article class="food-card">
+                    <img src="https://picsum.photos/seed/dish2/280/200" alt="Dish 2">
                 </article>
-            </section>
 
-        </section>
+                <article class="food-card">
+                    <img src="https://picsum.photos/seed/dish3/280/200" alt="Dish 3">
+                </article>
 
-    </main>
+                <article class="food-card">
+                    <img src="https://picsum.photos/seed/dish4/280/200" alt="Dish 4">
+                </article>
 
-    <!-- FOOTER -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS =====
+         Centered, avatar + name + stars + quote
+    -->
+    <section class="testimonials">
+        <div class="testimonials-inner">
+            <span class="tag-label orange center">Testimonials</span>
+            <h2 class="section-title">Customer Say</h2>
+
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src="https://picsum.photos/seed/person1/80/80" alt="Mr John Smith">
+                </div>
+                <h4>Mr John Smith</h4>
+                <p class="testimonial-role">Art Director</p>
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">Delicious boneless, skinless chicken breasts and fresh mushrooms in garlic and white wine sauce. Cuisine is a team work of Cuisine Restaurant Cafe, we aim at promoting the foodstuff industry through the branches, we establish and through the new dishes.</p>
+            </div>
+
+            <div class="dots-indicator">
+                <span class="dot"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-        <p>Restaurant Layout – Educational Example</p>
+        <p>&copy; 2024 Cuisine Restaurant – Educational Use Only</p>
     </footer>
 
 </body>

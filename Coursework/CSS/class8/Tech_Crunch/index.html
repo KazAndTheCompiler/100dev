@@ -3,49 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <title>TechCrunch Clone</title>
-    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=GT+America,system-ui&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<nav class="main-nav clearfix">
-    <div class="logo">TechCrunch</div>
-</nav>
+    <!-- ===== THREE-COLUMN LAYOUT =====
+         Left sidebar (fixed nav) | Center content | Right headlines
+         All three floated side by side
+    -->
+    <div class="page-wrap clearfix">
 
-<main class="layout clearfix">
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <aside class="sidebar">
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside class="sidebar">
-        <ul>
-            <li>Startups</li>
-            <li>Tech</li>
-            <li>Apps</li>
-        </ul>
-    </aside>
+            <!-- TC Logo -->
+            <a href="#" class="tc-logo">
+                <span class="tc-box">TC</span>
+            </a>
 
-    <!-- MAIN CONTENT -->
-    <section class="content">
+            <!-- Join Extra Crunch -->
+            <a href="#" class="join-link">Join Extra Crunch</a>
 
-        <!-- FEATURED ARTICLE -->
-        <article class="featured">
-            <h1>Featured Tech Story</h1>
-            <p>Big headline content lives here.</p>
-        </article>
+            <!-- Login -->
+            <a href="#" class="login-link">Login</a>
 
-        <!-- ARTICLE LIST -->
-        <section class="articles clearfix">
-            <article class="article">Article One</article>
-            <article class="article">Article Two</article>
-            <article class="article">Article Three</article>
-        </section>
+            <!-- Nav divider -->
+            <div class="nav-divider"></div>
 
-    </section>
+            <!-- Nav links -->
+            <nav class="sidebar-nav">
+                <a href="#">Search &#128269;</a>
+                <a href="#">Startups</a>
+                <a href="#">Videos</a>
+                <a href="#">Audio</a>
+                <a href="#">Newsletters</a>
+                <a href="#">Extra Crunch</a>
+                <a href="#">The TC List</a>
+                <a href="#">Advertise</a>
+                <a href="#">Events</a>
+                <div class="nav-dash">—</div>
+                <a href="#">More</a>
+            </nav>
 
-</main>
+        </aside>
 
-<footer class="site-footer">
-    <p>TechCrunch Clone – Educational</p>
-</footer>
+        <!-- ===== CENTER CONTENT ===== -->
+        <main class="center-content">
+
+            <!-- Featured article -->
+            <article class="featured-article">
+                <p class="extra-crunch-tag">&#163; Extra Crunch</p>
+                <h1>What China's fintech market can teach the world</h1>
+                <p class="article-excerpt">Finance researcher Martin Chorzempa discusses Ant Group, payments networks and more</p>
+                <p class="article-author">Danny Crichton</p>
+                <div class="featured-img">
+                    <img src="https://picsum.photos/seed/fintech/700/400" alt="China fintech">
+                </div>
+            </article>
+
+            <!-- The Latest section -->
+            <div class="latest-divider">
+                <span class="latest-label">The Latest</span>
+            </div>
+
+            <!-- Latest article row -->
+            <article class="latest-article clearfix">
+                <div class="latest-text">
+                    <h2>'Wonder Woman 1984' is coming to HBO Max (and some U.S. theaters) on Dec. 25</h2>
+                    <p class="article-author">Anthony Ha</p>
+                    <p class="article-meta">9:15 AM PST • November 19, 2020</p>
+                </div>
+                <div class="latest-excerpt">
+                    <p>Although COVID-19 is surging in the United States and around the world, Warner Bros. still plans to release "Wonder Woman 1984" on Christmas Day — but its plans are are no longer limite...</p>
+                </div>
+                <div class="latest-img">
+                    <img src="https://picsum.photos/seed/wonderwoman/360/200" alt="Wonder Woman 1984">
+                </div>
+            </article>
+
+        </main>
+
+        <!-- ===== RIGHT HEADLINES ===== -->
+        <aside class="right-col">
+
+            <article class="right-article">
+                <h3>SellerX raises $118M to buy up and grow Amazon marketplace businesses</h3>
+                <p class="right-author">Ingrid Lunden</p>
+            </article>
+
+            <div class="right-divider"></div>
+
+            <article class="right-article right-article-muted">
+                <h3>Spotify opens a marketplace for Canvas looping artwork designers</h3>
+                <p class="right-author">Brian Heater</p>
+            </article>
+
+            <div class="right-divider"></div>
+
+            <article class="right-article">
+                <h3>Instagram revamps its mobile messaging app Threads</h3>
+                <p class="right-author">Sarah Perez</p>
+            </article>
+
+            <div class="right-divider"></div>
+
+            <article class="right-article">
+                <h3>ZenBusiness snags $55M Series B for its incorporation and growth platform for micro businesses</h3>
+                <p class="right-author">Danny Crichton</p>
+            </article>
+
+        </aside>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <p>TechCrunch Clone – Educational Use Only</p>
+    </footer>
 
 </body>
 </html>

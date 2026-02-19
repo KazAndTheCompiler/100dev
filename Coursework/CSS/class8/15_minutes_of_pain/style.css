@@ -100,13 +100,6 @@ body {
     MOBILE: 0px – 767px
     Stack columns vertically.
 */
-.column {
-    float: none;
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 20px;
-}
-
 /*
     TABLET: 768px and up
     Switch to two-column layout.

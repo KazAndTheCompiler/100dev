@@ -1,74 +1,33 @@
-/*
-    BASE STYLES
-*/
+/* =====================
+   GLOBAL
+   ===================== */
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-}
-
-/*
-    HERO SECTION
-*/
-
-.hero {
-    background: #111;
-    color: #fff;
-    text-align: center;
-    padding: 100px 20px;
-}
-
-/*
-    TWO-COLUMN SECTION
-*/
-
-.two-column {
-    width: 90%;
-    margin: 60px auto;
-}
-
-/*
-    SHARED COLUMN STYLES
-*/
-
-.column {
-    float: left;
-    width: 48%;
+* {
     box-sizing: border-box;
 }
 
-/*
-    TEXT COLUMN
-*/
-
-.column.text {
-    padding: 20px;
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    margin: 0;
+    background: #fff;
+    color: #222;
+    font-size: 15px;
+    line-height: 1.6;
 }
 
-/*
-    IMAGE COLUMN
-*/
-
-.column.image {
-    padding: 20px;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-/*
-    IMAGE PLACEHOLDER
-    Used instead of real images for layout learning.
-*/
-
-.placeholder {
-    background: #ccc;
-    height: 200px;
-    text-align: center;
-    line-height: 200px;
+h1, h2, h3 {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-weight: 700;
 }
 
-/*
-    CLEARFIX
-*/
+/* =====================
+   CLEARFIX
+   ===================== */
 
 .clearfix::after {
     content: "";
@@ -76,53 +35,486 @@ body {
     clear: both;
 }
 
-/*
-    FOOTER
-*/
+/* =====================
+   NAVBAR
+   Three-zone float layout
+   ===================== */
 
-.site-footer {
-    background: #111;
+.main-nav {
+    background: #2e3d4f;
+    padding: 0 30px;
+    height: 52px;
+    line-height: 52px;
+    position: relative;
+}
+
+/* Left: nav links */
+.nav-left {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-left li {
+    float: left;
+    margin-right: 24px;
+}
+
+.nav-left li a {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #ccc;
+}
+
+.nav-left li a:hover {
+    color: #fff;
+}
+
+/* Center: logo absolutely centered */
+.nav-center {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    height: 52px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
+
+.logo-lg {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.logo-sub {
+    font-size: 7px;
+    letter-spacing: 3px;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+/* Right: donate button */
+.nav-right {
+    float: right;
+}
+
+.btn-donate {
+    display: inline-block;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 7px 18px;
+    margin-top: 12px;
+    line-height: 1;
+}
+
+.btn-donate:hover {
+    background: #fff;
+    color: #2e3d4f;
+}
+
+/* =====================
+   HERO SECTION
+   Full-width dark with centered content
+   ===================== */
+
+.hero {
+    background: #5a6e82;
     color: #fff;
     text-align: center;
-    padding: 20px;
+    padding: 80px 20px 60px;
 }
 
-/*
-    RESPONSIVE DESIGN
-*/
-
-/* MOBILE */
-@media (max-width: 767px) {
-
-    .column {
-        float: none;
-        width: 100%;
-    }
+.hero-inner {
+    max-width: 700px;
+    margin: 0 auto;
 }
+
+.hero h1 {
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 0 0 28px 0;
+    color: #fff;
+}
+
+.hero p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+    margin: 0 0 28px 0;
+}
+
+.watch-video {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.play-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    flex-shrink: 0;
+    padding-left: 3px;
+}
+
+.bg-label {
+    font-style: italic;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin: 30px 0 0 0;
+}
+
+/* =====================
+   WHY SECTION
+   Centered text on white
+   ===================== */
+
+.why-section {
+    background: #fff;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.why-inner {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.why-section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0 0 24px 0;
+}
+
+.why-section p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.8;
+    margin: 0;
+    text-align: center;
+}
+
+/* =====================
+   TWO-CARD SECTION
+   Light gray, two floated columns
+   ===================== */
+
+.cards-section {
+    background: #d8dde2;
+    padding: 70px 20px;
+}
+
+.cards-inner {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* Each card column floated left */
+.card-col {
+    float: left;
+    width: 46%;
+    margin-right: 8%;
+    text-align: center;
+}
+
+.card-col:last-child {
+    margin-right: 0;
+}
+
+/* Image placeholder box */
+.card-image {
+    background: #7a8fa3;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 24px;
+}
+
+.card-col h3 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0 0 14px 0;
+}
+
+.card-col p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.75;
+    margin: 0 0 24px 0;
+    text-align: center;
+}
+
+/* Outlined button used in cards and volunteer section */
+.btn-outline {
+    display: inline-block;
+    border: 2px solid #333;
+    color: #333;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 12px 28px;
+}
+
+.btn-outline:hover {
+    background: #333;
+    color: #fff;
+}
+
+/* =====================
+   VOLUNTEER SECTION
+   White, centered
+   ===================== */
+
+.volunteer-section {
+    background: #fff;
+    padding: 90px 20px;
+    text-align: center;
+}
+
+.volunteer-inner {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.volunteer-section h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0 0 24px 0;
+}
+
+.volunteer-section p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.8;
+    margin: 0 0 32px 0;
+    text-align: center;
+}
+
+/* =====================
+   FOOTER
+   Dark, two-column float layout
+   ===================== */
+
+.site-footer {
+    background: #1c2530;
+    color: #aaa;
+}
+
+/* Main footer area */
+.footer-main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 50px 30px 30px;
+}
+
+/* Left column */
+.footer-left {
+    float: left;
+    width: 50%;
+}
+
+/* Social icons */
+.social-icons {
+    margin-bottom: 24px;
+}
+
+.social-icon {
+    display: inline-block;
+    font-size: 20px;
+    color: #aaa;
+    margin-right: 12px;
+}
+
+.social-icon:hover {
+    color: #fff;
+}
+
+/* Footer labels */
+.footer-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #777;
+    margin: 0 0 6px 0;
+    text-transform: uppercase;
+}
+
+/* Footer link lists — floated side by side */
+.footer-links {
+    list-style: none;
+    margin: 0 0 22px 0;
+    padding: 0;
+}
+
+.footer-links li {
+    display: inline-block;
+    margin-right: 16px;
+}
+
+.footer-links li a {
+    font-size: 13px;
+    color: #ccc;
+    font-weight: 600;
+}
+
+.footer-links li a:hover {
+    color: #fff;
+}
+
+/* Right column: address */
+.footer-right {
+    float: right;
+    width: 42%;
+    text-align: right;
+}
+
+.footer-org {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ddd;
+    letter-spacing: 1px;
+    line-height: 1.6;
+    margin: 0 0 10px 0;
+}
+
+.footer-right p {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.footer-right strong {
+    color: #ccc;
+}
+
+/* Bottom bar */
+.footer-bottom {
+    border-top: 1px solid #2e3d4f;
+    padding: 16px 30px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.footer-legal {
+    float: left;
+    font-size: 11px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 75%;
+}
+
+.footer-logo-sm {
+    float: right;
+}
+
+.logo-lg-sm {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 2px;
+    border: 1px solid #444;
+    padding: 3px 7px;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
 
 /* TABLET */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 768px) {
 
-    .column {
-        width: 48%;
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .card-col {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 40px;
+    }
+
+    .card-col:last-child {
+        margin-bottom: 0;
+    }
+
+    .footer-left,
+    .footer-right {
+        float: none;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+    .footer-legal {
+        max-width: 100%;
+        float: none;
+        margin-bottom: 10px;
+    }
+
+    .footer-logo-sm {
+        float: none;
     }
 }
 
-/*
-    FLEXBOX ALTERNATIVE (COMMENTED OUT)
+/* MOBILE */
+@media (max-width: 480px) {
 
-.two-column {
-    display: flex;
-    gap: 20px;
+    .nav-left li {
+        margin-right: 12px;
+    }
+
+    .nav-left li a {
+        font-size: 10px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .hero {
+        padding: 50px 16px 40px;
+    }
+
+    .why-section,
+    .volunteer-section {
+        padding: 50px 20px;
+    }
+
+    .cards-section {
+        padding: 40px 16px;
+    }
 }
-*/
-
-/*
-    GRID ALTERNATIVE (COMMENTED OUT)
-
-.two-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-*/

@@ -1,66 +1,25 @@
+/* =====================
+   GLOBAL
+   ===================== */
+
+* { box-sizing: border-box; }
+
 body {
+    font-family: 'Inter', Arial, sans-serif;
     margin: 0;
-    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #1e2d3d;
+    font-size: 15px;
+    line-height: 1.6;
 }
 
-.main-nav {
-    background: #111;
-    color: #fff;
-    padding: 15px;
-}
+a { text-decoration: none; color: inherit; }
+p { margin-top: 0; }
+h1, h2, h3, h4 { margin-top: 0; line-height: 1.2; }
 
-.logo {
-    float: left;
-    font-weight: bold;
-}
-
-.nav-menu {
-    float: right;
-    list-style: none;
-    margin: 0;
-}
-
-.nav-menu li {
-    float: left;
-    margin-left: 20px;
-}
-
-.hero {
-    width: 90%;
-    margin: 60px auto;
-}
-
-.hero-text {
-    float: left;
-    width: 50%;
-}
-
-.hero-mockup {
-    float: right;
-    width: 45%;
-    background: #ddd;
-    height: 200px;
-    text-align: center;
-    line-height: 200px;
-}
-
-.features {
-    width: 90%;
-    margin: 60px auto;
-}
-
-.feature {
-    float: left;
-    width: 23%;
-    margin-right: 2%;
-    background: #eee;
-    text-align: center;
-    padding: 40px 0;
-}
-
-.feature:last-child {
-    margin-right: 0;
-}
+/* =====================
+   CLEARFIX
+   ===================== */
 
 .clearfix::after {
     content: "";
@@ -68,23 +27,426 @@ body {
     clear: both;
 }
 
-/* MOBILE */
-@media (max-width: 767px) {
-    .logo,
-    .nav-menu,
-    .nav-menu li,
-    .hero-text,
-    .hero-mockup,
-    .feature {
-        float: none;
-        width: 100%;
-        margin-right: 0;
-    }
+/* =====================
+   SHARED
+   ===================== */
+
+.btn-dark {
+    display: inline-block;
+    background: #1e2d3d;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 24px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 2px;
 }
 
-/* GRID ALT (COMMENTED OUT)
-.features {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.btn-dark:hover { background: #2e3f52; }
+
+/* =====================
+   NAVBAR
+   ===================== */
+
+.main-nav {
+    background: #fff;
+    border-bottom: 1px solid #e8ecf0;
+    padding: 0 40px;
+    height: 60px;
+    line-height: 60px;
 }
-*/
+
+/* Logo — floated left */
+.nav-logo {
+    float: left;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e2d3d;
+    letter-spacing: -0.3px;
+}
+
+/* Nav links — floated left after logo */
+.nav-links {
+    float: left;
+    list-style: none;
+    margin: 0 0 0 60px;
+    padding: 0;
+}
+
+.nav-links li {
+    float: left;
+    margin-right: 36px;
+}
+
+.nav-links li a {
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+}
+
+.nav-links li a:hover { color: #1e2d3d; }
+
+/* CTA button — floated right */
+.nav-cta {
+    float: right;
+}
+
+.nav-cta .btn-dark {
+    margin-top: 12px;
+    padding: 9px 22px;
+    font-size: 13px;
+}
+
+/* Hamburger — hidden on desktop, shown on mobile */
+.hamburger {
+    display: none;
+    float: right;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #1e2d3d;
+    cursor: pointer;
+    padding: 0;
+    line-height: 60px;
+    margin-right: 0;
+}
+
+/* =====================
+   HERO
+   ===================== */
+
+.hero {
+    padding: 70px 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Left text column */
+.hero-text {
+    float: left;
+    width: 38%;
+    padding-right: 40px;
+    padding-top: 30px;
+}
+
+.tagline {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.hero-text h1 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1e2d3d;
+    line-height: 1.25;
+    margin-bottom: 28px;
+}
+
+/* Input + button inline */
+.hero-form {
+    margin-bottom: 16px;
+    display: flex;
+}
+
+.hero-input {
+    flex: 1;
+    border: 1px solid #d0d7e0;
+    border-right: none;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: #aaa;
+    outline: none;
+    border-radius: 2px 0 0 2px;
+}
+
+.hero-input:focus { border-color: #1e2d3d; }
+
+.hero-form .btn-dark {
+    border-radius: 0 2px 2px 0;
+    padding: 11px 22px;
+}
+
+.hero-sub {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 340px;
+}
+
+/* Right device mockup */
+.hero-mockup {
+    float: right;
+    width: 58%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    min-height: 360px;
+}
+
+.mockup-wrap {
+    position: relative;
+    width: 440px;
+    height: 320px;
+}
+
+/* Laptop */
+.laptop {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.laptop-screen {
+    width: 90%;
+    margin: 0 auto;
+    height: 210px;
+    border: 2px solid #b8c8d8;
+    border-radius: 8px 8px 0 0;
+    background: #f0f4f8;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.laptop-camera {
+    width: 6px;
+    height: 6px;
+    background: #b8c8d8;
+    border-radius: 50%;
+}
+
+.laptop-base {
+    width: 100%;
+    height: 14px;
+    background: #d0dce8;
+    border-radius: 0 0 4px 4px;
+    border: 1px solid #b8c8d8;
+}
+
+/* Phone overlay */
+.phone {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-20%);
+    width: 110px;
+    background: #e8eff6;
+    border: 2px solid #b8c8d8;
+    border-radius: 16px;
+    padding: 12px 8px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 200px;
+}
+
+.phone-speaker {
+    width: 30px;
+    height: 4px;
+    background: #b8c8d8;
+    border-radius: 2px;
+}
+
+.phone-screen {
+    flex: 1;
+    width: 100%;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #d0dce8;
+}
+
+.phone-home {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #b8c8d8;
+    border-radius: 50%;
+}
+
+/* =====================
+   4-FEATURE STRIP
+   ===================== */
+
+.features-strip {
+    padding: 50px 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid #eaecf0;
+}
+
+/* Each feature column — floated left, 25% each */
+.feat {
+    float: left;
+    width: 25%;
+    padding-right: 40px;
+}
+
+.feat:last-child { padding-right: 0; }
+
+.feat-icon {
+    margin-bottom: 18px;
+}
+
+.feat h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1e2d3d;
+}
+
+.feat p {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+.feat-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e2d3d;
+}
+
+.feat-link:hover { text-decoration: underline; }
+
+/* =====================
+   CONTENT SECTION
+   ===================== */
+
+.content-section {
+    padding: 60px 40px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content-inner {
+    max-width: 560px;
+    margin-bottom: 40px;
+}
+
+.content-inner h2 {
+    font-size: 38px;
+    font-weight: 800;
+    color: #1e2d3d;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.content-inner p {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.75;
+    margin: 0;
+    max-width: 460px;
+}
+
+/* Gray placeholder band */
+.content-band {
+    width: 100%;
+    height: 80px;
+    background: #e4eaf0;
+    border-radius: 4px;
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+
+.site-footer {
+    background: #f7f9fb;
+    border-top: 1px solid #eaecf0;
+    color: #aaa;
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    margin-top: 60px;
+}
+
+/* =====================
+   RESPONSIVE — TABLET
+   ===================== */
+
+@media (max-width: 900px) {
+
+    .hero-text {
+        float: none;
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .hero-mockup {
+        float: none;
+        width: 100%;
+        margin-top: 40px;
+        min-height: 280px;
+    }
+
+    .feat {
+        width: 50%;
+        margin-bottom: 36px;
+        padding-right: 30px;
+    }
+
+    .feat:nth-child(2n) { padding-right: 0; }
+}
+
+/* =====================
+   RESPONSIVE — MOBILE
+   (matches the mobile view shown in the wireframe)
+   ===================== */
+
+@media (max-width: 600px) {
+
+    .main-nav { padding: 0 20px; }
+
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+
+    .hamburger { display: block; }
+
+    .hero {
+        padding: 40px 20px 36px;
+    }
+
+    .hero-text h1 { font-size: 26px; }
+
+    .hero-form { flex-direction: column; gap: 10px; }
+    .hero-input { border-right: 1px solid #d0d7e0; border-radius: 2px; }
+    .hero-form .btn-dark { border-radius: 2px; width: 100%; }
+
+    .hero-sub { max-width: 100%; }
+
+    .mockup-wrap {
+        width: 280px;
+        height: 220px;
+    }
+
+    .laptop-screen { height: 140px; }
+    .phone { width: 70px; height: 130px; }
+
+    .features-strip { padding: 36px 20px 40px; }
+
+    .feat {
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+
+    .content-section { padding: 40px 20px 0; }
+
+    .content-inner h2 { font-size: 26px; }
+}

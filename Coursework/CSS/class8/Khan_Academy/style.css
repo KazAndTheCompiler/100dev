@@ -1,106 +1,26 @@
-/*
-    BASE STYLES
-*/
+/* =====================
+   GLOBAL
+   ===================== */
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f7f7f7;
-}
-
-/*
-    NAVIGATION BAR
-*/
-
-.main-nav {
-    background: #0b214a;
-    color: #fff;
-    padding: 15px 20px;
-}
-
-/* Logo floated left */
-.logo {
-    float: left;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-/* Navigation links floated right */
-.nav-links {
-    float: right;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    float: left;
-    margin-left: 20px;
-}
-
-/* Search box floated right, next to nav */
-.search-box {
-    float: right;
-    margin-right: 20px;
-}
-
-/*
-    HERO SECTION
-*/
-
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background: #fff;
-}
-
-/*
-    CTA BUTTONS
-*/
-
-.cta-buttons {
-    margin-top: 30px;
-}
-
-/* Buttons floated to sit inline */
-.btn {
-    float: left;
-    padding: 12px 25px;
-    background: #1865f2;
-    color: #fff;
-    text-decoration: none;
-    margin-right: 15px;
-}
-
-.btn.secondary {
-    background: #555;
-}
-
-/*
-    FEATURES SECTION
-*/
-
-.features {
-    width: 90%;
-    margin: 60px auto;
-}
-
-.feature-card {
-    float: left;
-    width: 31.33%;
-    margin-right: 3%;
-    background: #fff;
-    padding: 20px;
+* {
     box-sizing: border-box;
 }
 
-.feature-card:last-child {
-    margin-right: 0;
+body {
+    font-family: 'Lato', Arial, sans-serif;
+    margin: 0;
+    background: #fff;
+    color: #1a1a1a;
 }
 
-/*
-    CLEARFIX
-*/
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =====================
+   CLEARFIX
+   ===================== */
 
 .clearfix::after {
     content: "";
@@ -108,69 +28,402 @@ body {
     clear: both;
 }
 
-/*
-    FOOTER
-*/
+/* =====================
+   NAVBAR
+   ===================== */
+
+.main-nav {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 24px;
+    height: 56px;
+    line-height: 56px;
+    position: relative;
+}
+
+/* Left zone: Courses + Search */
+.nav-left {
+    float: left;
+}
+
+.nav-courses {
+    float: left;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1865f2;
+    margin-right: 16px;
+    cursor: pointer;
+}
+
+.nav-courses:hover {
+    text-decoration: underline;
+}
+
+.nav-search {
+    float: left;
+    position: relative;
+}
+
+.nav-search input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 34px 6px 12px;
+    font-size: 14px;
+    width: 220px;
+    outline: none;
+    height: 34px;
+    vertical-align: middle;
+    margin-top: 11px;
+}
+
+.nav-search input:focus {
+    border-color: #1865f2;
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+/* Center zone: Logo — absolutely centered in nav */
+.nav-center {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    height: 56px;
+    line-height: 56px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.logo-icon {
+    font-size: 24px;
+    color: #14bf96;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Right zone: Donate / Login / Sign up */
+.nav-right {
+    float: right;
+}
+
+.nav-link {
+    float: left;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1865f2;
+    margin-left: 24px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.nav-signup {
+    color: #1865f2;
+}
+
+/* =====================
+   HERO SECTION
+   ===================== */
+
+.hero {
+    padding: 60px 60px 80px;
+    background: #fff;
+    min-height: 520px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ---- LEFT: Collage ---- */
+.hero-collage {
+    float: left;
+    width: 46%;
+    position: relative;
+    height: 480px;
+}
+
+/* Decorative blobs */
+.blob {
+    position: absolute;
+    border-radius: 50% 40% 60% 40% / 50% 60% 40% 50%;
+}
+
+.blob-navy {
+    width: 280px;
+    height: 260px;
+    background: #1a2e5a;
+    top: 20px;
+    left: 50px;
+    border-radius: 55% 45% 60% 40% / 50% 55% 45% 50%;
+    opacity: 0.9;
+}
+
+.blob-teal {
+    width: 180px;
+    height: 160px;
+    background: #b2ede4;
+    top: 60px;
+    right: 40px;
+    border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%;
+    opacity: 0.7;
+}
+
+.blob-coral {
+    width: 200px;
+    height: 170px;
+    background: #f4a27a;
+    bottom: 40px;
+    right: 30px;
+    border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%;
+    opacity: 0.85;
+    /* Half-circle look from the reference */
+    clip-path: ellipse(100% 60% at 50% 100%);
+}
+
+.blob-pink {
+    width: 90px;
+    height: 80px;
+    background: #e85d6a;
+    top: 10px;
+    right: 120px;
+    border-radius: 50%;
+    opacity: 0.75;
+}
+
+/* Dot grid */
+.dot-grid {
+    position: absolute;
+    left: 0;
+    top: 140px;
+    width: 80px;
+    height: 120px;
+    background-image: radial-gradient(circle, #ccc 1.5px, transparent 1.5px);
+    background-size: 12px 12px;
+}
+
+/* Student photos */
+.student {
+    position: absolute;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.student-main {
+    width: 200px;
+    height: 260px;
+    top: 30px;
+    left: 120px;
+    z-index: 3;
+    border-radius: 6px;
+}
+
+.student-left {
+    width: 150px;
+    height: 190px;
+    top: 130px;
+    left: 20px;
+    z-index: 2;
+    border-radius: 6px;
+}
+
+.student-bottom {
+    width: 155px;
+    height: 175px;
+    bottom: 40px;
+    left: 80px;
+    z-index: 3;
+    border-radius: 6px;
+}
+
+.student-headset {
+    width: 160px;
+    height: 190px;
+    bottom: 60px;
+    right: 50px;
+    z-index: 3;
+    border-radius: 6px;
+}
+
+/* Squiggle SVG */
+.squiggle {
+    position: absolute;
+    width: 60px;
+    height: 120px;
+    top: 120px;
+    left: 240px;
+    z-index: 4;
+}
+
+/* ---- RIGHT: Text ---- */
+.hero-text {
+    float: right;
+    width: 48%;
+    padding-top: 80px;
+    padding-left: 30px;
+}
+
+.hero-text h1 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1a1a1a;
+    margin: 0 0 16px 0;
+}
+
+/* Green underline beneath heading */
+.hero-underline {
+    width: 100%;
+    height: 3px;
+    background: #14bf96;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+    max-width: 420px;
+}
+
+/* Four CTA buttons — floated left inline */
+.cta-buttons {
+    /* clearfix applied via class */
+}
+
+.btn-cta {
+    float: left;
+    background: #1865f2;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.btn-cta:hover {
+    background: #0d4fd6;
+}
+
+/* =====================
+   FOOTER
+   ===================== */
 
 .site-footer {
-    background: #0b214a;
-    color: #fff;
+    background: #f7f7f7;
+    border-top: 1px solid #e0e0e0;
+    color: #888;
     text-align: center;
     padding: 20px;
+    font-size: 13px;
 }
 
-/*
-    RESPONSIVE DESIGN
-*/
-
-/* MOBILE */
-@media (max-width: 767px) {
-
-    .logo,
-    .nav-links,
-    .nav-links li,
-    .search-box,
-    .btn {
-        float: none;
-        text-align: center;
-        margin: 10px auto;
-    }
-
-    .feature-card {
-        float: none;
-        width: 100%;
-        margin-right: 0;
-    }
-}
+/* =====================
+   RESPONSIVE
+   ===================== */
 
 /* TABLET */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 960px) {
 
-    .feature-card {
-        width: 48%;
-        margin-right: 4%;
+    .hero-collage,
+    .hero-text {
+        float: none;
+        width: 100%;
     }
 
-    .feature-card:nth-child(2n) {
-        margin-right: 0;
+    .hero-collage {
+        height: 380px;
+        margin-bottom: 40px;
+    }
+
+    .hero-text {
+        padding-top: 0;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .hero-text p {
+        max-width: 100%;
+    }
+
+    .cta-buttons {
+        text-align: center;
+    }
+
+    .btn-cta {
+        float: none;
+        display: inline-block;
+    }
+
+    .hero-underline {
+        margin: 0 auto 20px;
+        max-width: 400px;
     }
 }
 
-/*
-    FLEXBOX ALTERNATIVE (COMMENTED OUT)
+/* MOBILE */
+@media (max-width: 600px) {
 
-.features {
-    display: flex;
-    gap: 20px;
+    .nav-center {
+        display: none;
+    }
+
+    .nav-search input {
+        width: 130px;
+    }
+
+    .nav-link {
+        margin-left: 12px;
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 30px 20px 50px;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .hero-collage {
+        height: 300px;
+    }
+
+    .student-main {
+        width: 150px;
+        height: 200px;
+    }
+
+    .student-left,
+    .student-bottom,
+    .student-headset {
+        width: 110px;
+        height: 140px;
+    }
+
+    .btn-cta {
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-right: 6px;
+    }
 }
-*/
-
-/*
-    GRID ALTERNATIVE (COMMENTED OUT)
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-*/

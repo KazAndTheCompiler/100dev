@@ -1,103 +1,35 @@
-/*
-    GLOBAL STYLES
-*/
+/* =====================
+   GLOBAL
+   ===================== */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    background: #f5f5f5;
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.4;
 }
 
-/*
-    NAVIGATION BAR
-*/
-
-.main-nav {
-    background: #000;
-    color: #fff;
-    padding: 10px 20px;
-}
-
-/* Logo floated left */
-.logo {
-    float: left;
-    font-weight: bold;
-    font-size: 24px;
-}
-
-/* Navigation menu floated right */
-.nav-menu {
-    float: right;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-menu li {
-    float: left;
-    margin-left: 20px;
-}
-
-.nav-menu a {
-    color: #fff;
+a {
     text-decoration: none;
+    color: inherit;
 }
 
-/*
-    HERO SECTION
-*/
-
-.hero {
-    width: 90%;
-    margin: 30px auto;
+img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* Main featured story */
-.hero-main {
-    float: left;
-    width: 65%;
-    background: #fff;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Side stories */
-.hero-side {
-    float: right;
-    width: 32%;
-    background: #eaeaea;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/*
-    NEWS GRID
-*/
-
-.news-grid {
-    width: 90%;
-    margin: 30px auto;
-}
-
-/* Individual news cards */
-.news-card {
-    float: left;
-    width: 48%;
-    margin-right: 4%;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-/* Remove margin from every second card */
-.news-card:nth-child(2n) {
-    margin-right: 0;
-}
-
-/*
-    CLEARFIX
-*/
+/* =====================
+   CLEARFIX
+   ===================== */
 
 .clearfix::after {
     content: "";
@@ -105,83 +37,392 @@ body {
     clear: both;
 }
 
-/*
-    FOOTER
-*/
+/* =====================
+   NAVIGATION
+   ===================== */
+
+.main-nav {
+    background: #000;
+    color: #fff;
+    padding: 0 16px;
+    height: 44px;
+    line-height: 44px;
+}
+
+.nav-left {
+    float: left;
+}
+
+.logo {
+    float: left;
+    margin-right: 14px;
+}
+
+.bbc-box {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    font-weight: 900;
+    font-size: 18px;
+    padding: 2px 6px;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    vertical-align: middle;
+}
+
+.sign-in {
+    float: left;
+    color: #ccc;
+    font-size: 13px;
+    padding: 0 14px;
+    border-left: 1px solid #333;
+}
+
+.sign-in:hover {
+    color: #fff;
+}
+
+.nav-menu {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid #333;
+}
+
+.nav-menu li {
+    float: left;
+    border-right: 1px solid #333;
+}
+
+.nav-menu li a {
+    display: block;
+    padding: 0 14px;
+    color: #fff;
+    font-size: 13px;
+    height: 44px;
+    line-height: 44px;
+}
+
+.nav-menu li a:hover {
+    background: #333;
+}
+
+.nav-search {
+    float: right;
+    padding: 8px 0;
+}
+
+.nav-search input {
+    padding: 4px 8px;
+    font-size: 13px;
+    border: none;
+    outline: none;
+    width: 160px;
+    height: 28px;
+}
+
+.nav-search button {
+    background: #555;
+    border: none;
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+    height: 28px;
+    font-size: 14px;
+    vertical-align: top;
+}
+
+/* =====================
+   PAGE HEADER
+   ===================== */
+
+.page-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.welcome {
+    float: left;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.date {
+    float: right;
+    margin: 0;
+    color: #888;
+    font-size: 15px;
+    line-height: 28px;
+}
+
+/* =====================
+   HERO SECTION
+   ===================== */
+
+.hero {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Big left story */
+.hero-main {
+    float: left;
+    width: 48%;
+    margin-right: 2%;
+    position: relative;
+    height: 330px;
+    overflow: hidden;
+    background: #000;
+}
+
+.hero-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+}
+
+.hero-main-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 16px 14px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    color: #fff;
+}
+
+.hero-main-text h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    line-height: 1.25;
+}
+
+.hero-main-text p {
+    font-size: 13px;
+    margin: 0 0 8px 0;
+    opacity: 0.9;
+}
+
+/* Right 2×2 grid */
+.hero-side {
+    float: right;
+    width: 50%;
+}
+
+.hero-side-card {
+    float: left;
+    width: 49%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+}
+
+.hero-side-card:nth-child(2n) {
+    margin-right: 0;
+}
+
+.hero-side-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.hero-side-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 10px 8px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.72));
+    color: #fff;
+}
+
+.hero-side-text h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    line-height: 1.3;
+}
+
+/* =====================
+   TAGS
+   ===================== */
+
+.tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+    display: inline-block;
+}
+
+.hero-main .tag,
+.hero-side .tag {
+    color: #fff;
+}
+
+.tag-bar {
+    display: inline-block;
+    width: 2px;
+    height: 11px;
+    background: #e5004a;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* =====================
+   NEWS SECTION
+   ===================== */
+
+.news-section {
+    padding: 20px 16px 30px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.title-bar {
+    display: inline-block;
+    width: 3px;
+    height: 20px;
+    background: #e5004a;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.news-grid {
+    /* contains floated cards */
+}
+
+.news-card {
+    float: left;
+    width: 31.33%;
+    margin-right: 3%;
+}
+
+.news-card:last-child {
+    margin-right: 0;
+}
+
+.news-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
+}
+
+.news-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 10px 0 6px 0;
+    line-height: 1.3;
+}
+
+.news-card p {
+    font-size: 13px;
+    color: #333;
+    margin: 0 0 8px 0;
+    line-height: 1.5;
+}
+
+.news-card .tag {
+    color: #333;
+    font-size: 11px;
+}
+
+.news-card .tag .tag-bar {
+    background: #e5004a;
+}
+
+/* =====================
+   FOOTER
+   ===================== */
 
 .site-footer {
     background: #000;
-    color: #fff;
+    color: #aaa;
     text-align: center;
     padding: 20px;
+    font-size: 13px;
 }
 
-/*
-    RESPONSIVE DESIGN
-*/
-
-/* MOBILE */
-@media (max-width: 767px) {
-
-    .logo,
-    .nav-menu,
-    .nav-menu li {
-        float: none;
-        text-align: center;
-    }
-
-    .hero-main,
-    .hero-side,
-    .news-card {
-        float: none;
-        width: 100%;
-        margin-right: 0;
-    }
-}
+/* =====================
+   RESPONSIVE
+   ===================== */
 
 /* TABLET */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 900px) {
 
     .hero-main {
-        width: 60%;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 12px;
+        height: 280px;
     }
 
     .hero-side {
-        width: 38%;
+        float: none;
+        width: 100%;
     }
 
     .news-card {
         width: 48%;
+        margin-right: 4%;
+        margin-bottom: 20px;
+    }
+
+    .news-card:nth-child(2n) {
+        margin-right: 0;
+    }
+
+    .news-card:last-child {
+        margin-right: 0;
     }
 }
 
-/* DESKTOP */
-@media (min-width: 1025px) {
-    /* Default float layout applies */
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .nav-menu {
+        display: none;
+    }
+
+    .nav-search {
+        display: none;
+    }
+
+    .hero-side-card {
+        width: 100%;
+        margin-right: 0;
+        height: 140px;
+        margin-bottom: 10px;
+    }
+
+    .news-card {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 24px;
+    }
+
+    .welcome {
+        font-size: 16px;
+    }
+
+    .date {
+        display: none;
+    }
 }
-
-/*
-    FLEXBOX ALTERNATIVE (COMMENTED OUT)
-
-.hero {
-    display: flex;
-}
-
-.hero-main {
-    flex: 2;
-}
-
-.hero-side {
-    flex: 1;
-}
-*/
-
-/*
-    GRID ALTERNATIVE (COMMENTED OUT)
-
-.news-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-*/

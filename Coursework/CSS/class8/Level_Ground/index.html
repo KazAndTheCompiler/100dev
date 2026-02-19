@@ -3,69 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <title>Level Ground MMA</title>
-
-    <!-- NORMALIZE FIRST -->
-    <link rel="stylesheet" href="normalize.css">
-
-    <!-- FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!--
-        HERO SECTION
-        Full-width intro with strong visual hierarchy.
+    <!-- ===== NAVBAR =====
+         Three-zone float layout:
+         Left: CLASSES + HIRE US
+         Center: LG logo (absolute)
+         Right: DONATE button
+    -->
+    <nav class="main-nav clearfix">
+        <ul class="nav-left">
+            <li><a href="#">CLASSES</a></li>
+            <li><a href="#">HIRE US</a></li>
+        </ul>
+
+        <div class="nav-center">
+            <a href="#" class="nav-logo">
+                <span class="logo-lg">LG</span>
+                <span class="logo-sub">LEVEL GROUND</span>
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#" class="btn-donate">DONATE</a>
+        </div>
+    </nav>
+
+    <!-- ===== HERO =====
+         Full-width dark section with large headline,
+         paragraph, and "Watch the Video" CTA
     -->
     <header class="hero">
-        <h1>Level Ground</h1>
-        <p>Mixed Martial Arts Training</p>
+        <div class="hero-inner">
+            <h1>WHERE GRIT MEETS OPPORTUNITY</h1>
+            <p>At Level Ground (LG), urban youth cultivate grit and resilience through Mixed Martial Arts. They learn to apply these values 'off the mat' in the pursuit of their ambitions through our Student Trainer Certification and College Access programs.</p>
+            <a href="#" class="watch-video">
+                <span class="play-circle">&#9654;</span>
+                Watch the Video
+            </a>
+            <p class="bg-label">Big Background Image</p>
+        </div>
     </header>
 
-    <!--
-        ABOUT SECTION
-        Two-column float layout.
+    <!-- ===== WHY SECTION =====
+         Centered text block, white background
     -->
-    <section class="two-column clearfix">
-
-        <!-- Left column -->
-        <div class="column text">
-            <h2>Who We Are</h2>
-            <p>
-                Level Ground provides structured MMA training
-                focused on discipline, strength, and confidence.
-            </p>
+    <section class="why-section">
+        <div class="why-inner">
+            <h2>WHY</h2>
+            <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec ullamcorper nulla non metus auctor fringilla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
         </div>
-
-        <!-- Right column -->
-        <div class="column image">
-            <div class="placeholder">Image</div>
-        </div>
-
     </section>
 
-    <!--
-        PROGRAMS SECTION
-        Another two-column float layout.
-        Repetition reinforces learning.
+    <!-- ===== TWO-CARD SECTION =====
+         Light gray background
+         Two float columns: Visit the Gym | Have Us Visit You
     -->
-    <section class="two-column clearfix">
+    <section class="cards-section clearfix">
+        <div class="cards-inner clearfix">
 
-        <div class="column image">
-            <div class="placeholder">Image</div>
+            <div class="card-col">
+                <div class="card-image"></div>
+                <h3>VISIT THE GYM</h3>
+                <p>Etiam porta sem malesuada magna mollis euismod. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                <a href="#" class="btn-outline">SEE CLASSES</a>
+            </div>
+
+            <div class="card-col">
+                <div class="card-image"></div>
+                <h3>HAVE US VISIT YOU</h3>
+                <p>Etiam porta sem malesuada magna mollis euismod. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                <a href="#" class="btn-outline">HIRE US</a>
+            </div>
+
         </div>
-
-        <div class="column text">
-            <h2>Our Programs</h2>
-            <p>
-                Youth training, adult classes, and competitive coaching.
-            </p>
-        </div>
-
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== VOLUNTEER SECTION =====
+         White background, centered text + CTA
+    -->
+    <section class="volunteer-section">
+        <div class="volunteer-inner">
+            <h2>VOLUNTEER WITH LEVEL GROUND</h2>
+            <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec ullamcorper nulla non metus auctor fringilla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+            <a href="#" class="btn-outline">VOLUNTEER</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER =====
+         Dark background
+         Left: social icons + sitemap + contribute
+         Right: address block
+         Bottom bar: tax-exempt note + LG logo
+    -->
     <footer class="site-footer">
-        <p>Level Ground MMA – Educational Layout Example</p>
+        <div class="footer-main clearfix">
+
+            <!-- Left: social + site map + contribute -->
+            <div class="footer-left">
+                <div class="social-icons">
+                    <a href="#" class="social-icon">&#9744;</a>
+                    <a href="#" class="social-icon">&#9743;</a>
+                    <a href="#" class="social-icon">&#9993;</a>
+                </div>
+
+                <p class="footer-label">SITE MAP</p>
+                <ul class="footer-links">
+                    <li><a href="#">Classes</a></li>
+                    <li><a href="#">Hire Us</a></li>
+                </ul>
+
+                <p class="footer-label">CONTRIBUTE</p>
+                <ul class="footer-links">
+                    <li><a href="#">Give</a></li>
+                    <li><a href="#">Volunteer</a></li>
+                </ul>
+            </div>
+
+            <!-- Right: address -->
+            <div class="footer-right">
+                <p class="footer-org"><strong>LEVEL GROUND<br>MIXED MARTIAL ARTS</strong></p>
+                <p>50 Milk Street, Floor 17<br>
+                Boston, MA, 02109<br>
+                410-533-2210<br>
+                <strong>Ali@LevelGroundMMA.org</strong></p>
+            </div>
+
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="footer-bottom clearfix">
+            <p class="footer-legal">Level Ground Mixed Martial Arts is a tax-exempt, 501(c)3 organization under the IRS. EIN 46-3915852.</p>
+            <div class="footer-logo-sm">
+                <span class="logo-lg-sm">LG</span>
+            </div>
+        </div>
     </footer>
 
 </body>

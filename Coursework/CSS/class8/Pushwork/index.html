@@ -3,82 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <title>Pushwork Agency</title>
-
-    <!-- NORMALIZE FIRST -->
-    <link rel="stylesheet" href="normalize.css">
-
-    <!-- FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!--
-        MAIN NAVIGATION
-        Logo left, menu right using floats.
+    <!-- ===== NAVBAR =====
+         Dark bar: logo left, nav links center, Sign Up button right
     -->
     <nav class="main-nav clearfix">
-        <div class="logo">Pushwork</div>
-
-        <ul class="nav-menu">
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Work</a></li>
-            <li><a href="#">Contact</a></li>
+        <div class="nav-logo">&#9711;</div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">HOME</a></li>
+            <li><a href="#">SERVICES</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li><a href="#">TEAM</a></li>
+            <li><a href="#">BLOG</a></li>
+            <li><a href="#">LOGIN</a></li>
         </ul>
+        <a href="#" class="btn-signup">SIGN UP</a>
     </nav>
 
-    <!--
-        HERO SECTION
+    <!-- ===== HERO =====
+         Dark background, text left, browser mockup image right
     -->
-    <header class="hero">
-        <h1>We Build Brands That Work</h1>
-        <p>Marketing strategy and execution.</p>
-    </header>
+    <section class="hero clearfix">
+        <div class="hero-text">
+            <h1>Inject Your Brand and Values into a Physical Space</h1>
+            <p>Place an order now, and our creative wordsmiths are on it like dots on i's with all the necessary. Reduces your total IoT cost of operations.</p>
+            <div class="hero-btns">
+                <a href="#" class="btn-primary">ORDER CONTENT</a>
+                <a href="#" class="btn-ghost">&rsaquo; CREATE AN ACCOUNT</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="browser-mockup">
+                <div class="browser-bar">
+                    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+                <div class="browser-body">
+                    <div class="img-placeholder"><span>&#128247; Image Here</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!--
-        SERVICES SECTION
-        Float-based grid.
+    <!-- ===== LOGO STRIP =====
+         Clients/partners logos row
     -->
-    <section class="services clearfix">
+    <section class="logo-strip clearfix">
+        <div class="logo-strip-inner clearfix">
+            <div class="partner-logo">&#9992; airbnb</div>
+            <div class="partner-logo">&#9749; shopify</div>
+            <div class="partner-logo">&#9729; salesforce</div>
+            <div class="partner-logo">&#9654; twitter</div>
+            <div class="partner-logo"><strong>NETFLIX</strong></div>
+            <div class="partner-logo">&#11123; Dropbox</div>
+            <div class="partner-logo"><strong>HUGE</strong></div>
+        </div>
+    </section>
 
-        <article class="service-card">
-            <h3>Strategy</h3>
-            <p>Clear direction and positioning.</p>
-        </article>
+    <!-- ===== ABOUT + SERVICES =====
+         Left: about text + CTA
+         Right: 2x2 service cards grid
+    -->
+    <section class="about-services clearfix">
 
-        <article class="service-card">
-            <h3>Design</h3>
-            <p>Visual identity and UX.</p>
-        </article>
+        <div class="about-col">
+            <p class="section-tag">HOW WE CAN HELP YOUR BUSINESS</p>
+            <h2>We Are a Full-Service Marketing and Design Firm</h2>
+            <p>We are a content masters of good taste, but self-education can help improve that. At Sync, we played with dual design and typography relying on explanations of its effective usage in 'Form of the Book' by Jan Tschichold.</p>
+            <p>Share your expertise with us. Here we successfully to combining fonts and choosing an appropriate typesetting method! We welcome your feedback. Not only fitness classes should be fun but also their internal management. With busy class schedules and wide variety of instructors, administration is always a big deal.</p>
+            <a href="#" class="btn-primary">ORDER CONTENT</a>
+        </div>
 
-        <article class="service-card">
-            <h3>Marketing</h3>
-            <p>Campaigns that convert.</p>
-        </article>
+        <div class="services-col">
+            <div class="services-grid clearfix">
+
+                <article class="service-card">
+                    <div class="service-img"><span>&#128247; Image Here</span></div>
+                    <h4>DIGITAL &amp; SOCIAL MEDIA</h4>
+                    <p>Effective social media success effective of cases.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-img"><span>&#128247; Image Here</span></div>
+                    <h4>BRAND MARKETING</h4>
+                    <p>LG provides branding from the inside out planet.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-img"><span>&#128247; Image Here</span></div>
+                    <h4>MEDIA BUYING</h4>
+                    <p>With new ways of winning in the region.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-img"><span>&#128247; Image Here</span></div>
+                    <h4>GRAPHIC &amp; WEB DESIGN</h4>
+                    <p>With new ways of winning helping your company.</p>
+                </article>
+
+            </div>
+        </div>
 
     </section>
 
-    <!--
-        FEATURES SECTION
-        Two-column float layout.
+    <!-- ===== SOLUTION SECTION =====
+         Light gray, image left, text right
     -->
-    <section class="features clearfix">
-
-        <div class="feature-text">
-            <h2>Why Pushwork</h2>
-            <p>We combine insight, creativity, and execution.</p>
+    <section class="solution clearfix">
+        <div class="solution-image">
+            <div class="img-placeholder large"><span>&#128247; Image Here</span></div>
         </div>
-
-        <div class="feature-boxes clearfix">
-            <div class="feature-box">Fast</div>
-            <div class="feature-box">Focused</div>
-            <div class="feature-box">Effective</div>
+        <div class="solution-text">
+            <p class="section-tag">ONLINE AD / ADVERTISING AGENCY</p>
+            <h2>We Are a Solution-Based Marketing Company</h2>
+            <p>Not only fitness classes should be fun but also their internal management. With busy class schedules and wide variety of instructors, administration is always a big deal. The redesign challenge was to make manager life easier.</p>
+            <p>We updated a calendar so that managers can have an easy and rapid access to instructor schedule. From now on, there will be an ability to see tasks right on the dashboard.</p>
+            <a href="#" class="btn-primary">ORDER CONTENT</a>
         </div>
-
     </section>
 
-    <!-- FOOTER -->
+    <!-- ===== HOW IT WORKS =====
+         White, image left, steps right
+    -->
+    <section class="how-it-works">
+        <div class="how-inner clearfix">
+            <h2 class="how-title">How Does It Work?</h2>
+            <p class="how-sub">Not only fitness classes should be fun but also their internal management. With busy class schedules and wide variety of instructors, administration is always.</p>
+
+            <div class="how-cols clearfix">
+                <div class="how-image">
+                    <div class="img-placeholder large"><span>&#128247; Image Here</span></div>
+                </div>
+                <div class="how-text">
+                    <p class="section-tag">CREATE AN ACCOUNT FOR FREE</p>
+                    <h3>Create an Account for Free and use free trial</h3>
+                    <p>We updated a calendar so that managers can have an easy and rapid access to instructor schedule. From now on, there will be an ability to see tasks right on the fashionable posted a calendar so that managers can have an easy and rapid.</p>
+                    <div class="checklist">
+                        <div class="check-item"><span class="checkbox"></span> FASTEST RESPONSE RATE<br><small>Not only fitness classes should be fun but also their internal management</small></div>
+                        <div class="check-item"><span class="checkbox"></span> QUICK TURNAROUND<br><small>Not only fitness classes should be fun but also their internal management. With busy class schedules and wide variety of instructors, administration</small></div>
+                    </div>
+                    <div class="how-icons">
+                        <span class="icon-circle">&#8635;</span>
+                        <span class="icon-circle">&#9881;</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="how-cta">
+                <a href="#" class="btn-outline-dark">VIEW HOW IT WORKS</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES DARK SECTION =====
+         Dark background, feature cards
+    -->
+    <section class="features-dark">
+        <div class="features-dark-inner">
+            <p class="section-tag light">CREATE AN ACCOUNT FOR FREE</p>
+            <h2>Core Features and<br>Technologies List</h2>
+        </div>
+
+        <div class="features-strip clearfix">
+            <div class="feat-card">
+                <span class="feat-check">&#9633;</span>
+                <h4>ALLOWS US TO BE YOUR GUIDE</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card">
+                <h4>VIEW ALL FEATURES</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card">
+                <span class="feat-check">&#9633;</span>
+                <h4>EFFECTIVE SOCIAL MEDIA</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card feat-card-partial">
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+        </div>
+
+        <div class="features-strip features-strip-2 clearfix">
+            <div class="feat-card">
+                <span class="feat-check">&#9633;</span>
+                <h4>AS A BRAND MARKETING FIRM</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card">
+                <span class="feat-check">&#9633;</span>
+                <h4>WITH EXTENSIVE EXPERIENCE</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card">
+                <span class="feat-check">&#9633;</span>
+                <h4>WE PROVIDE FROM THE INSIDE-OUT</h4>
+                <p>Not only fitness classes should be fun but also their internal management.</p>
+            </div>
+            <div class="feat-card"></div>
+        </div>
+    </section>
+
+    <!-- ===== APPROACH SECTION =====
+         White, image left, text right
+    -->
+    <section class="approach clearfix">
+        <div class="approach-image">
+            <div class="img-placeholder large"><span>&#128247; Image Here</span></div>
+        </div>
+        <div class="approach-text">
+            <p class="section-tag">FROM THE COMPANY</p>
+            <h2>Whose Approach is More Like That of a Fully-Integrated Marketing</h2>
+            <p>Not only fitness classes should be fun but also their internal management. With busy class schedules and wide variety of instructors, administration is always a big deal. The redesign challenge was to make manager life easier.</p>
+            <p>We updated a calendar so that managers can have an easy and rapid access to instructor schedule. From now on, there will be an ability to see tasks right on the dashboard.</p>
+            <a href="#" class="btn-primary">ORDER CONTENT</a>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIAL =====
+         Centered, quote + avatar + name
+    -->
+    <section class="testimonial">
+        <div class="testimonial-inner">
+            <p class="section-tag">LOOK BY SOME OF THE BEST PEOPLE &amp; EARTH</p>
+            <p class="testimonial-text">Need high quality original content that is SEO optimized and verified for originality? It's an order now, and our creative wordsmiths are on it like dots on i's with all the necessary resources.</p>
+            <div class="testimonial-author clearfix">
+                <div class="author-avatar"></div>
+                <div class="author-info">
+                    <strong>CHARLIZE THERON</strong><br>
+                    <small>CEO &amp; Founder Site</small>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-arrows">
+            <span class="arrow-circle">&#8592;</span>
+            <span class="arrow-circle">&#8594;</span>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER =====
+         Dark strip: text left, two buttons right
+    -->
+    <section class="cta-banner clearfix">
+        <div class="cta-text">
+            <p class="section-tag light">PLACE AN ORDER NOW AND WE WILL GUIDE</p>
+            <h3>Take your team anywhere to go.</h3>
+        </div>
+        <div class="cta-btns">
+            <a href="#" class="btn-primary">ORDER CONTENT</a>
+            <a href="#" class="btn-outline-light">CONTACT US</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER =====
+         5-column link grid + bottom bar
+    -->
     <footer class="site-footer">
-        <p>Pushwork Agency – Educational Layout</p>
+        <div class="footer-cols clearfix">
+
+            <div class="footer-col footer-col-brand">
+                <div class="footer-logo">&#9711; CIRCLECIRCLE LTD</div>
+                <p>Working at the junction of technology, marketing, and discipline. My work.</p>
+                <div class="footer-checkboxes">
+                    <div>&#9633; Option</div>
+                    <div>&#9633; Option</div>
+                    <div>&#9633; Option</div>
+                    <div>&#9633; Option</div>
+                </div>
+                <a href="#">circlecircle.com</a>
+            </div>
+
+            <div class="footer-col">
+                <h5>PRODUCTS</h5>
+                <ul>
+                    <li><a href="#">Managing BV</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">All ht Items</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>FOR USERS</h5>
+                <ul>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Policy Note</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>INFORMATION</h5>
+                <ul>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>RESOURCES</h5>
+                <ul>
+                    <li><a href="#">Understanding MB</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                    <li><a href="#">ht Items</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom clearfix">
+            <p class="footer-copy">&copy; 2024 Pushwork Agency. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#">f</a>
+                <a href="#">t</a>
+                <a href="#">in</a>
+                <a href="#">&#9993;</a>
+            </div>
+        </div>
     </footer>
 
 </body>

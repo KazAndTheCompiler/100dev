@@ -3,84 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>BBC News Clone</title>
-
-    <!-- NORMALIZE FIRST -->
-    <link rel="stylesheet" href="normalize.css">
-
-    <!-- MAIN FLOAT-BASED STYLES -->
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!--
-        TOP NAVIGATION BAR
-        Uses floats to align logo left and menu right.
-    -->
+    <!-- TOP NAV -->
     <nav class="main-nav clearfix">
-
-        <!-- Logo floated left -->
-        <div class="logo">BBC</div>
-
-        <!-- Navigation menu floated right -->
+        <div class="nav-left clearfix">
+            <div class="logo">
+                <span class="bbc-box">BBC</span>
+            </div>
+            <a href="#" class="sign-in">
+                <span class="sign-in-icon">&#9584;</span> Sign in
+            </a>
+        </div>
         <ul class="nav-menu">
             <li><a href="#">Home</a></li>
             <li><a href="#">News</a></li>
             <li><a href="#">Sport</a></li>
-            <li><a href="#">Weather</a></li>
+            <li><a href="#">Reel</a></li>
+            <li><a href="#">Worklife</a></li>
+            <li><a href="#">Travel</a></li>
+            <li><a href="#">Future</a></li>
+            <li><a href="#">Culture</a></li>
+            <li><a href="#">More ▾</a></li>
         </ul>
+        <div class="nav-search">
+            <input type="text" placeholder="Search">
+            <button>&#128269;</button>
+        </div>
     </nav>
 
-    <!--
-        HERO SECTION
-        Two-column float layout:
-        - Featured article (left)
-        - Secondary headlines (right)
-    -->
+    <!-- PAGE HEADER -->
+    <div class="page-header clearfix">
+        <h2 class="welcome">Welcome to BBC.com</h2>
+        <p class="date">Thursday, 13 August</p>
+    </div>
+
+    <!-- HERO SECTION -->
     <section class="hero clearfix">
 
-        <!-- Featured article -->
+        <!-- Big featured story left -->
         <article class="hero-main">
-            <h1>Major Headline Goes Here</h1>
-            <p>Large featured story with emphasis and visual weight.</p>
+            <img src="https://picsum.photos/seed/israel/620/330" alt="Israel UAE">
+            <div class="hero-main-text">
+                <h1>Israel and UAE strike historic peace deal</h1>
+                <p>Israel and the UAE agree to normalise relations, marking the third Israel-Arab peace deal.</p>
+                <span class="tag"><span class="tag-bar"></span> MIDDLE EAST</span>
+            </div>
         </article>
 
-        <!-- Side headlines -->
-        <aside class="hero-side">
-            <h3>Related Story</h3>
-            <p>Supporting article summary.</p>
+        <!-- 2x2 grid on the right -->
+        <div class="hero-side">
 
-            <h3>Another Story</h3>
-            <p>More supporting content.</p>
-        </aside>
+            <article class="hero-side-card">
+                <img src="https://picsum.photos/seed/canada/300/155" alt="Canada">
+                <div class="hero-side-text">
+                    <h3>Americans, go home: Tension at Canada-US border</h3>
+                    <span class="tag"><span class="tag-bar"></span> CANADA</span>
+                </div>
+            </article>
+
+            <article class="hero-side-card">
+                <img src="https://picsum.photos/seed/vaccine/300/155" alt="Vaccine">
+                <div class="hero-side-text">
+                    <h3>How will the world vaccinate seven billion people?</h3>
+                    <span class="tag"><span class="tag-bar"></span> HEALTH</span>
+                </div>
+            </article>
+
+            <article class="hero-side-card">
+                <img src="https://picsum.photos/seed/gym/300/155" alt="Gym">
+                <div class="hero-side-text">
+                    <h3>The online 'productivity gyms'</h3>
+                    <span class="tag"><span class="tag-bar"></span> WORKLIFE</span>
+                </div>
+            </article>
+
+            <article class="hero-side-card">
+                <img src="https://picsum.photos/seed/folk/300/155" alt="Folk singer">
+                <div class="hero-side-text">
+                    <h3>The folk singer murdered for his music</h3>
+                    <span class="tag">CULTURE</span>
+                </div>
+            </article>
+
+        </div>
     </section>
 
-    <!--
-        NEWS GRID
-        Float-based card grid.
-    -->
-    <section class="news-grid clearfix">
+    <!-- NEWS SECTION -->
+    <section class="news-section">
+        <h2 class="section-title"><span class="title-bar"></span> News</h2>
 
-        <!-- Individual article cards -->
-        <article class="news-card">
-            <h3>Article One</h3>
-            <p>Short summary text.</p>
-        </article>
+        <div class="news-grid clearfix">
 
-        <article class="news-card">
-            <h3>Article Two</h3>
-            <p>Short summary text.</p>
-        </article>
+            <article class="news-card">
+                <img src="https://picsum.photos/seed/biden/400/220" alt="Biden Harris">
+                <h3>Biden and Harris say Trump has left US 'in tatters'</h3>
+                <p>Joe Biden and running mate Kamala Harris call President Donald Trump a "whining" incompetent leader.</p>
+                <span class="tag"><span class="tag-bar"></span> US ELECTION 2020</span>
+            </article>
 
-        <article class="news-card">
-            <h3>Article Three</h3>
-            <p>Short summary text.</p>
-        </article>
+            <article class="news-card">
+                <img src="https://picsum.photos/seed/belarus/400/220" alt="Belarus">
+                <h3>Women form 'solidarity chains' in Belarus protests</h3>
+                <p>Women take to the streets of Minsk dressed in white as they demand an end to police brutality.</p>
+                <span class="tag"><span class="tag-bar"></span> EUROPE</span>
+            </article>
 
-        <article class="news-card">
-            <h3>Article Four</h3>
-            <p>Short summary text.</p>
-        </article>
+            <article class="news-card">
+                <img src="https://picsum.photos/seed/trump/400/220" alt="Trump">
+                <h3>Trump says low-pressure shower heads won't wash</h3>
+                <p>The US calls for rules to be eased after Donald Trump complained of issues washing his hair.</p>
+                <span class="tag"><span class="tag-bar"></span> US &amp; CANADA</span>
+            </article>
 
+        </div>
     </section>
 
     <!-- FOOTER -->
