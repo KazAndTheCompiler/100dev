@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Carousel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   CSS VARIABLES — one place to tune everything
+   ============================================= */
+:root {
+  --bg:        #0a0a0a;
+  --surface:   #111;
+  --accent:    #c8f04a;
+  --text:      #f0ede6;
+  --muted:     #444;
+  --radius-x:  38vw;   /* ellipse horizontal radius */
+  --radius-y:  14vw;   /* ellipse vertical radius   */
+  --card-w:    min(420px, 88vw);
+  --card-h:    min(280px, 56vw);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =============================================
+   SCENE — the sticky scroll container
+   The carousel pins here while user scrolls
+   ============================================= */
+.scene {
+  position: relative;
+  height: 500vh; /* scroll distance = how long it pins */
+}
+
+.scene-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.site-header {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.site-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 0.25em;
+  color: var(--text);
+  opacity: 0.35;
+}
+
+/* =============================================
+   HINT — scroll / drag instruction
+   ============================================= */
+.hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.hint svg { animation: bounce 1.6s ease-in-out infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(4px); }
+}
+
+/* =============================================
+   ELLIPSE TRACK — the rotating ring
+   All items are children; rotating this element
+   moves every item around the ellipse at once.
+   ============================================= */
+.track {
+  position: relative;
+  width: calc(var(--radius-x) * 2);
+  height: calc(var(--radius-y) * 2);
+  transform-style: preserve-3d;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.track:active { cursor: grabbing; }
+
+/* =============================================
+   TRACK ITEMS — each project title on the ring
+   
+   Positioned by JS using CSS custom properties:
+     --angle  → this item's angle around the ellipse (degrees)
+   
+   The actual x/y is computed from the ellipse formula:
+     x = cos(angle) * radius-x
+     y = sin(angle) * radius-y
+   ============================================= */
+.track-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  /* Translation applied by JS via inline style */
+
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  /* Depth cue: items at the back are smaller + dimmer */
+  transition:
+    opacity 0.35s ease,
+    color    0.35s ease,
+    transform 0.05s linear; /* keep snappy during drag */
+}
+
+/* The item currently at the top (activeIndex) */
+.track-item.is-active {
+  color: var(--accent);
+  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+}
+
+/* =============================================
+   ACTIVE DISPLAY — the center card that reveals
+   when an item reaches the top of the ellipse
+   ============================================= */
+.active-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* card itself isn't clickable — the link inside is */
+  z-index: 5;
+}
+
+.display-card {
+  width: var(--card-w);
+  height: var(--card-h);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Image fills the card */
+.display-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.display-card:hover img {
+  transform: scale(1.04);
+}
+
+/* Dark gradient overlay so text is legible */
+.display-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.1)  50%,
+    transparent      100%
+  );
+  pointer-events: none;
+}
+
+/* Card footer: title + arrow link */
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.2rem 1.4rem;
+  z-index: 2;
+  pointer-events: auto; /* this part IS clickable */
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  letter-spacing: 0.1em;
+  color: #fff;
+  line-height: 1.1;
+  max-width: 70%;
+}
+
+/* The actual link — arrow button bottom-right of card */
+.card-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--accent);
+  color: #000;
+  text-decoration: none;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card-link:hover {
+  transform: scale(1.12);
+  background: #fff;
+}
+
+/* Card enter / exit animations */
+.display-card {
+  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0% 0 0 0);
+  }
+}
+
+/* =============================================
+   INDEX COUNTER — "01 / 06" bottom right
+   ============================================= */
+.counter {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  z-index: 10;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter .current { color: var(--text); }
+
+/* =============================================
+   PROGRESS BAR — thin accent line at top
+   ============================================= */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+/* =============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================= */
+@media (max-width: 600px) {
+  :root {
+    --radius-x: 44vw;
+    --radius-y: 18vw;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Scroll scene — sticky inner keeps carousel fixed while user scrolls -->
+<div class="scene" id="scene">
+  <div class="scene-sticky">
+
+    <header class="site-header">
+      <h1>Selected Work</h1>
+    </header>
+
+    <!-- THE ACTIVE IMAGE CARD — sits behind the track visually -->
+    <div class="active-display" id="activeDisplay">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- THE ROTATING ELLIPSE TRACK -->
+    <div class="track" id="track">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Counter -->
+    <div class="counter" id="counter"></div>
+
+    <!-- Scroll / drag hint -->
+    <div class="hint" id="hint">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2v12M8 14l-4-4M8 14l4-4" stroke="#444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      scroll or drag
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =============================================
+   DATA LAYER
+   
+   One array of objects. Add/remove projects here.
+   Nothing else needs to change.
+   ============================================= */
+const PROJECTS = [
+  {
+    title:   'Branding — Volta',
+    image:   'https://picsum.photos/seed/volta/840/560',
+    url:     '#volta',
+    year:    '2024',
+  },
+  {
+    title:   'Web — Meridian Studio',
+    image:   'https://picsum.photos/seed/meridian/840/560',
+    url:     '#meridian',
+    year:    '2024',
+  },
+  {
+    title:   'Motion — Kōsei',
+    image:   'https://picsum.photos/seed/kosei/840/560',
+    url:     '#kosei',
+    year:    '2023',
+  },
+  {
+    title:   'App — Noctua',
+    image:   'https://picsum.photos/seed/noctua/840/560',
+    url:     '#noctua',
+    year:    '2023',
+  },
+  {
+    title:   'Identity — Fern & Co.',
+    image:   'https://picsum.photos/seed/fern/840/560',
+    url:     '#fern',
+    year:    '2022',
+  },
+  {
+    title:   'Editorial — Supriya',
+    image:   'https://picsum.photos/seed/supriya/840/560',
+    url:     '#supriya',
+    year:    '2022',
+  },
+];
+
+const COUNT = PROJECTS.length;
+const STEP  = 360 / COUNT; // degrees between items
+
+/* =============================================
+   STATE LAYER
+   
+   A single number — the current rotation angle
+   of the whole track in degrees.
+   Everything else is derived from this.
+   ============================================= */
+let state = {
+  rotation:     0,      // current track rotation (degrees)
+  targetRot:    0,      // where we're animating toward
+  activeIndex:  0,      // which project is currently "at the top"
+  isAnimating:  false,
+};
+
+/* =============================================
+   DOM REFERENCES
+   ============================================= */
+const scene         = document.getElementById('scene');
+const track         = document.getElementById('track');
+const activeDisplay = document.getElementById('activeDisplay');
+const counterEl     = document.getElementById('counter');
+const progressBar   = document.getElementById('progressBar');
+const hint          = document.getElementById('hint');
+
+/* =============================================
+   BUILD DOM — runs once at startup
+   
+   Creates one .track-item per project and
+   pre-renders the card for the first project.
+   ============================================= */
+function buildDOM() {
+  // Build track items
+  PROJECTS.forEach((project, i) => {
+    const el = document.createElement('div');
+    el.className = 'track-item';
+    el.dataset.index = i;
+    el.textContent = project.title;
+    track.appendChild(el);
+  });
+
+  // Render initial state
+  render(0);
+}
+
+/* =============================================
+   RENDER — the only function that touches the DOM
+   
+   Called whenever state.rotation changes.
+   Reads from PROJECTS[], updates positions,
+   opacity, active class, and the center card.
+   ============================================= */
+function render(newActiveIndex) {
+  const items = track.querySelectorAll('.track-item');
+
+  // Read ellipse radii from CSS variables
+  const style  = getComputedStyle(document.documentElement);
+  const rx     = parseFloat(style.getPropertyValue('--radius-x')) || 300;
+  const ry     = parseFloat(style.getPropertyValue('--radius-y')) || 110;
+
+  // Convert vw values to px
+  const vw     = window.innerWidth / 100;
+  const rxPx   = rx * vw;
+  const ryPx   = ry * vw;
+
+  items.forEach((el, i) => {
+    // Each item's angle = its index offset + current track rotation
+    // Subtract 90° so index 0 starts at the top (12 o'clock)
+    const angleDeg = (i * STEP) - state.rotation - 90;
+    const angleRad = (angleDeg * Math.PI) / 180;
+
+    const x = Math.cos(angleRad) * rxPx;
+    const y = Math.sin(angleRad) * ryPx;
+
+    // Depth: sin of the vertical angle maps back→front (−1 to +1)
+    // Items at the bottom are "in front" visually
+    const depth   = (Math.sin(angleRad) + 1) / 2; // 0 (top/back) → 1 (bottom/front)
+    const opacity = 0.18 + depth * 0.55;
+    const scale   = 0.7  + depth * 0.45;
+
+    el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${scale})`;
+    el.style.opacity   = opacity;
+    el.style.zIndex    = Math.round(depth * 10);
+
+    // Mark the active item
+    el.classList.toggle('is-active', i === newActiveIndex);
+  });
+
+  // Only re-render the card if activeIndex actually changed
+  if (newActiveIndex !== state.activeIndex) {
+    state.activeIndex = newActiveIndex;
+    renderCard(newActiveIndex);
+  }
+
+  // Update counter
+  const pad = n => String(n + 1).padStart(2, '0');
+  counterEl.innerHTML =
+    `<span class="current">${pad(newActiveIndex)}</span> / ${pad(COUNT - 1)}`;
+}
+
+/* =============================================
+   RENDER CARD — updates the center image card
+   
+   Replaces the card DOM entirely so the CSS
+   animation (cardIn) re-triggers on each change.
+   Links live in the data array — they're just
+   an <a> tag. Nothing fragile about them.
+   ============================================= */
+function renderCard(index) {
+  const p = PROJECTS[index];
+
+  activeDisplay.innerHTML = `
+    <div class="display-card">
+      <img src="${p.image}" alt="${p.title}" loading="lazy">
+      <div class="card-footer">
+        <div class="card-title">${p.title}</div>
+        <a
+          class="card-link"
+          href="${p.url}"
+          aria-label="View ${p.title}"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7h10M8 3l4 4-4 4"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+/* =============================================
+   DERIVE ACTIVE INDEX from rotation angle
+   
+   Figures out which project is closest to the
+   top of the ellipse (12 o'clock position).
+   ============================================= */
+function getActiveIndex(rotation) {
+  // Normalise rotation to 0–360
+  const norm = ((rotation % 360) + 360) % 360;
+  // Each item occupies STEP degrees; find nearest
+  const raw  = Math.round(norm / STEP) % COUNT;
+  return ((COUNT - raw) % COUNT + COUNT) % COUNT;
+}
+
+/* =============================================
+   ANIMATION LOOP
+   
+   Smoothly interpolates state.rotation toward
+   state.targetRot using lerp (linear interpolation).
+   Calls render() every frame while moving.
+   ============================================= */
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function tick() {
+  const delta = state.targetRot - state.rotation;
+
+  if (Math.abs(delta) > 0.01) {
+    state.rotation = lerp(state.rotation, state.targetRot, 0.1);
+
+    const newActive = getActiveIndex(state.rotation);
+    render(newActive);
+  } else {
+    // Snap to exact target to avoid float drift
+    state.rotation = state.targetRot;
+    const newActive = getActiveIndex(state.rotation);
+    render(newActive);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+/* =============================================
+   SCROLL INTERACTION
+   
+   Maps scroll progress (0–1) through the scene
+   to rotation (0–360°).
+   The scene height (500vh) controls how many
+   items pass by per viewport scroll.
+   ============================================= */
+function onScroll() {
+  const sceneTop    = scene.getBoundingClientRect().top + window.scrollY;
+  const sceneHeight = scene.offsetHeight - window.innerHeight;
+  const scrolled    = window.scrollY - sceneTop;
+  const progress    = Math.max(0, Math.min(1, scrolled / sceneHeight));
+
+  state.targetRot   = progress * 360;
+
+  // Update progress bar
+  progressBar.style.width = (progress * 100) + '%';
+
+  // Hide hint after first scroll
+  if (progress > 0.02) hint.style.opacity = '0';
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* =============================================
+   DRAG INTERACTION (mouse + touch)
+   
+   Drag left/right to rotate the track.
+   Completely independent of scroll — whichever
+   was used last wins, they don't fight each other.
+   ============================================= */
+let drag = {
+  active:    false,
+  startX:    0,
+  startRot:  0,
+  sensitivity: 0.4, // degrees per pixel dragged
+};
+
+function onDragStart(e) {
+  drag.active   = true;
+  drag.startX   = e.type === 'touchstart'
+    ? e.touches[0].clientX
+    : e.clientX;
+  drag.startRot = state.targetRot;
+  track.style.transition = 'none';
+}
+
+function onDragMove(e) {
+  if (!drag.active) return;
+
+  // Prevent page scroll while dragging horizontally
+  if (e.cancelable) e.preventDefault();
+
+  const x     = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+  const delta = (drag.startX - x) * drag.sensitivity;
+
+  state.targetRot = drag.startRot + delta;
+}
+
+function onDragEnd() {
+  drag.active = false;
+  // Snap to nearest item
+  const nearest    = getActiveIndex(state.targetRot);
+  state.targetRot  = ((COUNT - nearest) % COUNT) * STEP;
+}
+
+track.addEventListener('mousedown',  onDragStart);
+track.addEventListener('touchstart', onDragStart, { passive: true });
+
+window.addEventListener('mousemove',  onDragMove);
+window.addEventListener('touchmove',  onDragMove, { passive: false });
+
+window.addEventListener('mouseup',   onDragEnd);
+window.addEventListener('touchend',  onDragEnd);
+
+/* =============================================
+   KEYBOARD NAVIGATION (accessibility)
+   Arrow keys advance/retreat through items.
+   ============================================= */
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    state.targetRot += STEP;
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    state.targetRot -= STEP;
+  }
+});
+
+/* =============================================
+   INIT
+   ============================================= */
+buildDOM();
+tick();
+onScroll(); // set initial state from URL hash / restored scroll position
+</script>
+</body>
+</html>

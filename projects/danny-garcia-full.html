@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name | Engineer</title>
+<style>
+  /* ─────────────────────────────────────────
+     TOKENS
+  ───────────────────────────────────────── */
+  :root {
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --bg:          #f5f4f0;
+    --ink:         #1a1a18;
+    --ink-muted:   #72726e;
+    --ink-faint:   #aeada8;
+    --border:      #e0dfd9;
+    --link-line:   #c8c7c1;
+    --content:     620px;
+    --pad:         1.5rem;
+  }
+
+  /* ─────────────────────────────────────────
+     RESET + BASE
+  ───────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100vh;
+    /* cursor hidden — custom cursor takes over */
+    cursor: none;
+  }
+
+  /* ─────────────────────────────────────────
+     PHYSICS CANVAS — sits on top of everything
+     pointer-events: none so text stays clickable
+  ───────────────────────────────────────── */
+  #physics-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  /* ─────────────────────────────────────────
+     CUSTOM CURSOR
+  ───────────────────────────────────────── */
+  #cursor {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--ink);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 200;
+    transition: transform 0.1s ease, background 0.2s ease;
+    mix-blend-mode: multiply;
+  }
+  #cursor.hovering {
+    transform: translate(-50%, -50%) scale(3);
+    background: var(--ink-muted);
+  }
+
+  /* ─────────────────────────────────────────
+     LAYOUT
+  ───────────────────────────────────────── */
+  .page {
+    max-width: var(--content);
+    margin: 0 auto;
+    padding: 4rem var(--pad) 7rem;
+  }
+
+  /* ─────────────────────────────────────────
+     LINKS
+  ───────────────────────────────────────── */
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--link-line);
+    transition: text-decoration-color 0.15s;
+    cursor: none;
+  }
+  a:hover { text-decoration-color: var(--ink); }
+
+  /* ─────────────────────────────────────────
+     HEADER
+  ───────────────────────────────────────── */
+  .site-header {
+    margin-bottom: 4.5rem;
+  }
+  .site-header h1 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.6rem;
+  }
+  .site-header h1 a { text-decoration: none; }
+  .site-header h1 a:hover { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .site-header .bio {
+    font-size: 0.9375rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 420px;
+  }
+
+  /* ─────────────────────────────────────────
+     SECTION LABEL
+  ───────────────────────────────────────── */
+  .label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-bottom: 1.25rem;
+    margin-top: 3.5rem;
+  }
+
+  /* ─────────────────────────────────────────
+     WRITING LIST
+  ───────────────────────────────────────── */
+  .post-list { list-style: none; }
+
+  .post-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-item:first-child { border-top: 1px solid var(--border); }
+
+  .post-title {
+    font-size: 0.9375rem;
+    font-weight: 450;
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .post-title a { text-decoration: none; }
+  .post-title a:hover { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 3px; }
+
+  .post-date {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .post-desc {
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 0.2rem;
+    line-height: 1.5;
+  }
+
+  /* ─────────────────────────────────────────
+     WORK LIST
+  ───────────────────────────────────────── */
+  .work-list { display: flex; flex-direction: column; gap: 2rem; }
+
+  .work-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 1rem;
+  }
+  .work-company {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    grid-column: 1; grid-row: 1;
+    margin-bottom: 0.3rem;
+  }
+  .work-company a { text-decoration: none; }
+  .work-company a:hover { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 3px; }
+
+  .work-years {
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    grid-column: 2; grid-row: 1;
+    padding-top: 2px;
+  }
+  .work-desc {
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    grid-column: 1 / -1; grid-row: 2;
+  }
+
+  /* ─────────────────────────────────────────
+     FOOTER
+  ───────────────────────────────────────── */
+  .site-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  /* ─────────────────────────────────────────
+     PAGE LOAD FADE
+  ───────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .page { animation: fadeUp 0.5s ease both; }
+
+  /* ─────────────────────────────────────────
+     RESPONSIVE
+  ───────────────────────────────────────── */
+  @media (max-width: 500px) {
+    body { font-size: 14px; }
+    .page { padding-top: 2.5rem; }
+    .post-item, .work-item { grid-template-columns: 1fr; }
+    .post-date, .work-years { grid-column: 1; margin-top: 0.15rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Physics canvas overlay -->
+<canvas id="physics-canvas"></canvas>
+
+<!-- Custom cursor dot -->
+<div id="cursor"></div>
+
+<!-- ─── PAGE CONTENT ─── -->
+<div class="page">
+
+  <header class="site-header">
+    <h1><a href="/">Your Name</a></h1>
+    <p class="bio">Senior frontend engineer with over a decade of experience building nice things for good people.</p>
+  </header>
+
+  <!-- WRITING -->
+  <p class="label">Writing</p>
+  <ul class="post-list">
+    <li class="post-item">
+      <span class="post-title"><a href="#">The dream of the web is alive in fungible frameworks</a></span>
+      <time class="post-date">Apr 19, 2025</time>
+      <span class="post-desc">About a side project using Astro and Stimulus.</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">Relative disappointment</a></span>
+      <time class="post-date">Mar 19, 2025</time>
+      <span class="post-desc">A trap. One of the good ones.</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">No training wheels. No pedals.</a></span>
+      <time class="post-date">Mar 8, 2025</time>
+      <span class="post-desc">No giving up.</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">AI and the growth of craft</a></span>
+      <time class="post-date">Mar 6, 2025</time>
+      <span class="post-desc">We are all artists.</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">AI and the loss of craft</a></span>
+      <time class="post-date">Mar 5, 2025</time>
+      <span class="post-desc">In my day we wrote our CSS by hand, line by line, and we liked it!</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">Hobbies as Hobbies</a></span>
+      <time class="post-date">Feb 28, 2025</time>
+      <span class="post-desc">I'm something of a systemizing mechanizer myself.</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">Hands off (my) HTML</a></span>
+      <time class="post-date">Feb 25, 2025</time>
+      <span class="post-desc">In my day we wrote our HTML by hand, line by line, and we liked it!</span>
+    </li>
+    <li class="post-item">
+      <span class="post-title"><a href="#">Writing here now</a></span>
+      <time class="post-date">Feb 22, 2025</time>
+      <span class="post-desc">The beginning of a series of articles written into the void.</span>
+    </li>
+  </ul>
+
+  <!-- WORK -->
+  <p class="label">Work</p>
+  <div class="work-list">
+    <div class="work-item">
+      <span class="work-company"><a href="https://shopify.com">Shopify</a></span>
+      <span class="work-years">2024–Present</span>
+      <p class="work-desc">Engineering on the Quality &amp; Trust team.</p>
+    </div>
+    <div class="work-item">
+      <span class="work-company"><a href="https://ambrook.com">Ambrook</a></span>
+      <span class="work-years">2023–2024</span>
+      <p class="work-desc">Shipped full-stack features that improved NPS from ~30% to &gt;60%. Led performance projects improving UI speeds up to 93% across platforms, achieving &lt;400ms P99 latency in key workflows.</p>
+    </div>
+    <div class="work-item">
+      <span class="work-company"><a href="https://stripe.com">Stripe</a></span>
+      <span class="work-years">2021–2022</span>
+      <p class="work-desc">Helped launch the Stripe Apps platform. Shipped a redesign of the Stripe Dashboard navigation that measurably improved user engagement. Architected and patented part of an internal view container mechanism.</p>
+    </div>
+    <div class="work-item">
+      <span class="work-company"><a href="https://apple.com">Apple</a></span>
+      <span class="work-years">2014–2021</span>
+      <p class="work-desc">Designed prototypes, built custom tooling for designers, and engineered web and native applications. Most work launched as interactive web experiences on apple.com. Led large teams of talented developers.</p>
+    </div>
+    <div class="work-item">
+      <span class="work-company">RED Interactive</span>
+      <span class="work-years">2012–2014</span>
+      <p class="work-desc">Defined technical process and strategy. Hands-on development for responsive, engaging web experiences.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>
+      You can follow me on <a href="#">Threads</a>, <a href="#">Instagram</a>, and <a href="#">LinkedIn</a>.
+      I read every <a href="mailto:hey@yourname.com">email</a>.
+    </p>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PHYSICS ENGINE — from scratch, no libraries
+//
+//  How it works:
+//  1. Each "ball" is a plain JS object: { x, y, vx, vy, r, color }
+//  2. Every frame: apply gravity, apply cursor attraction/repulsion,
+//     integrate velocity, bounce off walls, resolve ball-ball collisions
+//  3. Draw to canvas with requestAnimationFrame
+//
+//  The "magnetic" feel: each ball is attracted toward the cursor
+//  with a force proportional to 1/distance². Like gravity.
+//  When cursor is very close, it switches to repulsion (push away).
+// ═══════════════════════════════════════════════════════
+
+const canvas = document.getElementById('physics-canvas');
+const ctx    = canvas.getContext('2d');
+const cursor = document.getElementById('cursor');
+
+// ── SIZING ──
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── MOUSE ──
+const mouse = { x: -9999, y: -9999, down: false };
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+window.addEventListener('mousedown', () => { mouse.down = true; });
+window.addEventListener('mouseup',   () => { mouse.down = false; });
+
+// cursor hover state on links
+document.querySelectorAll('a').forEach(a => {
+  a.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+  a.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+});
+
+// ── BALL FACTORY ──
+// Colors pulled from the page's warm off-white palette
+const PALETTES = [
+  ['#d4cfc9', '#bfb9b2', '#a8a09a'],   // warm grays
+  ['#c9ccd4', '#b2b5bf', '#9aa0a8'],   // cool grays
+  ['#d4cbc0', '#c2b8ab', '#b0a698'],   // sandy
+  ['#1a1a18', '#3a3a36', '#5a5a56'],   // dark ink
+];
+const FLAT = PALETTES.flat();
+
+function makeColor() {
+  return FLAT[Math.floor(Math.random() * FLAT.length)];
+}
+
+function makeBall(x, y) {
+  const r = 8 + Math.random() * 22;
+  return {
+    x: x ?? Math.random() * canvas.width,
+    y: y ?? Math.random() * canvas.height * 0.5,
+    vx: (Math.random() - 0.5) * 3,
+    vy: (Math.random() - 0.5) * 3,
+    r,
+    mass: r * r,          // mass proportional to area
+    color: makeColor(),
+    alpha: 0.75 + Math.random() * 0.25,
+  };
+}
+
+// Spawn balls scattered around
+const balls = [];
+const COUNT = 26;
+for (let i = 0; i < COUNT; i++) {
+  balls.push(makeBall(
+    80 + Math.random() * (window.innerWidth  - 160),
+    80 + Math.random() * (window.innerHeight * 0.7)
+  ));
+}
+
+// ── PHYSICS CONSTANTS ──
+const GRAVITY         =  0.18;    // downward pull each frame
+const ATTRACTION      = 18000;    // cursor magnet strength
+const REPULSE_RADIUS  = 80;       // px — inside this, balls are pushed away
+const REPULSE_FORCE   = 35000;    // repulsion strength when too close
+const DAMPING         = 0.985;    // velocity multiplier per frame (air drag)
+const BOUNCE          = 0.55;     // energy kept on wall bounce
+const FRICTION        = 0.92;     // ground friction
+
+// ── COLLISION RESOLUTION ──
+// Separates two overlapping balls and exchanges momentum
+function resolveCollision(a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+  const overlap = (a.r + b.r) - dist;
+
+  if (overlap <= 0) return;
+
+  // Separate along normal
+  const nx = dx / dist;
+  const ny = dy / dist;
+  const correction = overlap / 2;
+  a.x -= nx * correction;
+  a.y -= ny * correction;
+  b.x += nx * correction;
+  b.y += ny * correction;
+
+  // Relative velocity along normal
+  const dvx = a.vx - b.vx;
+  const dvy = a.vy - b.vy;
+  const dot  = dvx * nx + dvy * ny;
+
+  if (dot > 0) return; // already separating
+
+  // Impulse — elastic collision weighted by mass
+  const totalMass = a.mass + b.mass;
+  const impulse = (2 * dot) / totalMass;
+
+  a.vx -= impulse * b.mass * nx;
+  a.vy -= impulse * b.mass * ny;
+  b.vx += impulse * a.mass * nx;
+  b.vy += impulse * a.mass * ny;
+}
+
+// ── MAIN LOOP ──
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const W = canvas.width;
+  const H = canvas.height;
+  const hasMouse = mouse.x > -999;
+
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+
+    // ── CURSOR FORCE ──
+    if (hasMouse) {
+      const dx = mouse.x - b.x;
+      const dy = mouse.y - b.y;
+      const dist2 = dx * dx + dy * dy;
+      const dist  = Math.sqrt(dist2) || 0.001;
+
+      if (dist < REPULSE_RADIUS) {
+        // Too close → repel
+        const force = REPULSE_FORCE / (dist2 + 1);
+        b.vx -= (dx / dist) * force / b.mass;
+        b.vy -= (dy / dist) * force / b.mass;
+      } else {
+        // Far → attract (like a magnet)
+        const force = ATTRACTION / (dist2 + 1);
+        b.vx += (dx / dist) * force / b.mass;
+        b.vy += (dy / dist) * force / b.mass;
+      }
+    }
+
+    // Click — big repulse burst from cursor
+    if (mouse.down) {
+      const dx = b.x - mouse.x;
+      const dy = b.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+      if (dist < 200) {
+        const force = 800 / b.mass;
+        b.vx += (dx / dist) * force;
+        b.vy += (dy / dist) * force;
+      }
+    }
+
+    // ── GRAVITY ──
+    b.vy += GRAVITY;
+
+    // ── DRAG ──
+    b.vx *= DAMPING;
+    b.vy *= DAMPING;
+
+    // ── INTEGRATE ──
+    b.x += b.vx;
+    b.y += b.vy;
+
+    // ── WALL COLLISIONS ──
+    // Left / Right
+    if (b.x - b.r < 0) {
+      b.x  = b.r;
+      b.vx = Math.abs(b.vx) * BOUNCE;
+    }
+    if (b.x + b.r > W) {
+      b.x  = W - b.r;
+      b.vx = -Math.abs(b.vx) * BOUNCE;
+    }
+    // Top
+    if (b.y - b.r < 0) {
+      b.y  = b.r;
+      b.vy = Math.abs(b.vy) * BOUNCE;
+    }
+    // Ground
+    if (b.y + b.r > H) {
+      b.y  = H - b.r;
+      b.vy = -Math.abs(b.vy) * BOUNCE;
+      b.vx *= FRICTION;
+      if (Math.abs(b.vy) < 0.5) b.vy = 0;
+    }
+
+    // ── BALL–BALL COLLISIONS ──
+    for (let j = i + 1; j < balls.length; j++) {
+      const c = balls[j];
+      const dx = c.x - b.x;
+      const dy = c.y - b.y;
+      const dist2 = dx * dx + dy * dy;
+      if (dist2 < (b.r + c.r) * (b.r + c.r)) {
+        resolveCollision(b, c);
+      }
+    }
+  }
+
+  // ── DRAW ──
+  // Draw from largest to smallest so small balls appear "on top"
+  const sorted = [...balls].sort((a, b) => b.r - a.r);
+  for (const b of sorted) {
+    ctx.save();
+    ctx.globalAlpha = b.alpha;
+
+    // Shadow for depth
+    ctx.shadowColor   = 'rgba(0,0,0,0.12)';
+    ctx.shadowBlur    = 12;
+    ctx.shadowOffsetY = 4;
+
+    // Fill
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fillStyle = b.color;
+    ctx.fill();
+
+    // Subtle gloss highlight
+    ctx.shadowColor  = 'transparent';
+    ctx.shadowBlur   = 0;
+    ctx.shadowOffsetY = 0;
+    const gloss = ctx.createRadialGradient(
+      b.x - b.r * 0.3, b.y - b.r * 0.35, b.r * 0.05,
+      b.x,              b.y,               b.r
+    );
+    gloss.addColorStop(0, 'rgba(255,255,255,0.22)');
+    gloss.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fillStyle = gloss;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Subtle cursor ring when near balls
+  if (hasMouse) {
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, REPULSE_RADIUS, 0, Math.PI * 2);
+    ctx.strokeStyle = '#1a1a18';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

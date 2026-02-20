@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igloo Inc.</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:       #0d0f14;
+    --ice-light: #b6bac5;
+    --ice-mid:   #6e7484;
+    --ice-dark:  #383e4e;
+    --accent:    #a8c8e8;
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--ice-light);
+    font-family: var(--font);
+    overflow: hidden; /* WebGL handles scrolling */
+    cursor: none;
+  }
+
+  /* ── WEBGL CANVAS — full screen, everything rendered here ── */
+  #canvas {
+    position: fixed;
+    inset: 0;
+    display: block;
+    z-index: 0;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  #cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--ice-light);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    z-index: 100;
+    transition: transform 0.12s ease, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(182,186,197,0.4);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    z-index: 99;
+    transition: transform 0.25s ease, width 0.25s, height 0.25s, border-color 0.25s;
+  }
+  #cursor-ring.hovered {
+    width: 60px; height: 60px;
+    border-color: rgba(168,200,232,0.7);
+  }
+
+  /* ── LOADING SCREEN ── */
+  #loading {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    transition: opacity 0.8s ease;
+  }
+  #loading .logo-load {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ice-mid);
+  }
+  #loading .bar {
+    width: 180px; height: 1px;
+    background: rgba(255,255,255,0.1);
+    position: relative; overflow: hidden;
+  }
+  #loading .bar::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--ice-light);
+    transform: translateX(-100%);
+    animation: loadBar 2.4s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes loadBar { to { transform: translateX(0); } }
+  #loading .pct {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ice-mid);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── HTML UI OVERLAY — sits over canvas, pointer-events: none by default ── */
+  #ui {
+    position: fixed; inset: 0; z-index: 10;
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 40px;
+    pointer-events: all;
+  }
+  .nav-logo {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ice-light);
+    text-decoration: none;
+    cursor: none;
+  }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ice-mid);
+    text-decoration: none;
+    cursor: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ice-light); }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeIn 1s ease 3s forwards;
+  }
+  .scroll-hint span {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ice-mid);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--ice-mid), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { transform: scaleY(1); opacity: 0.5; }
+    50%      { transform: scaleY(1.3); opacity: 1; }
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* SECTION TITLE — appears as you scroll into each section */
+  .section-label {
+    position: absolute;
+    left: 40px;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ice-mid);
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  #label-1 { top: 50%; transform: translateY(-50%); }
+
+  /* PROGRESS BAR — thin line on right edge */
+  .progress-track {
+    position: absolute;
+    right: 36px; top: 50%;
+    transform: translateY(-50%);
+    width: 1px; height: 120px;
+    background: rgba(255,255,255,0.08);
+  }
+  .progress-fill {
+    width: 100%; height: 0%;
+    background: var(--ice-light);
+    transition: height 0.1s linear;
+  }
+
+  /* SECTION COUNTER */
+  .section-counter {
+    position: absolute;
+    right: 50px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .counter-num {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--ice-mid);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .counter-num.active { color: var(--ice-light); }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="logo-load">Igloo Inc.</div>
+  <div class="bar"></div>
+  <div class="pct" id="pct">0%</div>
+</div>
+
+<!-- UI Overlay -->
+<div id="ui">
+  <nav>
+    <a class="nav-logo" href="#">Igloo Inc.</a>
+    <ul class="nav-links">
+      <li><a href="#">Work</a></li>
+      <li><a href="#">Studio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+  <div class="section-label" id="label-1">— Portfolio</div>
+
+  <!-- Right edge progress + counter -->
+  <div class="section-counter">
+    <span class="counter-num active" id="cnt-1">01</span>
+    <span class="counter-num" id="cnt-2">02</span>
+    <span class="counter-num" id="cnt-3">03</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+</div>
+
+<!-- Three.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  IGLOO INC. — SKELETON IMPLEMENTATION
+//
+//  Tech breakdown (from Awwwards case study + refs.gallery):
+//  ─────────────────────────────────────────────────────────
+//  • Three.js — all rendering (geometry, materials, lights)
+//  • GSAP-style scroll — we roll our own lerped scroll here
+//  • WebGL UI — text effects, glitches done in shader space
+//    (we approximate with canvas + CSS for skeleton)
+//  • Ice blocks — procedural crystal growth algorithm
+//    (we approximate with IcosahedronGeometry + displacement)
+//  • Particles — GPU particle system morphing between shapes
+//  • Chromatic aberration — post-process shader pass
+//  • Sound — waypoint-triggered audio (omitted in skeleton)
+//  • KTX2 compressed textures — replaced with procedural here
+//
+//  SCROLL ARCHITECTURE:
+//  The page has 3 "scenes". Scroll wheel accumulates into a
+//  normalised 0–1 progress. GSAP (here: manual lerp) drives
+//  camera position along a bezier path through the scenes.
+// ═══════════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('canvas');
+const W = () => window.innerWidth;
+const H = () => window.innerHeight;
+
+// ── RENDERER ──────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: true,
+  alpha: false,
+  powerPreference: 'high-performance',
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(W(), H());
+renderer.setClearColor(0x0d0f14);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.9;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+// ── SCENE + CAMERA ────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0d0f14, 0.018);
+
+const camera = new THREE.PerspectiveCamera(55, W() / H(), 0.1, 200);
+camera.position.set(0, 1, 14);
+
+// ── RESIZE ────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  camera.aspect = W() / H();
+  camera.updateProjectionMatrix();
+  renderer.setSize(W(), H());
+  composer?.setSize(W(), H());
+});
+
+// ── LIGHTING ──────────────────────────────────────────────────────
+// Ambient — cold blue fill
+const ambient = new THREE.AmbientLight(0x1a2535, 1.2);
+scene.add(ambient);
+
+// Key light — slightly warm white from upper right
+const keyLight = new THREE.DirectionalLight(0xe8f0ff, 2.5);
+keyLight.position.set(6, 8, 5);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.camera.near = 0.5;
+keyLight.shadow.camera.far = 50;
+keyLight.shadow.camera.left = -15;
+keyLight.shadow.camera.right = 15;
+keyLight.shadow.camera.top = 15;
+keyLight.shadow.camera.bottom = -15;
+scene.add(keyLight);
+
+// Rim light — cyan rim from behind
+const rimLight = new THREE.DirectionalLight(0x4090c0, 1.8);
+rimLight.position.set(-4, 2, -6);
+scene.add(rimLight);
+
+// Fill — warm very faint from below
+const fillLight = new THREE.PointLight(0x203050, 1.5, 30);
+fillLight.position.set(0, -5, 0);
+scene.add(fillLight);
+
+// ── GROUND PLANE ──────────────────────────────────────────────────
+const groundGeo = new THREE.PlaneGeometry(80, 80, 60, 60);
+// Subtle vertex displacement for icy ground
+const gPos = groundGeo.attributes.position;
+for (let i = 0; i < gPos.count; i++) {
+  const x = gPos.getX(i), z = gPos.getZ(i);
+  gPos.setY(i, Math.sin(x * 0.4) * 0.12 + Math.cos(z * 0.3) * 0.08);
+}
+groundGeo.computeVertexNormals();
+
+const groundMat = new THREE.MeshStandardMaterial({
+  color: 0x141820,
+  roughness: 0.1,
+  metalness: 0.6,
+  envMapIntensity: 1.2,
+});
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -2.8;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ── PROCEDURAL ICE BLOCK GENERATOR ────────────────────────────────
+// The real igloo.inc used a crystal growth algorithm in Houdini.
+// We approximate it: start with a low-poly icosahedron and
+// extrude faces outward randomly to mimic crystalline structure.
+
+function buildIceBlock(seed = 0, scale = 1) {
+  const group = new THREE.Group();
+
+  // Core geometry — icosahedron with subdiv
+  const detail = 1;
+  const coreGeo = new THREE.IcosahedronGeometry(0.9 * scale, detail);
+
+  // Vertex displacement — mimics crystal facets
+  const pos = coreGeo.attributes.position;
+  const rng = mulberry32(seed);
+  for (let i = 0; i < pos.count; i++) {
+    const nx = pos.getX(i), ny = pos.getY(i), nz = pos.getZ(i);
+    const len = Math.sqrt(nx*nx + ny*ny + nz*nz);
+    const disp = 0.85 + rng() * 0.3;
+    pos.setXYZ(i, nx/len*disp*scale, ny/len*disp*scale, nz/len*disp*scale);
+  }
+  coreGeo.computeVertexNormals();
+
+  // Ice material — translucent, high IOR approximation
+  const iceMat = new THREE.MeshStandardMaterial({
+    color: 0x8aaabb,
+    roughness: 0.05,
+    metalness: 0.1,
+    transparent: true,
+    opacity: 0.82,
+    side: THREE.DoubleSide,
+    envMapIntensity: 2.0,
+  });
+
+  const core = new THREE.Mesh(coreGeo, iceMat);
+  core.castShadow = true;
+  group.add(core);
+
+  // Crystal spikes — random elongated cones protruding
+  const spikeCount = 5 + Math.floor(rng() * 6);
+  for (let s = 0; s < spikeCount; s++) {
+    const theta = rng() * Math.PI * 2;
+    const phi   = rng() * Math.PI;
+    const len   = (0.3 + rng() * 0.5) * scale;
+    const rad   = (0.04 + rng() * 0.08) * scale;
+
+    const spikeGeo = new THREE.CylinderGeometry(0, rad, len, 4, 1);
+    const spikeMat = new THREE.MeshStandardMaterial({
+      color: 0xaaccdd,
+      roughness: 0.02,
+      metalness: 0.2,
+      transparent: true,
+      opacity: 0.65,
+    });
+    const spike = new THREE.Mesh(spikeGeo, spikeMat);
+
+    // Place spike at surface pointing outward
+    const surfR = 0.85 * scale;
+    spike.position.set(
+      Math.sin(phi) * Math.cos(theta) * surfR,
+      Math.cos(phi) * surfR,
+      Math.sin(phi) * Math.sin(theta) * surfR,
+    );
+    // Orient spike outward
+    spike.lookAt(new THREE.Vector3(
+      Math.sin(phi) * Math.cos(theta) * 5,
+      Math.cos(phi) * 5,
+      Math.sin(phi) * Math.sin(theta) * 5,
+    ));
+    spike.rotateX(Math.PI / 2);
+    spike.castShadow = true;
+    group.add(spike);
+  }
+
+  // Bounding box outer shell — frosted glass effect
+  let outerGeo;
+  const shapeType = seed % 3;
+  if (shapeType === 0) {
+    outerGeo = new THREE.BoxGeometry(1.6*scale, 1.6*scale, 1.6*scale, 2, 2, 2);
+  } else if (shapeType === 1) {
+    outerGeo = new THREE.CylinderGeometry(1*scale, 0.9*scale, 1.8*scale, 6, 2);
+  } else {
+    outerGeo = new THREE.IcosahedronGeometry(1.1*scale, 0);
+  }
+
+  // Displace outer shell slightly
+  const outerPos = outerGeo.attributes.position;
+  const rng2 = mulberry32(seed + 100);
+  for (let i = 0; i < outerPos.count; i++) {
+    outerPos.setX(i, outerPos.getX(i) + (rng2()-0.5) * 0.08 * scale);
+    outerPos.setY(i, outerPos.getY(i) + (rng2()-0.5) * 0.08 * scale);
+    outerPos.setZ(i, outerPos.getZ(i) + (rng2()-0.5) * 0.08 * scale);
+  }
+  outerGeo.computeVertexNormals();
+
+  const outerMat = new THREE.MeshStandardMaterial({
+    color: 0xc8d8e8,
+    roughness: 0.08,
+    metalness: 0.05,
+    transparent: true,
+    opacity: 0.18,
+    side: THREE.FrontSide,
+    wireframe: false,
+  });
+  const outer = new THREE.Mesh(outerGeo, outerMat);
+  group.add(outer);
+
+  // Wireframe overlay on outer — gives crystalline edge look
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0x7899aa,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.12,
+  });
+  const wire = new THREE.Mesh(outerGeo.clone(), wireMat);
+  wire.scale.setScalar(1.002);
+  group.add(wire);
+
+  return group;
+}
+
+// Simple seeded RNG
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+// ── SCENE 1: HERO — single large ice shard, centered ──────────────
+const heroBlock = buildIceBlock(42, 1.4);
+heroBlock.position.set(0, 0, 0);
+scene.add(heroBlock);
+
+// ── SCENE 2: PORTFOLIO — row of ice blocks ─────────────────────────
+const portfolioGroup = new THREE.Group();
+const projectData = [
+  { name: 'Pudgy Penguins', seed: 7  },
+  { name: 'OverpassIP',     seed: 13 },
+  { name: 'Abstract',       seed: 21 },
+  { name: 'Venture',        seed: 33 },
+];
+projectData.forEach((p, i) => {
+  const block = buildIceBlock(p.seed, 0.85);
+  block.position.set((i - 1.5) * 3.2, 0, 0);
+  block.userData.name = p.name;
+  block.userData.index = i;
+  portfolioGroup.add(block);
+});
+portfolioGroup.position.set(0, 0, -22);
+scene.add(portfolioGroup);
+
+// ── SCENE 3: PARTICLE FOOTER ───────────────────────────────────────
+// GPU-style particle system — morphs between shapes on hover
+const PARTICLE_COUNT = 4000;
+const particlePositions  = new Float32Array(PARTICLE_COUNT * 3);
+const particleTargets    = new Float32Array(PARTICLE_COUNT * 3);
+const particleColors     = new Float32Array(PARTICLE_COUNT * 3);
+const particleSpeeds     = new Float32Array(PARTICLE_COUNT);
+
+// Init particles in a sphere cloud
+const rng0 = mulberry32(99);
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  const theta = rng0() * Math.PI * 2;
+  const phi   = Math.acos(2 * rng0() - 1);
+  const r     = 1.5 + rng0() * 1.5;
+  particlePositions[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+  particlePositions[i*3+1] = r * Math.cos(phi);
+  particlePositions[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+  particleSpeeds[i] = rng0();
+  // Color: icy blues/whites
+  particleColors[i*3]   = 0.5 + rng0() * 0.5;
+  particleColors[i*3+1] = 0.7 + rng0() * 0.3;
+  particleColors[i*3+2] = 0.9 + rng0() * 0.1;
+}
+// Copy initial as targets
+particleTargets.set(particlePositions);
+
+const particleGeo = new THREE.BufferGeometry();
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions.slice(), 3));
+particleGeo.setAttribute('color',    new THREE.BufferAttribute(particleColors, 3));
+
+// Particle shapes — generate target positions
+const particleShapes = {
+  sphere: generateSphere(PARTICLE_COUNT),
+  torus:  generateTorus(PARTICLE_COUNT),
+  box:    generateBox(PARTICLE_COUNT),
+  wave:   generateWave(PARTICLE_COUNT),
+};
+
+function generateSphere(n) {
+  const out = new Float32Array(n * 3);
+  const rng = mulberry32(1);
+  for (let i = 0; i < n; i++) {
+    const theta = rng() * Math.PI * 2;
+    const phi   = Math.acos(2 * rng() - 1);
+    const r = 1.8;
+    out[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+    out[i*3+1] = r * Math.cos(phi);
+    out[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+  }
+  return out;
+}
+function generateTorus(n) {
+  const out = new Float32Array(n * 3);
+  const rng = mulberry32(2);
+  for (let i = 0; i < n; i++) {
+    const u = rng() * Math.PI * 2;
+    const v = rng() * Math.PI * 2;
+    const R = 1.5, r = 0.5;
+    out[i*3]   = (R + r * Math.cos(v)) * Math.cos(u);
+    out[i*3+1] = r * Math.sin(v);
+    out[i*3+2] = (R + r * Math.cos(v)) * Math.sin(u);
+  }
+  return out;
+}
+function generateBox(n) {
+  const out = new Float32Array(n * 3);
+  const rng = mulberry32(3);
+  for (let i = 0; i < n; i++) {
+    const face = Math.floor(rng() * 6);
+    let x, y, z;
+    const s = 1.6;
+    if (face < 2) { x = face===0?s:-s; y=(rng()-0.5)*2*s; z=(rng()-0.5)*2*s; }
+    else if(face<4){ y=face===2?s:-s; x=(rng()-0.5)*2*s; z=(rng()-0.5)*2*s; }
+    else           { z=face===4?s:-s; x=(rng()-0.5)*2*s; y=(rng()-0.5)*2*s; }
+    out[i*3]=x; out[i*3+1]=y; out[i*3+2]=z;
+  }
+  return out;
+}
+function generateWave(n) {
+  const out = new Float32Array(n * 3);
+  const rng = mulberry32(4);
+  for (let i = 0; i < n; i++) {
+    const x = (rng() - 0.5) * 5;
+    const z = (rng() - 0.5) * 5;
+    const y = Math.sin(x * 1.4) * Math.cos(z * 1.4) * 0.8;
+    out[i*3]=x; out[i*3+1]=y; out[i*3+2]=z;
+  }
+  return out;
+}
+
+const particleMat = new THREE.PointsMaterial({
+  size: 0.025,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.85,
+  sizeAttenuation: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+
+const particles = new THREE.Points(particleGeo, particleMat);
+particles.position.set(0, 0, -44);
+scene.add(particles);
+
+// Current particle interpolation state
+let particleCurrentShape = 'sphere';
+let particleT = 0;
+let particleFrom = particleShapes.sphere.slice();
+let particleTo   = particleShapes.sphere.slice();
+let particleTransitioning = false;
+
+function morphParticlesToShape(name) {
+  if (name === particleCurrentShape) return;
+  particleFrom = new Float32Array(particleGeo.attributes.position.array);
+  particleTo   = particleShapes[name];
+  particleT    = 0;
+  particleTransitioning = true;
+  particleCurrentShape = name;
+}
+
+// ── HOVER LINKS (footer) ───────────────────────────────────────────
+const footerLinks = document.querySelectorAll('.footer-link');
+// (created below)
+
+// ── BACKGROUND PARTICLES — ambient floaters ────────────────────────
+const bgParticleCount = 800;
+const bgGeo = new THREE.BufferGeometry();
+const bgPos = new Float32Array(bgParticleCount * 3);
+const rng1 = mulberry32(55);
+for (let i = 0; i < bgParticleCount; i++) {
+  bgPos[i*3]   = (rng1()-0.5) * 60;
+  bgPos[i*3+1] = (rng1()-0.5) * 30;
+  bgPos[i*3+2] = (rng1()-0.5) * 60 - 20;
+}
+bgGeo.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
+const bgMat = new THREE.PointsMaterial({
+  size: 0.04, color: 0x6888aa, transparent: true, opacity: 0.35,
+  sizeAttenuation: true, depthWrite: false,
+});
+const bgParticles = new THREE.Points(bgGeo, bgMat);
+scene.add(bgParticles);
+
+// ── SCROLL SYSTEM ─────────────────────────────────────────────────
+// The scroll drives a 0–1 progress through 3 scenes.
+// Camera moves along a path: Scene1(z=14) → Scene2(z=-8) → Scene3(z=-30)
+const SCROLL_SCENES = 3;
+let scrollTarget = 0;   // 0–1
+let scrollCurrent = 0;  // lerped
+
+const cameraPath = [
+  new THREE.Vector3(0, 1,   14),   // scene 0 start
+  new THREE.Vector3(0, 0.5,  2),   // scene 0 end / scene 1 start
+  new THREE.Vector3(2, 0.8, -8),   // scene 1 mid
+  new THREE.Vector3(0, 1,  -14),   // scene 1 end
+  new THREE.Vector3(0, 2,  -30),   // scene 2 (particles)
+];
+
+window.addEventListener('wheel', e => {
+  scrollTarget = Math.max(0, Math.min(1, scrollTarget + e.deltaY * 0.0004));
+}, { passive: true });
+
+// touch scroll
+let touchY = 0;
+window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+window.addEventListener('touchmove',  e => {
+  const dy = touchY - e.touches[0].clientY;
+  scrollTarget = Math.max(0, Math.min(1, scrollTarget + dy * 0.0006));
+  touchY = e.touches[0].clientY;
+}, { passive: true });
+
+// ── CURSOR ────────────────────────────────────────────────────────
+const cursorEl     = document.getElementById('cursor');
+const cursorRingEl = document.getElementById('cursor-ring');
+const mouse2D = { x: -1000, y: -1000 };
+const mouseNDC = new THREE.Vector2();
+
+window.addEventListener('mousemove', e => {
+  mouse2D.x = e.clientX;
+  mouse2D.y = e.clientY;
+  cursorEl.style.left     = e.clientX + 'px';
+  cursorEl.style.top      = e.clientY + 'px';
+  cursorRingEl.style.left = e.clientX + 'px';
+  cursorRingEl.style.top  = e.clientY + 'px';
+  mouseNDC.x = (e.clientX / W()) * 2 - 1;
+  mouseNDC.y = -(e.clientY / H()) * 2 + 1;
+});
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorRingEl.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => cursorRingEl.classList.remove('hovered'));
+});
+
+// ── CHROMATIC ABERRATION — post-process simulation ─────────────────
+// Real igloo.inc uses a full WebGL shader pass.
+// We approximate with a canvas 2D overlay for the skeleton.
+const caCanvas = document.createElement('canvas');
+caCanvas.style.cssText = `
+  position:fixed;inset:0;pointer-events:none;z-index:5;
+  opacity:0;transition:opacity 0.4s;mix-blend-mode:screen;
+`;
+document.body.appendChild(caCanvas);
+const caCtx = caCanvas.getContext('2d');
+
+let caStrength = 0;      // 0–1 intensity
+let caTarget   = 0;
+
+function renderChromaticAberration() {
+  if (caStrength < 0.01) { caCanvas.style.opacity = '0'; return; }
+  caCanvas.width  = W();
+  caCanvas.height = H();
+  caCanvas.style.opacity = String(caStrength * 0.35);
+
+  // Red channel offset
+  caCtx.globalCompositeOperation = 'source-over';
+  caCtx.fillStyle = `rgba(255,0,0,${0.03 * caStrength})`;
+  const off = caStrength * 6;
+  caCtx.fillRect(off, 0, W(), H());
+  // Blue channel offset
+  caCtx.fillStyle = `rgba(0,0,255,${0.03 * caStrength})`;
+  caCtx.fillRect(-off, 0, W(), H());
+}
+
+// ── RAYCASTER for ice block hover ──────────────────────────────────
+const raycaster = new THREE.Raycaster();
+let hoveredBlock = null;
+
+function checkHover() {
+  raycaster.setFromCamera(mouseNDC, camera);
+  const allBlocks = portfolioGroup.children;
+  const meshes = [];
+  allBlocks.forEach(g => g.children.forEach(m => { if (m.isMesh) meshes.push(m); }));
+  const hits = raycaster.intersectObjects(meshes);
+  if (hits.length > 0) {
+    const parent = hits[0].object.parent;
+    if (hoveredBlock !== parent) {
+      hoveredBlock = parent;
+      cursorRingEl.classList.add('hovered');
+      caTarget = 0.6; // trigger aberration on hover
+    }
+  } else {
+    if (hoveredBlock) { hoveredBlock = null; cursorRingEl.classList.remove('hovered'); }
+    caTarget = 0;
+  }
+}
+
+// ── PROGRESS UI ───────────────────────────────────────────────────
+const progressEl = document.getElementById('progress');
+function updateProgressUI(t) {
+  progressEl.style.height = (t * 100) + '%';
+  const scene = Math.floor(t * 3);
+  ['cnt-1','cnt-2','cnt-3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i === scene);
+  });
+}
+
+// ── MAIN RENDER LOOP ──────────────────────────────────────────────
+const clock = new THREE.Clock();
+let time = 0;
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+// Camera target points by scroll
+function getCameraPosition(t) {
+  // t: 0 = intro, 0.5 = portfolio, 1 = particles
+  const easedT = easeInOut(t);
+  const z = lerp(14, -30, easedT);
+  const y = lerp(1, 2, easedT * easedT);
+  const x = Math.sin(easedT * Math.PI) * 2; // slight side sweep
+  return new THREE.Vector3(x, y, z);
+}
+
+function render() {
+  requestAnimationFrame(render);
+  time = clock.getElapsedTime();
+
+  // ── SCROLL LERP ──
+  scrollCurrent = lerp(scrollCurrent, scrollTarget, 0.06);
+
+  // ── CAMERA MOVEMENT ──
+  const targetPos = getCameraPosition(scrollCurrent);
+  camera.position.lerp(targetPos, 0.05);
+
+  // Camera always looks slightly ahead
+  const lookZ = lerp(0, -38, easeInOut(scrollCurrent));
+  const lookTarget = new THREE.Vector3(
+    camera.position.x * 0.3,
+    camera.position.y * 0.5 - 0.5,
+    lookZ
+  );
+  camera.lookAt(lookTarget);
+
+  // ── HERO BLOCK ROTATION ──
+  heroBlock.rotation.y = time * 0.18;
+  heroBlock.rotation.x = Math.sin(time * 0.1) * 0.08;
+  heroBlock.position.y = Math.sin(time * 0.5) * 0.12;
+
+  // ── PORTFOLIO BLOCKS ──
+  portfolioGroup.children.forEach((block, i) => {
+    block.rotation.y = time * (0.12 + i * 0.02) + i;
+    block.rotation.z = Math.sin(time * 0.3 + i) * 0.04;
+    block.position.y = Math.sin(time * 0.4 + i * 0.8) * 0.15;
+
+    // Scale hovered block
+    const targetScale = (block === hoveredBlock) ? 1.12 : 1.0;
+    block.scale.lerp(new THREE.Vector3(targetScale,targetScale,targetScale), 0.08);
+  });
+
+  // ── PARTICLES MORPHING ──
+  if (particleTransitioning) {
+    particleT = Math.min(particleT + 0.012, 1);
+    const ease = easeInOut(particleT);
+    const pos = particleGeo.attributes.position.array;
+    for (let i = 0; i < PARTICLE_COUNT * 3; i++) {
+      pos[i] = lerp(particleFrom[i], particleTo[i], ease);
+    }
+    particleGeo.attributes.position.needsUpdate = true;
+    // Update colors based on speed (velocity approximation)
+    const col = particleGeo.attributes.color.array;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const speed = Math.abs(pos[i*3] - particleFrom[i*3]) * 20;
+      col[i*3]   = 0.4 + Math.min(speed, 0.6);
+      col[i*3+1] = 0.7;
+      col[i*3+2] = 0.9;
+    }
+    particleGeo.attributes.color.needsUpdate = true;
+    if (particleT >= 1) particleTransitioning = false;
+  }
+
+  // Particles always slowly rotate
+  particles.rotation.y = time * 0.08;
+  particles.position.y = Math.sin(time * 0.2) * 0.1;
+
+  // ── AUTO MORPH PARTICLES based on scroll position ──
+  if (scrollCurrent > 0.85) {
+    const shapes = Object.keys(particleShapes);
+    const idx = Math.floor((time * 0.2) % shapes.length);
+    morphParticlesToShape(shapes[idx]);
+  }
+
+  // ── BG PARTICLES DRIFT ──
+  bgParticles.rotation.y = time * 0.008;
+
+  // ── HOVER CHECK ──
+  checkHover();
+
+  // ── CHROMATIC ABERRATION ──
+  // Also trigger on scroll velocity
+  const scrollVel = Math.abs(scrollTarget - scrollCurrent);
+  caTarget = Math.max(caTarget, scrollVel * 8);
+  caStrength = lerp(caStrength, caTarget, 0.08);
+  caTarget *= 0.92;
+  renderChromaticAberration();
+
+  // ── PROGRESS UI ──
+  updateProgressUI(scrollCurrent);
+
+  renderer.render(scene, camera);
+}
+
+// ── LOADING SEQUENCE ─────────────────────────────────────────────
+const loadingEl = document.getElementById('loading');
+const pctEl     = document.getElementById('pct');
+let loaded = 0;
+const fakeLoad = setInterval(() => {
+  loaded = Math.min(loaded + Math.random() * 12, 100);
+  pctEl.textContent = Math.floor(loaded) + '%';
+  if (loaded >= 100) {
+    clearInterval(fakeLoad);
+    setTimeout(() => {
+      loadingEl.style.opacity = '0';
+      setTimeout(() => { loadingEl.style.display = 'none'; }, 800);
+    }, 400);
+  }
+}, 80);
+
+// ── START ─────────────────────────────────────────────────────────
+render();
+</script>
+
+<!-- Particle footer shape links — HTML sits over canvas -->
+<style>
+  #footer-ui {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  #footer-ui.visible { opacity: 1; pointer-events: all; }
+
+  .footer-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .footer-link {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(182,186,197,0.5);
+    cursor: none;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: #b6bac5; }
+
+  .footer-copy {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(182,186,197,0.3);
+  }
+</style>
+
+<div id="footer-ui">
+  <ul class="footer-links">
+    <li><a class="footer-link" href="#"
+      onmouseenter="morphParticlesToShape('sphere')"
+      onmouseleave="morphParticlesToShape('wave')">Pudgy Penguins</a></li>
+    <li><a class="footer-link" href="#"
+      onmouseenter="morphParticlesToShape('torus')"
+      onmouseleave="morphParticlesToShape('wave')">OverpassIP</a></li>
+    <li><a class="footer-link" href="#"
+      onmouseenter="morphParticlesToShape('box')"
+      onmouseleave="morphParticlesToShape('wave')">Ventures</a></li>
+  </ul>
+  <span class="footer-copy">© 2024 Igloo Inc.</span>
+</div>
+
+<script>
+// Show footer when scrolled to scene 3
+function checkFooter() {
+  const fu = document.getElementById('footer-ui');
+  fu.classList.toggle('visible', scrollCurrent > 0.88);
+  requestAnimationFrame(checkFooter);
+}
+checkFooter();
+</script>
+
+</body>
+</html>

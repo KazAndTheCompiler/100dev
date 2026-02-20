@@ -1,0 +1,49 @@
+[
+    {
+    "id": 2,
+    "hour": 8,
+    "minute": 00,
+    "label": "Short reminder",
+    "tts": "breakfast.",
+    "enabled": true,
+    "last_trigger_date": null
+  },
+  {
+    "id": 3,
+    "hour": 8,
+    "minute": 15,
+    "label": "Short reminder",
+    "tts": "Medicin and toothbrush.",
+    "enabled": true,
+    "last_trigger_date": null
+  },
+  {
+    "id": 1,
+    "hour": 8,
+    "minute": 30,
+    "label": "Test",
+    "youtube_url": "https://www.youtube.com/watch?v=-Ubyt7iWJ8Q",
+    "tts": "Get down to business",
+    "enabled": true,
+    "last_trigger_date": null
+  },
+  {
+    "id": 4,
+    "hour": 12,
+    "minute": 15,
+    "label": "Short reminder",
+    "tts": "Medicin and toothbrush.",
+    "enabled": true,
+    "last_trigger_date": null
+  },
+  {
+    "id": 5,
+    "hour": 9,
+    "minute": 30,
+    "label": "Test",
+    "youtube_url": "https://www.youtube.com/watch?v=yoYZf-lBF_U",
+    "tts": "Break bitch",
+    "enabled": true,
+    "last_trigger_date": null
+  },
+]

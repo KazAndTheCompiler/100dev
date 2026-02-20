@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Resume — Game Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #87CEEB;
+    --ground: #5C8A3C;
+    --ground-dark: #3A5A28;
+    --platform: #C4843A;
+    --platform-dark: #8B5E2A;
+    --accent: #FFD700;
+    --pixel: #1a1a2e;
+    --white: #fff;
+    --cloud: rgba(255,255,255,0.9);
+    --char-w: 40px;
+    --char-h: 56px;
+    --ground-h: 80px;
+    --level-h: 100vh;
+    --world-w: 5000px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--pixel);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    cursor: none;
+  }
+
+  /* ── LOADING SCREEN ── */
+  #loading {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--pixel);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px;
+    transition: opacity 0.6s ease;
+  }
+  #loading h1 {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--accent);
+    font-size: clamp(14px, 3vw, 24px);
+    text-align: center;
+    line-height: 1.8;
+    animation: blink 1s step-end infinite;
+  }
+  #loading .bar-outer {
+    width: 240px; height: 16px;
+    border: 3px solid var(--accent);
+    position: relative;
+  }
+  #loading .bar-inner {
+    height: 100%; width: 0;
+    background: var(--accent);
+    animation: loadbar 2s ease forwards;
+  }
+  @keyframes loadbar { to { width: 100%; } }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── HUD ── */
+  #hud {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 24px;
+    background: rgba(0,0,0,0.5);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    pointer-events: none;
+  }
+  #hud .lives { display: flex; gap: 6px; }
+  #hud .life { width: 14px; height: 14px; background: #ff4c4c; clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
+  #hud .score span { font-size: 12px; color: #fff; }
+
+  /* ── SCROLL HINT ── */
+  #hint {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    font-family: 'Press Start 2P', monospace; font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    z-index: 50;
+    animation: float 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-6px)} }
+
+  /* ── VIEWPORT ── */
+  #viewport {
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── WORLD ── */
+  #world {
+    position: absolute;
+    width: var(--world-w);
+    height: 100vh;
+    will-change: transform;
+    transition: transform 0.12s linear;
+  }
+
+  /* ── SKY ── */
+  .sky {
+    position: absolute; inset: 0 0 var(--ground-h) 0;
+    background: linear-gradient(180deg, #1a1a5e 0%, #3a7bd5 50%, #87CEEB 100%);
+  }
+
+  /* ── STARS (animated) ── */
+  .stars {
+    position: absolute; top: 0; left: 0; right: 0; height: 40%;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d, 2s) ease-in-out infinite;
+  }
+  @keyframes twinkle { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── CLOUDS ── */
+  .cloud {
+    position: absolute;
+    background: var(--cloud);
+    border-radius: 50px;
+    filter: blur(2px);
+    animation: driftCloud linear infinite;
+    opacity: 0.85;
+  }
+  .cloud::before, .cloud::after {
+    content: ''; position: absolute;
+    background: var(--cloud);
+    border-radius: 50%;
+  }
+  @keyframes driftCloud {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-200px); }
+  }
+
+  /* ── GROUND ── */
+  .ground {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: var(--ground-h);
+    background: linear-gradient(180deg, var(--ground) 0 16px, var(--ground-dark) 16px 100%);
+    image-rendering: pixelated;
+  }
+  /* grass pixels */
+  .ground::before {
+    content: '';
+    position: absolute; top: -8px; left: 0; right: 0; height: 8px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--ground) 0 16px,
+      #76aa4a 16px 32px
+    );
+  }
+
+  /* ── PLATFORMS ── */
+  .platform {
+    position: absolute;
+    height: 24px;
+    background: linear-gradient(180deg, var(--platform) 0 8px, var(--platform-dark) 8px 100%);
+    border-top: 4px solid #e8a040;
+    border-radius: 4px 4px 0 0;
+    image-rendering: pixelated;
+  }
+
+  /* ── SECTION BLOCKS ── */
+  .section-block {
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    border: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    width: 340px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(255,215,0,0.15), inset 0 0 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+  .section-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .section-block h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .section-block .date {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .section-block p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+
+  /* ── SKILL BARS ── */
+  .skill-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .skill-row label {
+    font-size: 10px; color: rgba(255,255,255,0.7);
+    width: 90px; flex-shrink: 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+  }
+  .skill-bar {
+    flex: 1; height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent), #ff9900);
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+  }
+  .section-block.visible .skill-fill {
+    width: var(--pct);
+  }
+
+  /* ── COLLECTIBLE COINS ── */
+  .coin {
+    position: absolute;
+    width: 24px; height: 24px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 3px solid #b8860b;
+    box-shadow: 0 0 8px rgba(255,215,0,0.5);
+    animation: coinBob 1.2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+  .coin:hover { transform: scale(1.2) translateY(-4px); }
+  .coin.collected {
+    transform: translateY(-40px) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes coinBob {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+  }
+
+  /* ── QUESTION BLOCK ── */
+  .qblock {
+    position: absolute;
+    width: 40px; height: 40px;
+    background: linear-gradient(180deg, #e8a040 0 4px, var(--platform) 4px 100%);
+    border: 3px solid #b8860b;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    color: var(--pixel);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .qblock:active { transform: translateY(-4px); }
+
+  /* ── CHARACTER ── */
+  #character {
+    position: absolute;
+    bottom: var(--ground-h);
+    width: var(--char-w);
+    height: var(--char-h);
+    z-index: 10;
+    image-rendering: pixelated;
+    transition: bottom 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+    left: 120px;
+  }
+
+  /* Pixel art character using CSS shapes */
+  .char-body {
+    position: absolute;
+    width: 100%; height: 100%;
+  }
+  /* Head */
+  .char-head {
+    position: absolute;
+    top: 0; left: 8px;
+    width: 24px; height: 20px;
+    background: #f4c47c;
+    border: 2px solid #333;
+    border-radius: 4px 4px 0 0;
+  }
+  /* Hat */
+  .char-hat {
+    position: absolute;
+    top: -10px; left: 4px;
+    width: 32px; height: 10px;
+    background: #cc3333;
+    border: 2px solid #333;
+    border-radius: 4px 4px 0 0;
+  }
+  .char-hat::before {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: -4px;
+    width: calc(100% + 8px); height: 6px;
+    background: #cc3333;
+    border: 2px solid #333;
+    border-top: none;
+  }
+  /* Eyes */
+  .char-eye {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #333;
+    border-radius: 1px;
+    top: 7px;
+  }
+  .char-eye.left  { left: 4px; }
+  .char-eye.right { right: 4px; }
+  /* Mustache */
+  .char-mustache {
+    position: absolute;
+    bottom: 4px; left: 6px;
+    width: 12px; height: 4px;
+    background: #333;
+    border-radius: 2px;
+  }
+  /* Body/Overalls */
+  .char-overalls {
+    position: absolute;
+    top: 18px; left: 4px;
+    width: 32px; height: 20px;
+    background: #3333cc;
+    border: 2px solid #333;
+    border-radius: 4px;
+  }
+  /* Shirt */
+  .char-shirt {
+    position: absolute;
+    top: 20px; left: 0;
+    width: 40px; height: 16px;
+    background: #cc3333;
+    border: 2px solid #333;
+  }
+  /* Legs */
+  .char-legs {
+    position: absolute;
+    bottom: 0; left: 4px;
+    width: 32px; height: 16px;
+    display: flex; gap: 2px;
+  }
+  .char-leg {
+    flex: 1;
+    background: #3333cc;
+    border: 2px solid #333;
+    border-radius: 0 0 4px 4px;
+  }
+  /* Shoes */
+  .char-shoe {
+    position: absolute;
+    bottom: 0;
+    width: 16px; height: 8px;
+    background: #5c3d1e;
+    border: 2px solid #333;
+    border-radius: 0 0 4px 4px;
+  }
+  .char-shoe.left  { left: 2px; }
+  .char-shoe.right { right: 2px; }
+
+  /* Walk animation */
+  .walking .char-leg:first-child { animation: legL 0.25s steps(2) infinite; }
+  .walking .char-leg:last-child  { animation: legR 0.25s steps(2) infinite; }
+  @keyframes legL { 0%,100%{transform:rotate(15deg)} 50%{transform:rotate(-15deg)} }
+  @keyframes legR { 0%,100%{transform:rotate(-15deg)} 50%{transform:rotate(15deg)} }
+
+  /* Jump animation */
+  .jumping #character { bottom: calc(var(--ground-h) + 120px) !important; }
+
+  /* ── LEVEL SIGNS ── */
+  .level-sign {
+    position: absolute;
+    width: 60px;
+    background: var(--accent);
+    border: 3px solid #b8860b;
+    border-radius: 6px;
+    text-align: center;
+    padding: 6px 4px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--pixel);
+    line-height: 1.6;
+  }
+  .level-sign .post {
+    position: absolute;
+    bottom: -30px; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 30px;
+    background: #b8860b;
+  }
+
+  /* ── TREES / DECORATIONS ── */
+  .tree {
+    position: absolute;
+    bottom: var(--ground-h);
+  }
+  .tree-trunk {
+    width: 16px; height: 32px;
+    background: #7a5230;
+    border: 2px solid #5c3d1e;
+    margin: 0 auto;
+  }
+  .tree-top {
+    width: 48px; height: 48px;
+    background: #3a7a2a;
+    border: 2px solid #2a5a1a;
+    border-radius: 50% 50% 40% 40%;
+    margin: 0 auto;
+    position: relative;
+    top: 8px;
+  }
+
+  /* ── PIPE ── */
+  .pipe {
+    position: absolute;
+    bottom: var(--ground-h);
+  }
+  .pipe-top {
+    width: 56px; height: 16px;
+    background: #2ea833;
+    border: 3px solid #1a7022;
+    border-radius: 4px;
+    position: relative; left: -4px;
+  }
+  .pipe-body {
+    width: 48px; height: 56px;
+    background: #2ea833;
+    border: 3px solid #1a7022;
+    border-top: none;
+  }
+
+  /* ── PROGRESS INDICATOR ── */
+  #progress-bar {
+    position: fixed; top: 44px; left: 0; right: 0; height: 3px;
+    background: rgba(255,255,255,0.1);
+    z-index: 50;
+  }
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #ff6600);
+    width: 0%;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 8px rgba(255,215,0,0.5);
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  #cursor {
+    position: fixed; pointer-events: none; z-index: 999;
+    width: 20px; height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  #cursor.big { transform: translate(-50%,-50%) scale(1.8); }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="lives">
+    <div class="life"></div>
+    <div class="life"></div>
+    <div class="life"></div>
+    <span style="margin-left:8px">×3</span>
+  </div>
+  <div style="font-size:8px; letter-spacing:1px; color:rgba(255,255,255,0.5)">INTERACTIVE RESUME</div>
+  <div class="score">COINS <span id="coin-count">0</span></div>
+</div>
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div style="font-family:'Press Start 2P',monospace;color:var(--accent);font-size:11px;text-align:center;line-height:2.5;">
+    YOUR NAME<br>
+    <span style="font-size:8px;color:rgba(255,255,255,0.5)">INTERACTIVE RESUME</span>
+  </div>
+  <h1>PRESS ▶ TO START</h1>
+  <div class="bar-outer"><div class="bar-inner"></div></div>
+  <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:rgba(255,255,255,0.4);margin-top:8px;">SCROLL OR → TO MOVE</div>
+</div>
+
+<!-- Scroll hint -->
+<div id="hint">▶ SCROLL TO EXPLORE ▶</div>
+
+<!-- Viewport -->
+<div id="viewport">
+  <div id="world">
+
+    <!-- SKY -->
+    <div class="sky"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- GROUND -->
+    <div class="ground"></div>
+
+    <!-- ======== LEVEL 1: ABOUT ======== -->
+    <div class="level-sign" style="left:60px; bottom:calc(var(--ground-h) + 60px)">
+      LEVEL<br>1<div class="post"></div>
+    </div>
+
+    <!-- Clouds -->
+    <div class="cloud" style="width:120px;height:30px;top:12%;left:200px;animation-duration:18s;"></div>
+    <div class="cloud" style="width:80px;height:22px;top:18%;left:500px;animation-duration:22s;"></div>
+    <div class="cloud" style="width:100px;height:26px;top:10%;left:900px;animation-duration:15s;"></div>
+    <div class="cloud" style="width:140px;height:34px;top:20%;left:1300px;animation-duration:20s;"></div>
+    <div class="cloud" style="width:90px;height:24px;top:14%;left:1700px;animation-duration:17s;"></div>
+    <div class="cloud" style="width:110px;height:28px;top:8%;left:2200px;animation-duration:25s;"></div>
+
+    <!-- Trees decoration -->
+    <div class="tree" style="left:320px">
+      <div class="tree-top"></div>
+      <div class="tree-trunk"></div>
+    </div>
+    <div class="tree" style="left:420px">
+      <div class="tree-top" style="width:36px;height:36px;"></div>
+      <div class="tree-trunk" style="height:24px;width:12px;"></div>
+    </div>
+
+    <!-- ABOUT section block -->
+    <div class="section-block" id="block-about" style="left:260px; bottom:calc(var(--ground-h) + 90px)">
+      <h2>About Me</h2>
+      <div class="date">Multidisciplinary Designer & Developer</div>
+      <p>I craft digital experiences at the intersection of design and code. Passionate about turning ideas into pixel-perfect realities that users love to interact with.</p>
+      <p style="margin-top:10px;font-size:11px;color:rgba(255,215,0,0.7)">📍 New York City &nbsp; 🎮 Sports Fan</p>
+    </div>
+
+    <!-- Platform mid-air -->
+    <div class="platform" style="left:650px; bottom:calc(var(--ground-h) + 100px); width:120px;"></div>
+    <div class="platform" style="left:820px; bottom:calc(var(--ground-h) + 160px); width:100px;"></div>
+
+    <!-- Coins on platforms -->
+    <div class="coin" style="left:678px; bottom:calc(var(--ground-h) + 130px);" data-value="100"></div>
+    <div class="coin" style="left:710px; bottom:calc(var(--ground-h) + 130px);" data-value="100"></div>
+    <div class="coin" style="left:742px; bottom:calc(var(--ground-h) + 130px);" data-value="100"></div>
+    <div class="coin" style="left:848px; bottom:calc(var(--ground-h) + 190px);" data-value="200"></div>
+
+    <!-- ======== LEVEL 2: SKILLS ======== -->
+    <div class="level-sign" style="left:1000px; bottom:calc(var(--ground-h) + 60px)">
+      LEVEL<br>2<div class="post"></div>
+    </div>
+
+    <div class="pipe" style="left:1100px">
+      <div class="pipe-top"></div>
+      <div class="pipe-body"></div>
+    </div>
+    <div class="pipe" style="left:1200px">
+      <div class="pipe-top" style="width:40px;"></div>
+      <div class="pipe-body" style="width:32px;height:80px;"></div>
+    </div>
+
+    <!-- Skills block -->
+    <div class="section-block" id="block-skills" style="left:1280px; bottom:calc(var(--ground-h) + 90px); width:380px;">
+      <h2>Skills</h2>
+      <div class="date">Design + Code + Animation</div>
+      <div class="skill-row">
+        <label>UI DESIGN</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:90%"></div></div>
+      </div>
+      <div class="skill-row">
+        <label>HTML/CSS</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:95%"></div></div>
+      </div>
+      <div class="skill-row">
+        <label>JAVASCRIPT</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <label>REACT</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:75%"></div></div>
+      </div>
+      <div class="skill-row">
+        <label>ILLUSTRATION</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:85%"></div></div>
+      </div>
+      <div class="skill-row">
+        <label>ANIMATION</label>
+        <div class="skill-bar"><div class="skill-fill" style="--pct:70%"></div></div>
+      </div>
+    </div>
+
+    <!-- Question blocks -->
+    <div class="qblock" style="left:1680px; bottom:calc(var(--ground-h) + 120px)">?</div>
+    <div class="qblock" style="left:1730px; bottom:calc(var(--ground-h) + 120px)">?</div>
+    <div class="qblock" style="left:1780px; bottom:calc(var(--ground-h) + 120px)">?</div>
+
+    <!-- Coins in a row -->
+    <div class="coin" style="left:1680px; bottom:calc(var(--ground-h) + 175px)" data-value="200"></div>
+    <div class="coin" style="left:1730px; bottom:calc(var(--ground-h) + 175px)" data-value="200"></div>
+    <div class="coin" style="left:1780px; bottom:calc(var(--ground-h) + 175px)" data-value="200"></div>
+
+    <!-- ======== LEVEL 3: EXPERIENCE ======== -->
+    <div class="level-sign" style="left:1920px; bottom:calc(var(--ground-h) + 60px)">
+      LEVEL<br>3<div class="post"></div>
+    </div>
+
+    <div class="tree" style="left:2020px">
+      <div class="tree-top" style="background:#4a9a3a;width:60px;height:60px;"></div>
+      <div class="tree-trunk" style="height:40px;"></div>
+    </div>
+    <div class="tree" style="left:2120px">
+      <div class="tree-top" style="background:#3a8a2a;"></div>
+      <div class="tree-trunk"></div>
+    </div>
+
+    <!-- Elevated platform for experience 1 -->
+    <div class="platform" style="left:2200px; bottom:calc(var(--ground-h) + 60px); width:260px;"></div>
+
+    <div class="section-block" id="block-exp1" style="left:2200px; bottom:calc(var(--ground-h) + 90px);">
+      <h2>Experience 1</h2>
+      <div class="date">Jan 2018 – Dec 2020 · Company A</div>
+      <p>Led UI/UX for the core product platform. Redesigned onboarding flow, increasing conversion by 34%. Built design system used by 20+ engineers.</p>
+    </div>
+
+    <!-- Experience 2 on higher platform -->
+    <div class="platform" style="left:2640px; bottom:calc(var(--ground-h) + 120px); width:260px;"></div>
+    <div class="section-block" id="block-exp2" style="left:2640px; bottom:calc(var(--ground-h) + 150px);">
+      <h2>Experience 2</h2>
+      <div class="date">Jan 2021 – Dec 2022 · Company B</div>
+      <p>Senior designer & frontend developer. Owned end-to-end product experiences. Introduced motion design language adopted company-wide.</p>
+    </div>
+
+    <!-- Experience 3 on another platform -->
+    <div class="platform" style="left:3040px; bottom:calc(var(--ground-h) + 80px); width:260px;"></div>
+    <div class="section-block" id="block-exp3" style="left:3040px; bottom:calc(var(--ground-h) + 110px);">
+      <h2>Experience 3</h2>
+      <div class="date">2023 – Present · Freelance</div>
+      <p>Independent design & development practice. Clients span fintech, healthtech, and creative industries. Full-stack capability from Figma to deployment.</p>
+    </div>
+
+    <!-- ======== LEVEL 4: AWARDS / CONTACT ======== -->
+    <div class="level-sign" style="left:3400px; bottom:calc(var(--ground-h) + 60px)">
+      LEVEL<br>4<div class="post"></div>
+    </div>
+
+    <!-- Castle / End area decoration -->
+    <div style="position:absolute; left:3500px; bottom:var(--ground-h); width:200px; height:200px;">
+      <!-- Castle using CSS -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:160px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:160px;left:-6px;width:30px;height:40px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:160px;left:46px;width:30px;height:40px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:160px;left:98px;width:30px;height:40px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:160px;left:150px;width:30px;height:40px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:160px;right:-6px;width:30px;height:40px;background:#aaa;border:3px solid #777;"></div>
+      <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);width:50px;height:80px;background:#5c3d1e;border:3px solid #3d2912;border-radius:4px 4px 0 0;"></div>
+      <!-- Flag -->
+      <div style="position:absolute;bottom:200px;left:50%;width:4px;height:40px;background:#555;"></div>
+      <div style="position:absolute;bottom:224px;left:calc(50% + 4px);width:24px;height:16px;background:#cc3333;clip-path:polygon(0 0,100% 50%,0 100%);"></div>
+    </div>
+
+    <!-- Awards block -->
+    <div class="section-block" id="block-awards" style="left:3720px; bottom:calc(var(--ground-h) + 90px); width:360px;">
+      <h2>Awards & Recognition</h2>
+      <div class="date">Hall of Fame</div>
+      <p>🏆 Webby Awards Nominee 2024</p>
+      <p style="margin-top:6px">⭐ Site of the Day — Awwwards</p>
+      <p style="margin-top:6px">🎖 CSS Design Award Winner</p>
+      <p style="margin-top:6px">📰 Featured in Fast Company</p>
+    </div>
+
+    <!-- Contact block at the end -->
+    <div class="section-block" id="block-contact" style="left:4200px; bottom:calc(var(--ground-h) + 90px); width:320px;">
+      <h2>Contact</h2>
+      <div class="date">Let's work together!</div>
+      <p>hello@yourname.com</p>
+      <p style="margin-top:8px">
+        <span style="color:var(--accent); font-family:'Press Start 2P',monospace; font-size:8px">
+          ◆ Portfolio &nbsp; ◆ LinkedIn &nbsp; ◆ GitHub
+        </span>
+      </p>
+    </div>
+
+    <!-- Final coin trail -->
+    <div class="coin" style="left:4580px; bottom:calc(var(--ground-h) + 20px)" data-value="500"></div>
+    <div class="coin" style="left:4640px; bottom:calc(var(--ground-h) + 40px)" data-value="500"></div>
+    <div class="coin" style="left:4700px; bottom:calc(var(--ground-h) + 60px)" data-value="500"></div>
+    <div class="coin" style="left:4760px; bottom:calc(var(--ground-h) + 80px)" data-value="500"></div>
+    <div class="coin" style="left:4820px; bottom:calc(var(--ground-h) + 100px)" data-value="1000"></div>
+
+    <!-- END flag pole -->
+    <div style="position:absolute;left:4900px;bottom:var(--ground-h);">
+      <div style="width:6px;height:180px;background:#888;margin:0 auto;"></div>
+      <div style="width:40px;height:24px;background:#cc3333;clip-path:polygon(0 0,100% 50%,0 100%);position:absolute;top:0;left:6px;"></div>
+      <div style="position:absolute;bottom:0;left:-20px;width:48px;height:24px;background:#555;border-radius:0 0 4px 4px;border:3px solid #333;"></div>
+    </div>
+
+    <!-- CHARACTER -->
+    <div id="character">
+      <div class="char-body">
+        <div class="char-hat"></div>
+        <div class="char-head">
+          <div class="char-eye left"></div>
+          <div class="char-eye right"></div>
+          <div class="char-mustache"></div>
+        </div>
+        <div class="char-shirt"></div>
+        <div class="char-overalls"></div>
+        <div class="char-legs">
+          <div class="char-leg"></div>
+          <div class="char-leg"></div>
+        </div>
+        <div class="char-shoe left"></div>
+        <div class="char-shoe right"></div>
+      </div>
+    </div>
+
+  </div><!-- /world -->
+</div><!-- /viewport -->
+
+<script>
+// ── WORLD DATA ──
+const WORLD_W = 5000;
+const VIEWPORT_W = window.innerWidth;
+const GROUND_H = 80;
+
+let worldX = 0;        // how far world has scrolled
+let coinCount = 0;
+let isJumping = false;
+const world = document.getElementById('world');
+const character = document.getElementById('character');
+const progressFill = document.getElementById('progress-fill');
+const coinCountEl = document.getElementById('coin-count');
+
+// ── GENERATE STARS ──
+const starsEl = document.getElementById('stars');
+for(let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 1;
+  s.style.cssText = `
+    left:${Math.random() * WORLD_W}px;
+    top:${Math.random() * 100}%;
+    width:${size}px; height:${size}px;
+    --d:${(Math.random()*2+1).toFixed(1)}s;
+    animation-delay:${(Math.random()*3).toFixed(1)}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// ── SCROLL / KEYBOARD HANDLER ──
+let targetX = 0;
+let animX = 0;
+
+function scrollTo(x) {
+  const maxScroll = WORLD_W - VIEWPORT_W;
+  targetX = Math.max(0, Math.min(x, maxScroll));
+}
+
+// Smooth follow
+function raf() {
+  animX += (targetX - animX) * 0.08;
+  world.style.transform = `translateX(${-animX}px)`;
+  progressFill.style.width = `${(animX / (WORLD_W - VIEWPORT_W)) * 100}%`;
+  checkBlockVisibility(animX);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+// Wheel
+window.addEventListener('wheel', e => {
+  scrollTo(targetX + e.deltaY * 2.5);
+  showWalking();
+}, { passive: true });
+
+// Arrow keys
+window.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight') { scrollTo(targetX + 220); showWalking(); }
+  if(e.key === 'ArrowLeft')  { scrollTo(targetX - 220); }
+  if(e.key === ' ' || e.key === 'ArrowUp') { jump(); e.preventDefault(); }
+});
+
+// Touch / swipe
+let touchStartX = 0;
+window.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+window.addEventListener('touchmove', e => {
+  const dx = touchStartX - e.touches[0].clientX;
+  scrollTo(targetX + dx * 1.5);
+  touchStartX = e.touches[0].clientX;
+  showWalking();
+}, {passive:true});
+
+// ── WALKING ANIMATION ──
+let walkTimeout;
+function showWalking() {
+  character.querySelector('.char-body').classList.add('walking');
+  clearTimeout(walkTimeout);
+  walkTimeout = setTimeout(() => {
+    character.querySelector('.char-body').classList.remove('walking');
+  }, 400);
+}
+
+// ── JUMP ──
+function jump() {
+  if(isJumping) return;
+  isJumping = true;
+  character.style.transition = 'bottom 0.35s cubic-bezier(0.33,1,0.68,1)';
+  character.style.bottom = `${GROUND_H + 120}px`;
+  setTimeout(() => {
+    character.style.transition = 'bottom 0.3s cubic-bezier(0.55,0,1,0.45)';
+    character.style.bottom = `${GROUND_H}px`;
+    setTimeout(() => { isJumping = false; }, 300);
+  }, 350);
+}
+
+// ── BLOCK VISIBILITY ──
+const blocks = document.querySelectorAll('.section-block');
+function checkBlockVisibility(scrollX) {
+  blocks.forEach(b => {
+    const bLeft = parseInt(b.style.left);
+    const inView = bLeft > scrollX - 100 && bLeft < scrollX + VIEWPORT_W + 100;
+    if(inView) b.classList.add('visible');
+    else if(bLeft < scrollX - 400) b.classList.remove('visible');
+  });
+}
+
+// ── COINS ──
+document.querySelectorAll('.coin').forEach(coin => {
+  coin.addEventListener('click', () => {
+    coin.classList.add('collected');
+    coinCount += parseInt(coin.dataset.value || 100);
+    coinCountEl.textContent = coinCount;
+    // Animate count
+    coinCountEl.style.transform = 'scale(1.5)';
+    coinCountEl.style.color = '#fff';
+    setTimeout(() => {
+      coinCountEl.style.transform = 'scale(1)';
+      coinCountEl.style.color = 'var(--accent)';
+    }, 200);
+  });
+});
+
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+document.addEventListener('mouseover', e => {
+  if(e.target.classList.contains('coin') || e.target.classList.contains('qblock'))
+    cursor.classList.add('big');
+  else cursor.classList.remove('big');
+});
+
+// ── LOADING ──
+const loading = document.getElementById('loading');
+setTimeout(() => {
+  loading.style.opacity = '0';
+  setTimeout(() => { loading.style.display = 'none'; }, 600);
+}, 2200);
+</script>
+</body>
+</html>

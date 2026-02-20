@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peggy A</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #efefef;
+  --text:     #1a1a1a;
+  --link:     #5c00c7;
+  --muted:    #999;
+  --active:   #1a1a1a;
+
+  /* Ellipse radii — these match the screenshot proportions */
+  --rx: 36vw;
+  --ry: 15vw;
+
+  /* Center image card */
+  --card-w: min(360px, 70vw);
+  --card-h: min(280px, 54vw);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════
+   SIDEBAR NAV — fixed top-left
+   exactly like the screenshot
+   ══════════════════════════════════ */
+.site-nav {
+  position: fixed;
+  top: 1.6rem;
+  left: 1.8rem;
+  z-index: 50;
+  line-height: 1;
+}
+
+.site-nav .name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.site-nav a {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.2s;
+}
+.site-nav a:hover { opacity: 0.6; }
+
+/* ══════════════════════════════════
+   SCROLL SCENE
+   ══════════════════════════════════ */
+.scene        { position: relative; height: 500vh; }
+.scene-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════
+   CENTER IMAGE CARD
+   Hidden until an item is active.
+   The image fades in; title + link
+   appear below it.
+   ══════════════════════════════════ */
+.center-card {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-img-wrap {
+  width: var(--card-w);
+  height: var(--card-h);
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.card-img-wrap:hover img { transform: scale(1.03); }
+
+.card-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  font-style: italic;
+  color: var(--text);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+/* The actual link on the card */
+.card-link {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  pointer-events: auto;
+  letter-spacing: 0.08em;
+}
+.card-link:hover { opacity: 0.6; }
+
+/* Card reveal animation */
+.card-img-wrap {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ══════════════════════════════════
+   TRACK — the rotating ellipse ring
+   ══════════════════════════════════ */
+.track {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--rx) * 2);
+  height: calc(var(--ry) * 2);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 10;
+}
+.track:active { cursor: grabbing; }
+
+/* ── TRACK ITEMS — the artwork title labels ──
+   Each label is rotated tangentially to the
+   ellipse so it "follows the curve" exactly
+   like in the screenshot (upside-down at bottom,
+   right-way-up at top).
+*/
+.track-item {
+  position: absolute;
+  top: 50%; left: 50%;
+  white-space: nowrap;
+  cursor: pointer;
+  /* transform is set fully by JS each frame */
+  will-change: transform, opacity;
+
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.65rem, 1.1vw, 0.82rem);
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+}
+
+/* Active item at the top */
+.track-item.is-active {
+  color: var(--active);
+  font-weight: 400;
+}
+
+/* ══════════════════════════════════
+   HINT
+   ══════════════════════════════════ */
+.hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+.hint svg { animation: bob 2s ease-in-out infinite; }
+@keyframes bob {
+  0%,100% { transform: translateY(0);   }
+  50%      { transform: translateY(3px); }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════ */
+@media (max-width: 600px) {
+  :root {
+    --rx: 42vw;
+    --ry: 19vw;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Fixed sidebar nav matching the screenshot -->
+<nav class="site-nav">
+  <p class="name">Peggy A</p>
+  <a href="#about">About</a>
+  <a href="#contact">CV | Contact</a>
+</nav>
+
+<div class="scene" id="scene">
+  <div class="scene-sticky">
+
+    <!-- Center image + title + link -->
+    <div class="center-card" id="centerCard"></div>
+
+    <!-- Rotating title ring -->
+    <div class="track" id="track"></div>
+
+    <div class="hint" id="hint">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1v10M6 11L2 7M6 11l4-4"
+          stroke="#999" stroke-width="1.2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      scroll or drag
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════
+   DATA — artwork titles, images, links
+   Add/remove works here. Nothing else changes.
+   ════════════════════════════════════════════ */
+const WORKS = [
+  { title: 'Ruck Sack',          url: '#ruck-sack',        img: 'https://picsum.photos/seed/rucksack/720/560'   },
+  { title: 'Sleeping Beauties',  url: '#sleeping-beauties', img: 'https://picsum.photos/seed/sleeping/720/560'   },
+  { title: 'Urns',               url: '#urns',              img: 'https://picsum.photos/seed/urns/720/560'       },
+  { title: 'Bossom',             url: '#bossom',            img: 'https://picsum.photos/seed/bossom/720/560'     },
+  { title: 'Foxy Loxy',          url: '#foxy-loxy',         img: 'https://picsum.photos/seed/foxyloxy/720/560'   },
+  { title: 'Hare in Headlights', url: '#hare',              img: 'https://picsum.photos/seed/hare/720/560'       },
+  { title: 'Hay Bale',           url: '#hay-bale',          img: 'https://picsum.photos/seed/haybale/720/560'    },
+  { title: 'Ick',                url: '#ick',               img: 'https://picsum.photos/seed/ick/720/560'        },
+  { title: 'Leggy Peggy',        url: '#leggy-peggy',       img: 'https://picsum.photos/seed/leggypeggy/720/560' },
+  { title: 'Neon GRRRR',         url: '#neon-grrrr',        img: 'https://picsum.photos/seed/neongrrrr/720/560'  },
+  { title: 'Nodding Ones',       url: '#nodding-ones',      img: 'https://picsum.photos/seed/nodding/720/560'    },
+  { title: 'Roadkill',           url: '#roadkill',          img: 'https://picsum.photos/seed/roadkill/720/560'   },
+];
+
+const N    = WORKS.length;
+const STEP = 360 / N;
+
+/* ════════════════════════════════════════════
+   STATE — one number drives everything
+   ════════════════════════════════════════════ */
+const state = {
+  rotation:    0,
+  target:      0,
+  activeIndex: -1,
+};
+
+/* ════════════════════════════════════════════
+   DOM
+   ════════════════════════════════════════════ */
+const scene      = document.getElementById('scene');
+const track      = document.getElementById('track');
+const centerCard = document.getElementById('centerCard');
+const hint       = document.getElementById('hint');
+
+/* ════════════════════════════════════════════
+   BUILD — create one label per artwork
+   ════════════════════════════════════════════ */
+function build() {
+  WORKS.forEach((w, i) => {
+    const el = document.createElement('div');
+    el.className   = 'track-item';
+    el.dataset.idx = i;
+    el.textContent = w.title;
+    track.appendChild(el);
+  });
+}
+
+/* ════════════════════════════════════════════
+   RENDER CARD — fires only when active changes
+   Replaces innerHTML so the CSS animation
+   re-triggers on every artwork switch.
+   The <a> link is just a normal anchor —
+   it doesn't interact with the carousel at all.
+   ════════════════════════════════════════════ */
+function renderCard(i) {
+  const w = WORKS[i];
+  centerCard.innerHTML = `
+    <div class="card-img-wrap">
+      <img src="${w.img}" alt="${w.title}">
+    </div>
+    <p class="card-title">${w.title}</p>
+    <a class="card-link" href="${w.url}">View work →</a>
+  `;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — positions every label each frame.
+
+   Key detail: each label is rotated tangentially
+   so it follows the curve of the ellipse, just
+   like in the screenshot. The tangent angle at
+   any point on an ellipse is:
+     atan2(rx * sin(θ), ry * cos(θ)) + 90°
+   ════════════════════════════════════════════ */
+function render() {
+  const cs  = getComputedStyle(document.documentElement);
+  const vw  = window.innerWidth / 100;
+  const rx  = parseFloat(cs.getPropertyValue('--rx')) * vw;
+  const ry  = parseFloat(cs.getPropertyValue('--ry')) * vw;
+
+  const items = track.querySelectorAll('.track-item');
+
+  items.forEach((el, i) => {
+    // Position angle: 0° starts item 0 at top (12 o'clock)
+    const deg = (i * STEP) - state.rotation - 90;
+    const rad = deg * Math.PI / 180;
+
+    const x = Math.cos(rad) * rx;
+    const y = Math.sin(rad) * ry;
+
+    // Tangent angle — makes label follow the curve
+    const tanAngle = Math.atan2(rx * Math.sin(rad), ry * Math.cos(rad))
+                     * 180 / Math.PI + 90;
+
+    // Depth for opacity (items far away are more transparent)
+    const depth   = (Math.sin(rad) + 1) / 2;
+    const opacity = 0.25 + depth * 0.55;
+
+    el.style.transform = `
+      translate(calc(-50% + ${x}px), calc(-50% + ${y}px))
+      rotate(${tanAngle}deg)
+    `;
+    el.style.opacity = opacity;
+    el.style.zIndex  = Math.round(depth * 10);
+  });
+
+  // Which item is at 12 o'clock?
+  const newActive = getActiveIndex(state.rotation);
+  if (newActive !== state.activeIndex) {
+    state.activeIndex = newActive;
+    items.forEach((el, i) =>
+      el.classList.toggle('is-active', i === newActive));
+    renderCard(newActive);
+  }
+}
+
+/* ════════════════════════════════════════════
+   ACTIVE INDEX
+   ════════════════════════════════════════════ */
+function getActiveIndex(rot) {
+  const norm = ((rot % 360) + 360) % 360;
+  const raw  = Math.round(norm / STEP) % N;
+  return ((N - raw) % N + N) % N;
+}
+
+/* ════════════════════════════════════════════
+   ANIMATION LOOP
+   ════════════════════════════════════════════ */
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function tick() {
+  const d = state.target - state.rotation;
+  state.rotation = Math.abs(d) > 0.01
+    ? lerp(state.rotation, state.target, 0.09)
+    : state.target;
+  render();
+  requestAnimationFrame(tick);
+}
+
+/* ════════════════════════════════════════════
+   SCROLL
+   ════════════════════════════════════════════ */
+function onScroll() {
+  const top    = scene.getBoundingClientRect().top + window.scrollY;
+  const height = scene.offsetHeight - window.innerHeight;
+  const pct    = Math.max(0, Math.min(1, (window.scrollY - top) / height));
+
+  state.target = pct * 360;
+  if (pct > 0.02) hint.style.opacity = '0';
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* ════════════════════════════════════════════
+   DRAG (mouse + touch)
+   ════════════════════════════════════════════ */
+const drag = { on: false, startX: 0, startRot: 0, sensitivity: 0.4 };
+
+function dragStart(e) {
+  drag.on       = true;
+  drag.startX   = e.touches ? e.touches[0].clientX : e.clientX;
+  drag.startRot = state.target;
+}
+function dragMove(e) {
+  if (!drag.on) return;
+  if (e.cancelable) e.preventDefault();
+  const x = e.touches ? e.touches[0].clientX : e.clientX;
+  state.target = drag.startRot + (drag.startX - x) * drag.sensitivity;
+}
+function dragEnd() {
+  if (!drag.on) return;
+  drag.on = false;
+  // Snap to nearest title
+  const nearest = getActiveIndex(state.target);
+  state.target  = ((N - nearest) % N) * STEP;
+}
+
+track.addEventListener('mousedown',  dragStart);
+track.addEventListener('touchstart', dragStart, { passive: true });
+window.addEventListener('mousemove',  dragMove);
+window.addEventListener('touchmove',  dragMove, { passive: false });
+window.addEventListener('mouseup',   dragEnd);
+window.addEventListener('touchend',  dragEnd);
+
+/* ════════════════════════════════════════════
+   KEYBOARD
+   ════════════════════════════════════════════ */
+window.addEventListener('keydown', e => {
+  if      (e.key === 'ArrowRight' || e.key === 'ArrowDown') state.target += STEP;
+  else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   state.target -= STEP;
+});
+
+/* ════════════════════════════════════════════
+   CLICK A TITLE — jump to it
+   ════════════════════════════════════════════ */
+track.addEventListener('click', e => {
+  const item = e.target.closest('.track-item');
+  if (!item) return;
+  const i      = parseInt(item.dataset.idx, 10);
+  state.target = ((N - i) % N) * STEP;
+});
+
+/* ════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════ */
+build();
+tick();
+onScroll();
+</script>
+</body>
+</html>
