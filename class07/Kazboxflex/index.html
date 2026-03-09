@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KazBoxFlex - flexbox minigame for robot alignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="vendor/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <section id="sidebar">
+      <div class="header">
+        <div>
+          <h1 class="title">KazBoxFlex</h1>
+        </div>
+        <div id="level-counter">
+          <span class="arrow left">
+            <span class="triangle"></span>
+          </span>
+          <span id="level-indicator">
+            <span id="labelLevel" class="translate">Level</span>
+            <span class="current">1</span>
+            <span id="labelOf" class="translate">of</span>
+            <span class="total">1</span>
+            <span class="caret">▾</span>
+          </span>
+          <span class="arrow right">
+            <span class="triangle"></span>
+          </span>
+          <div id="levelsWrapper" class="tooltip">
+            <div id="levels"></div>
+            <div id="labelReset" class="translate">Reset</div>
+          </div>
+        </div>
+      </div>
+      <p id="instructions"></p>
+      <div id="editor">
+        <div id="css">
+          <div class="editor-toolbar">
+            <button id="load-solution" type="button">Load solution</button>
+            <button id="load-chaos" type="button">Load chaos</button>
+            <button id="random-css" type="button">Random nonsense</button>
+            <button id="export-snapshot" type="button">Export snapshot</button>
+          </div>
+          <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10</div>
+          <pre id="before"></pre>
+          <textarea id="code" autofocus autocapitalize="none" spellcheck="false"></textarea>
+          <pre id="after"></pre>
+        </div>
+        <button id="next" class="translate">Next</button>
+      </div>
+      <div id="share"><div class="games kazbox-win"><div><strong>KazBoxFlex complete.</strong><p>You bullied the robots into obeying flexbox.</p></div></div></div>
+
+      <div class="credits kazbox-credits">KazBoxFlex is the stripped-down robot fork. No ads. No socials. Just layout violence.</div>
+    </section>
+    <section id="view">
+      <aside id="debug-panel">
+        <h2>Robot Control Panel</h2>
+        <div class="debug-grid">
+          <section><h3>Level Goal</h3><pre id="goal-code"></pre></section>
+          <section><h3>Live CSS</h3><pre id="live-css"></pre></section>
+          <section><h3>Computed Pond</h3><pre id="computed-css"></pre></section>
+          <section><h3>Board State</h3><pre id="board-state"></pre></section>
+          <section><h3>Validation</h3><pre id="validation-state"></pre></section>
+          <section><h3>Action Log</h3><pre id="action-log"></pre></section>
+        </div>
+      </aside>
+      <div id="board">
+        <div id="pond">
+        </div>
+        <div id="background">
+        </div>
+      </div>
+    </section>
+    <script src="vendor/jquery.min.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/docs.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/game.js"></script>
+    </body>
+</html>
+

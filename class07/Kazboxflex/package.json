@@ -1,0 +1,16 @@
+{
+  "name": "kazboxflex",
+  "version": "1.0.0",
+  "description": "Robot-skinned flexbox minigame with a live debug panel",
+  "main": "game.js",
+  "dependencies": {
+    "animate.css": "^3.4.0",
+    "jquery": "^3.5.1"
+  },
+  "devDependencies": {},
+  "author": "Henry + Zoe",
+  "license": "MIT",
+  "scripts": {
+    "start": "python3 -m http.server 8765"
+  }
+}
