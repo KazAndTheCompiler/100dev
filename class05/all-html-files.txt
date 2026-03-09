@@ -1,0 +1,15 @@
+/home/henry/vscode/100dev/class05/adding-media/index.html
+/home/henry/vscode/100dev/class05/adding-media/register.html
+/home/henry/vscode/100dev/class05/adding-media/schedule.html
+/home/henry/vscode/100dev/class05/adding-media/speakers.html
+/home/henry/vscode/100dev/class05/adding-media/venue.html
+/home/henry/vscode/100dev/class05/building-forms/index.html
+/home/henry/vscode/100dev/class05/building-forms/register.html
+/home/henry/vscode/100dev/class05/building-forms/schedule.html
+/home/henry/vscode/100dev/class05/building-forms/speakers.html
+/home/henry/vscode/100dev/class05/building-forms/venue.html
+/home/henry/vscode/100dev/class05/building-your-first-web-page/index.html
+/home/henry/vscode/100dev/class05/class05-materials/basic-css-two/index.html
+/home/henry/vscode/100dev/class05/class05-materials/pain/index.html
+/home/henry/vscode/100dev/class05/class05-materials/relationship-css-two/index.html
+/home/henry/vscode/100dev/class05/class05-materials/specificity-practice/index.html

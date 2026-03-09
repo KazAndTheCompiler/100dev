@@ -1,0 +1,14 @@
+H1{
+    color: purple;
+}
+section > h2{
+    color: blue;
+}
+article > h2{
+    color: red !important; /*using bang important is big no no because it adds 1000 points */
+    font-weight: bold;
+    font-size: 10px;
+}
+section article {
+    color: orange;
+}

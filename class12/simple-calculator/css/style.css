@@ -1,0 +1,8 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(140deg,#fff4e6,#eef7ff); color:#1f1f2b; }
+.app { max-width: 720px; margin: 48px auto; padding: 28px; background:#fff; border-radius:16px; box-shadow:0 12px 34px rgba(0,0,0,.08); }
+.buttons { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:0; list-style:none; }
+button { width:100%; border:0; border-radius:10px; padding:12px; background:#1f6feb; color:#fff; cursor:pointer; }
+button:hover { background:#195dc4; }
+h2 { margin: 14px 0; }
+pre { min-height:130px; background:#0b1020; color:#d1d9ff; padding:12px; border-radius:10px; white-space:pre-wrap; }

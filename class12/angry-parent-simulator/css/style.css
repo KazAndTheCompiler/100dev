@@ -1,0 +1,9 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fee2e2,#fff7ed)}
+.app{max-width:760px;margin:48px auto;padding:28px;background:#fff;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.08)}
+label{display:block;margin-top:8px}
+input,button{width:100%;padding:10px;margin-top:6px;border-radius:10px;border:1px solid #d3d8e3}
+button{border:0;background:#dc2626;color:#fff;cursor:pointer}
+button:hover{background:#b91c1c}
+#placeToYell{min-height:38px}
+pre{min-height:120px;background:#1f2937;color:#e5ecff;padding:12px;border-radius:10px;white-space:pre-wrap}

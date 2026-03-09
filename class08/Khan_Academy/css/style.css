@@ -1,0 +1,541 @@
+/* Box Model Hack - Ensures consistent sizing across all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Clear fix hack - Solves collapsing parent container issue with floats */
+.clearfix:after {
+     content: ".";
+     display: block;
+     clear: both;
+     visibility: hidden;
+     line-height: 0;
+     height: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+/* Sets base styles for the entire document */
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+/******************************************
+/* HEADER LAYOUT - Khan Academy
+/*******************************************/
+/* Main header container for educational platform */
+.khan-academy-header {
+  background: linear-gradient(135deg, #9c27b0, #673ab7);
+  color: white;
+  border-bottom: 3px solid #ff6f00;
+}
+
+/* Float-based layout - active
+ * Why floats are used: 
+ * - Provides reliable left/right positioning for navigation elements
+ * - Allows content to wrap naturally around floated components
+ * - Consistent behavior across all browsers
+ * - Traditional approach that works well for multi-column layouts
+ * - Easier to control spacing and alignment in complex header structures
+ * 
+ * This layout uses floats to position the logo section on the left, 
+ * main navigation in the center, and user actions on the right. The hero 
+ * section uses floats to create a grid layout for featured courses.
+ */
+
+/* Top navigation bar - three-column layout using floats */
+.top-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  /* Three-column layout with floats */
+  .logo-section {
+    float: left;
+    width: 300px;
+    
+    .logo {
+      h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #fff;
+      }
+      
+      p {
+        font-size: 14px;
+        opacity: 0.9;
+        color: #f0f0f0;
+      }
+    }
+  }
+  
+  .main-nav {
+    float: left;
+    width: 500px;
+    
+    .nav-list {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      
+      .nav-item {
+        .nav-link {
+          color: white;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.3s;
+          font-size: 16px;
+          
+          &:hover {
+            color: #ff6f00;
+          }
+        }
+      }
+    }
+  }
+  
+  .user-actions {
+    float: right;
+    width: 200px;
+    text-align: right;
+    
+    .search-section {
+      margin-bottom: 10px;
+      
+      .search-link {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        transition: color 0.3s;
+        
+        &:hover {
+          color: #ff6f00;
+        }
+      }
+    }
+    
+    .auth-buttons {
+      .login-btn {
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        margin-right: 10px;
+        transition: all 0.3s;
+        display: inline-block;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: #ff6f00;
+        }
+      }
+      
+      .signup-btn {
+        background: #ff6f00;
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background 0.3s;
+        display: inline-block;
+        
+        &:hover {
+          background: #e65100;
+        }
+      }
+    }
+  }
+  
+  /* Clearfix to contain floated elements */
+  .clearfix {
+    clear: both;
+  }
+}
+
+/* Hero section - content and visual layout using floats */
+.hero-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  
+  /* Left content section */
+  .message-content {
+    float: left;
+    width: 60%;
+    padding-right: 40px;
+    
+    .featured-courses {
+      margin-bottom: 40px;
+      
+      h2 {
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #fff;
+      }
+      
+      .course-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        
+        .course-item {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 20px;
+          border-radius: 8px;
+          border-left: 4px solid #ff6f00;
+          
+          .course-category {
+            font-size: 12px;
+            color: #ff6f00;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+          }
+          
+          h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #fff;
+          }
+          
+          p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+          }
+        }
+      }
+    }
+    
+    .cta-section {
+      text-align: center;
+      
+      h2 {
+        font-size: 36px;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+      
+      p {
+        font-size: 18px;
+        margin-bottom: 25px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      .primary-cta {
+        background: #ff6f00;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 18px;
+        display: inline-block;
+        transition: background 0.3s;
+        
+        &:hover {
+          background: #e65100;
+        }
+      }
+    }
+  }
+  
+  /* Right visual section */
+  .visual-placeholder {
+    float: right;
+    width: 40%;
+    
+    .learning-visual {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &::before {
+        content: "📚";
+        display: block;
+        font-size: 64px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+  
+  /* Clearfix to contain floated elements */
+  .clearfix {
+    clear: both;
+  }
+}
+
+/******************************************
+/* FLEXBOX ALTERNATIVE - COMMENTED OUT
+/*******************************************/
+/* Flexbox-based layout - commented out
+ * What this alternative would change:
+ * - More modern and maintainable code structure
+ * - Easier vertical alignment and distribution
+ * - Better responsive control with flexible sizing
+ * - Automatic container containment (no clearfix needed)
+ * - Cleaner gap management between elements
+ * - More intuitive alignment properties (justify-content, align-items)
+ * - Better support for dynamic content sizing
+ * 
+ * This would replace float-based layout with flexbox containers:
+ * - .top-nav would use display: flex with justify-content: space-between
+ * - .message-content and .visual-placeholder would use flex for better control
+ * - .course-grid would use CSS Grid instead of float-based grid
+ * - .nav-list would use flex with gap management
+ * - Easier responsive adjustments with flex-wrap and flex-basis
+ */
+
+/*
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-section {
+  flex: 0 0 300px;
+}
+
+.main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.user-actions {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.hero-section {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.message-content {
+  flex: 0 0 60%;
+  padding-right: 40px;
+}
+
+.visual-placeholder {
+  flex: 0 0 40%;
+}
+*/
+
+/******************************************
+/* MEDIA QUERIES FOR RESPONSIVENESS
+/*******************************************/
+/* Mobile-first responsive design approach */
+
+/* Mobile Layout - Screens smaller than 768px */
+@media screen and (max-width: 767px) {
+  /* Float-based layout adjustments for mobile */
+  .top-nav {
+    padding: 15px;
+    
+    .logo-section {
+      float: none;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+      
+      .logo {
+        h1 {
+          font-size: 24px;
+        }
+        
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+    
+    .main-nav {
+      float: none;
+      width: 100%;
+      
+      .nav-list {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+    
+    .user-actions {
+      float: none;
+      width: 100%;
+      text-align: center;
+      
+      .search-section {
+        margin-bottom: 15px;
+      }
+      
+      .auth-buttons {
+        .login-btn, .signup-btn {
+          display: inline-block;
+          margin: 5px;
+        }
+      }
+    }
+  }
+  
+  .hero-section {
+    padding: 30px 15px;
+    
+    .message-content {
+      float: none;
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 30px;
+      
+      .featured-courses {
+        .course-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      .cta-section {
+        h2 {
+          font-size: 28px;
+        }
+        
+        p {
+          font-size: 16px;
+        }
+      }
+    }
+    
+    .visual-placeholder {
+      float: none;
+      width: 100%;
+      
+      .learning-visual {
+        height: 250px;
+        
+        &::before {
+          font-size: 48px;
+        }
+      }
+    }
+  }
+}
+
+/* Tablet Layout - Screens between 768px and 1024px */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Float-based layout adjustments for tablet */
+  .top-nav {
+    padding: 18px;
+    
+    .logo-section {
+      width: 250px;
+      
+      .logo {
+        h1 {
+          font-size: 26px;
+        }
+      }
+    }
+    
+    .main-nav {
+      width: 400px;
+      
+      .nav-list {
+        gap: 20px;
+      }
+    }
+    
+    .user-actions {
+      width: 180px;
+    }
+  }
+  
+  .hero-section {
+    padding: 35px 20px;
+    
+    .message-content {
+      width: 55%;
+      padding-right: 30px;
+      
+      .featured-courses {
+        .course-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+    
+    .visual-placeholder {
+      width: 45%;
+      
+      .learning-visual {
+        height: 350px;
+      }
+    }
+  }
+}
+
+/* Desktop Layout - Screens 1024px and larger */
+@media screen and (min-width: 1024px) {
+  /* Full desktop float-based layout - no changes needed as this is the base layout */
+  .top-nav {
+    padding: 20px;
+    
+    .logo-section {
+      width: 300px;
+    }
+    
+    .main-nav {
+      width: 500px;
+    }
+    
+    .user-actions {
+      width: 200px;
+    }
+  }
+  
+  .hero-section {
+    padding: 40px 20px;
+    
+    .message-content {
+      width: 60%;
+      padding-right: 40px;
+    }
+    
+    .visual-placeholder {
+      width: 40%;
+      
+      .learning-visual {
+        height: 400px;
+      }
+    }
+  }
+}

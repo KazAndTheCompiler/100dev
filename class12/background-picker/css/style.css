@@ -1,0 +1,118 @@
+:root {
+  --bg-top: rgba(48, 21, 79, 1);
+  --bg-bottom: rgba(16, 8, 40, 1);
+  --panel-top: rgba(190, 112, 255, 0.95);
+  --panel-bottom: rgba(123, 63, 199, 0.95);
+  --text: rgba(248, 245, 255, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  transition: background 260ms ease, color 260ms ease;
+}
+
+.app {
+  width: min(980px, 92vw);
+  margin: 0 auto;
+  padding: 28px 0 36px;
+}
+
+.page-title,
+.section-title {
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(70px, 140px) 1fr minmax(70px, 140px);
+  gap: 12px;
+  align-items: end;
+  min-height: 420px;
+  margin-bottom: 24px;
+}
+
+.panel {
+  height: 92%;
+  border-radius: 24px;
+  background: linear-gradient(180deg, var(--panel-top) 0%, var(--panel-bottom) 100%);
+  box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.18), 0 16px 32px rgba(0, 0, 0, 0.25);
+  transition: background 260ms ease;
+}
+
+.center {
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 20px;
+  padding: 12px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+    url('../img/33cab5fbae3b0f0bc33f5f218bf5d0a3.png') center/cover no-repeat;
+}
+
+.chair {
+  width: min(360px, 80%);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.35));
+}
+
+.remote {
+  width: min(440px, 90%);
+  margin: 0 auto;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.color-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  width: 100%;
+  height: 54px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.swatch:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.swatch--purple {
+  background: linear-gradient(180deg, rgba(208, 122, 255, 1), rgba(120, 60, 195, 1));
+}
+
+.swatch--green {
+  background: linear-gradient(180deg, rgba(77, 230, 129, 1), rgba(26, 125, 60, 1));
+}
+
+.swatch--blue {
+  background: linear-gradient(180deg, rgba(97, 216, 255, 1), rgba(36, 112, 210, 1));
+}
+
+.theme-code {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 0.93rem;
+  opacity: 0.92;
+}

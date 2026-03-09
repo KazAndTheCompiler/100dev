@@ -1,0 +1,8 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(145deg,#eef2ff,#fff7ed)}
+.app{max-width:760px;margin:48px auto;padding:28px;background:#fff;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.08)}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+button{border:0;border-radius:10px;padding:10px;background:#2563eb;color:#fff;cursor:pointer}
+button:hover{background:#1d4ed8}
+#output{min-height:28px;font-weight:700}
+pre{min-height:120px;background:#111827;color:#d8e7ff;padding:12px;border-radius:10px;white-space:pre-wrap}

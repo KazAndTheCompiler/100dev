@@ -1,0 +1,8 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(120deg,#edf7ff,#fff0f7);color:#1f2937}
+.app{max-width:720px;margin:48px auto;padding:28px;background:#fff;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.08)}
+label{display:block;margin-top:10px}
+input,select,button{width:100%;padding:10px;margin-top:6px;border-radius:10px;border:1px solid #d7deea}
+button{border:0;background:#6d28d9;color:#fff;cursor:pointer}
+button:hover{background:#5b21b6}
+pre{min-height:130px;background:#101828;color:#d7e4ff;padding:12px;border-radius:10px;white-space:pre-wrap}

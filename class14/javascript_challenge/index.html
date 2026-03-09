@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Challenges 1-12</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <!-- CSS Normalize -->
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <style>
+    body { font-family: system-ui, sans-serif; background:#111; color:#eee; padding:20px; }
+    h1 { margin-bottom: 8px; }
+    .result { 
+      background:#1d1d1d; 
+      border:1px solid #333; 
+      padding:16px; 
+      margin-bottom:12px;
+      border-radius:6px;
+    }
+    .question { 
+      color:#8be9fd;
+      font-weight:600;
+      margin-bottom:8px;
+      font-size:0.95rem;
+    }
+    .answer { 
+      color:#50fa7b;
+      font-family:'Courier New', monospace;
+      padding:8px 12px;
+      background:#0d0d0d;
+      border-radius:4px;
+      display:inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>JS Challenges 1-12 Output</h1>
+  <p>Open console for detailed objects.</p>
+  
+  <div id="results"></div>
+
+  <script src="assets/js/challenges_001.js"></script>
+  <script>
+    const c = window.challengeDemo;
+    const table = c.multiplicationTable(10);
+    const sampleTable = [[1,2,3],[4,5,6],[7,8,9]];
+
+    const results = [
+      { q: "Q1: Generate even numbers from 0 to 10", a: JSON.stringify(c.evenNumbers(10)) },
+      { q: "Q2: Generate first row of multiplication table (1-10)", a: JSON.stringify(table[0]) },
+      { q: "Q3: Convert 5 kilometers to miles", a: c.kmToMiles(5).toFixed(4) + " miles" },
+      { q: "Q4: Sum array [-2, 3.5, 4, -1.5, 10]", a: c.sumArray([-2, 3.5, 4, -1.5, 10]) },
+      { q: "Q4 Bonus A: Sum row 1 of [[1,2,3],[4,5,6],[7,8,9]]", a: c.sumRow(sampleTable, 1) },
+      { q: "Q4 Bonus B: Sum column 2 of same table", a: c.sumColumn(sampleTable, 2) },
+      { q: "Q5: Reverse [1,2,3,4,5]", a: JSON.stringify(c.reverseArray([1,2,3,4,5])) },
+      { q: "Q6: Sort [3,-1,2.2,8,0] ascending", a: JSON.stringify(c.sortAscending([3,-1,2.2,8,0])) },
+      { q: "Q7: Filter negatives from [-5,1,0,-2,9]", a: JSON.stringify(c.filterNegatives([-5,1,0,-2,9])) },
+      { q: "Q8: Remove spaces from ' 12 34  56 '", a: "'" + c.removeSpaces(' 12 34  56 ') + "'" },
+      { q: "Q9A: Is 120 divisible by 10?", a: c.isDivisibleBy10(120) },
+      { q: "Q9B: Is 127 divisible by 10?", a: c.isDivisibleBy10(127) },
+      { q: "Q10: Count vowels in 'Automation with Zoe'", a: c.countVowels('Automation with Zoe') + " vowels" },
+      { q: "Q11: Find max in [-10,4.5,2,99,3]", a: c.maxInArray([-10,4.5,2,99,3]) },
+      { q: "Q12A: Is 'Radar' a palindrome?", a: c.isPalindrome('Radar') },
+      { q: "Q12B: Is 'OpenClaw' a palindrome?", a: c.isPalindrome('OpenClaw') }
+    ];
+
+    const html = results.map(r => 
+      `<div class="result"><div class="question">${r.q}</div><div class="answer">${r.a}</div></div>`
+    ).join('');
+    
+    document.getElementById('results').innerHTML = html;
+    console.log('Challenge results', results);
+  </script>
+</body>
+</html>

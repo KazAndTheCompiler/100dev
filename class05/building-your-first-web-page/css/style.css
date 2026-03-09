@@ -1,0 +1,63 @@
+/* 
+ * KazAndTheCompiler v1.0
+ * https://github.com/KazAndTheCompiler
+ * Neural Network Visualization Styles
+ */
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Courier New', monospace;
+}
+
+canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.overlay {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  color: #00ff88;
+  text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+  pointer-events: none;
+}
+
+.overlay h1 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.overlay h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.25rem 0;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
+
+.overlay p {
+  font-size: 0.8rem;
+  margin: 0;
+  opacity: 0.7;
+  color: #fff;
+}
+
+.info {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10;
+  color: #fff;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  pointer-events: none;
+}

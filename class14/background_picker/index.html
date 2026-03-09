@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Background picker with gradient themes and RGBa controls" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project One — Gradient Background Picker</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <!-- CSS Normalize -->
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <main class="app">
+      <h1 class="page-title">Project One — Gradient Background Picker</h1>
+
+      <section class="stage" aria-label="Background preview stage">
+        <aside class="panel panel--left" aria-hidden="true"></aside>
+        <div class="center">
+          <img class="chair" src="assets/img/chair.png" alt="Studio chair" />
+        </div>
+        <aside class="panel panel--right" aria-hidden="true"></aside>
+      </section>
+
+      <section class="remote" aria-label="Theme selector">
+        <h2 class="section-title">Select Theme (9 Base Options)</h2>
+        <ul class="color-list">
+          <li><button class="swatch swatch--purple" data-theme="purple" aria-label="Purple gradient"></button></li>
+          <li><button class="swatch swatch--green" data-theme="green" aria-label="Green gradient"></button></li>
+          <li><button class="swatch swatch--blue" data-theme="blue" aria-label="Blue gradient"></button></li>
+
+          <li><button class="swatch swatch--sunset" data-theme="sunset" aria-label="Sunset gradient"></button></li>
+          <li><button class="swatch swatch--aurora" data-theme="aurora" aria-label="Aurora gradient"></button></li>
+          <li><button class="swatch swatch--ember" data-theme="ember" aria-label="Ember gradient"></button></li>
+
+          <li><button class="swatch swatch--oceanic" data-theme="oceanic" aria-label="Oceanic gradient"></button></li>
+          <li><button class="swatch swatch--neon-noir" data-theme="neonNoir" aria-label="Neon Noir gradient"></button></li>
+          <li><button class="swatch swatch--cyberlime" data-theme="cyberlime" aria-label="Cyberlime gradient"></button></li>
+        </ul>
+        <p class="theme-code" id="themeCode"></p>
+      </section>
+    </main>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

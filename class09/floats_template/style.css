@@ -1,0 +1,389 @@
+/* =============================================
+   FLOAT LAYOUT LABORATORY — style.css
+
+   This file demonstrates float-based layout
+   techniques used before flexbox and grid.
+
+   TABLE OF CONTENTS
+   1. Box Model
+   2. Clearfix
+   3. Base Styles
+   4. Header
+   5. Layout Sections
+   6. Demo 1 — Two-Column Layout
+   7. Demo 2 — Three-Column News Layout
+   8. Demo 3 — Image Text Wrap
+   9. Float Outline Visualizer (JS toggle)
+   10. Responsive
+   ============================================= */
+
+
+/* =============================================
+   1. BOX MODEL
+   border-box makes width/height include padding
+   and border — no more surprising size math.
+   ============================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =============================================
+   2. CLEARFIX
+   
+   The modern clearfix technique. Apply .clearfix
+   to any PARENT element that contains floated
+   children — it forces the parent to wrap around
+   them instead of collapsing to zero height.
+
+   How it works:
+   ::after injects an invisible block-level node
+   as the very last child of the container.
+   clear: both forces that node below all floats,
+   which stretches the parent to contain them.
+
+   Use this — not an empty <div class="clearfix">
+   inside your HTML. That achieves the same result
+   but adds meaningless markup to the DOM.
+   ============================================= */
+
+.clearfix::after {
+    content: "";       /* Required — even empty, pseudo-elements need content */
+    display: table;    /* display: table is slightly more robust than block   */
+    clear: both;       /* The actual clearing happens here                    */
+}
+
+
+/* =============================================
+   3. BASE STYLES
+   ============================================= */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background: #f5f5f5;
+}
+
+h1, h2, h3, h4 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+p {
+    margin-top: 0;
+}
+
+code {
+    background: #e8e8e8;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+
+/* =============================================
+   4. HEADER
+   Sits in normal document flow — full width,
+   no floats needed here.
+   ============================================= */
+
+header {
+    background: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+header h1 {
+    color: #fff;
+    margin-bottom: 0.4rem;
+}
+
+header p {
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 1.2rem;
+}
+
+/* Toggle button for the float visualizer */
+.toggle-btn {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.toggle-btn:hover {
+    background: #d35400;
+}
+
+
+/* =============================================
+   5. LAYOUT SECTIONS
+   Each demo section sits in normal flow,
+   stacked vertically with consistent spacing.
+   ============================================= */
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Each demo block */
+.layout-demo {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.layout-demo > h2 {
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.layout-demo > p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Individual demo containers inside each section */
+.demo-container {
+    border: 2px dashed #ccc;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    background: #fafafa;
+}
+
+.demo-container h3 {
+    margin-top: 0;
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 0.8rem;
+}
+
+
+/* =============================================
+   6. DEMO 1 — TWO-COLUMN LAYOUT
+
+   The sidebar floats left.
+   The main content uses margin-left to sit
+   beside it rather than sliding underneath.
+   ============================================= */
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Floated sidebar column
+   float: left pulls it out of normal flow and
+   pushes it to the left edge of its container.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.two-column .sidebar {
+    float: left;           /* Removes from flow, positions to the left */
+    width: 180px;          /* Fixed width sidebar                      */
+    background: #d5e8d4;
+    border: 1px solid #82b366;
+    padding: 0.8rem;
+    border-radius: 3px;
+    min-height: 80px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Main content column
+   Not floated — stays in normal flow.
+   margin-left creates a gutter so it doesn't
+   overlap with the floated sidebar.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.two-column .main-content {
+    margin-left: 200px;    /* sidebar width (180px) + 20px gap */
+    background: #dae8fc;
+    border: 1px solid #6c8ebf;
+    padding: 0.8rem;
+    border-radius: 3px;
+}
+
+.two-column .main-content h4 {
+    margin-top: 0;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Broken state — no containment, parent collapses.
+   Red background makes the collapsed height visible.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.no-fix {
+    background: #fff0f0;
+    border-color: #e74c3c;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Fix 1: overflow: hidden
+   Creates a new Block Formatting Context (BFC).
+   A BFC always contains its floated descendants.
+   Simple but can clip overflow — use carefully.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.overflow-fix {
+    overflow: hidden;      /* Creates BFC, contains floats */
+    background: #fffbe6;
+    border-color: #f39c12;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Fix 2: Clearfix (preferred)
+   .clearfix is already defined above in section 2.
+   Applying it here to the container is all that
+   is needed — no extra markup in the HTML.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.clearfix-fix {
+    background: #f0fff0;
+    border-color: #27ae60;
+}
+
+
+/* =============================================
+   7. DEMO 2 — THREE-COLUMN NEWS LAYOUT
+
+   All three columns float left.
+   Their widths must add up to 100% (or slightly
+   less to account for borders/padding if not
+   using box-sizing: border-box).
+   The parent uses .clearfix to contain them.
+   ============================================= */
+
+.news-container {
+    /* .clearfix is applied in HTML — see section 2 */
+}
+
+/* All three columns share the same float direction */
+.column {
+    float: left;           /* All columns float left, sitting side by side */
+    padding: 0.8rem;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+}
+
+/* Width breakdown: 50% + 30% + 20% = 100% */
+.column.article {
+    width: 50%;
+    background: #dae8fc;
+    border-color: #6c8ebf;
+}
+
+.column.sidebar {
+    width: 30%;
+    background: #d5e8d4;
+    border-color: #82b366;
+}
+
+.column.ads {
+    width: 20%;
+    background: #ffe6cc;
+    border-color: #d79b00;
+}
+
+.column h3 {
+    margin-top: 0;
+    font-size: 1rem;
+}
+
+
+/* =============================================
+   8. DEMO 3 — IMAGE WITH TEXT WRAP
+
+   This is the original intended use of float.
+   The image floats left; surrounding text wraps
+   naturally around it — exactly like a newspaper.
+   ============================================= */
+
+.article-container {
+    padding: 0.5rem;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - -
+   Floated image
+   float: left removes the image from normal flow.
+   The paragraph text that follows it then fills
+   the space to its right and below it.
+   margin creates breathing room so text doesn't
+   sit flush against the image edge.
+   - - - - - - - - - - - - - - - - - - - - - - */
+.article-container img {
+    float: left;                    /* Pull out of flow, sit to the left */
+    margin: 0 1.2rem 0.8rem 0;     /* right and bottom margin only      */
+    border-radius: 3px;
+    display: block;                 /* Images are inline by default —    */
+                                    /* block removes the baseline gap    */
+}
+
+.article-content h3 {
+    margin-top: 0;
+}
+
+
+/* =============================================
+   9. FLOAT OUTLINE VISUALIZER
+
+   When the user clicks "Toggle Float Outlines",
+   main.js adds .show-float-outlines to <body>.
+   Any element that also has .float (also added
+   by JS) gets a bright outline so you can see
+   exactly which elements have been pulled out
+   of normal document flow.
+   ============================================= */
+
+/* Applied by JS to every floated element */
+.float {
+    /* no default style — outline only appears when visualizer is on */
+}
+
+/* When visualizer is active, all .float elements glow */
+.show-float-outlines .float {
+    outline: 3px solid #e74c3c;
+    outline-offset: 2px;
+    /* Optional: subtle background tint to reinforce which items are floated */
+    background-color: rgba(231, 76, 60, 0.07) !important;
+}
+
+
+/* =============================================
+   10. RESPONSIVE
+   Stack everything vertically on small screens —
+   floats were never designed for mobile.
+   ============================================= */
+
+@media (max-width: 700px) {
+
+    /* Two-column layout: unstack sidebar + content */
+    .two-column .sidebar {
+        float: none;       /* Remove float — returns to normal flow */
+        width: 100%;       /* Take full container width             */
+        margin-bottom: 0.8rem;
+    }
+
+    .two-column .main-content {
+        margin-left: 0;    /* No sidebar beside it anymore */
+    }
+
+    /* Three-column layout: stack all columns */
+    .column {
+        float: none;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Image wrap: un-float the image, center it */
+    .article-container img {
+        float: none;
+        display: block;
+        margin: 0 auto 1rem;
+        max-width: 100%;
+    }
+}

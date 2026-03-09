@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="description" content="Convert temperatures between units">
+    	<meta name="keywords" content="temperature, converter, celsius, fahrenheit, kelvin">
+
+		<title>Temperature Converter</title>
+
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<main class="app">
+			<h1>Temperature Converter</h1>
+
+			<label for="temperatureInput">Temperature</label>
+			<input id="temperatureInput" type="number" step="any" placeholder="Enter a number">
+			<label for="fromUnit">From</label>
+			<select id="fromUnit"><option value="c">Celsius</option><option value="f">Fahrenheit</option><option value="k">Kelvin</option></select>
+			<label for="toUnit">To</label>
+			<select id="toUnit"><option value="f">Fahrenheit</option><option value="c">Celsius</option><option value="k">Kelvin</option></select>
+			<button id="convertBtn" type="button">Convert</button>
+			<h2 id="output" aria-live="polite"></h2>
+			<button id="runExamplesBtn" type="button">Run 10 Examples</button>
+			<pre id="examples"></pre>
+		</main>
+
+		<script type="text/javascript" src="js/main.js"></script>
+	</body>
+</html>

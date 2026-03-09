@@ -1,0 +1,8 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(130deg,#ecfeff,#fff7ed)}
+.app{max-width:720px;margin:48px auto;padding:28px;background:#fff;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.08)}
+input,button{width:100%;padding:10px;margin-top:8px;border-radius:10px;border:1px solid #d6dce6}
+button{border:0;background:#0e7490;color:#fff;cursor:pointer}
+button:hover{background:#155e75}
+#placeToSee{min-height:36px}
+pre{min-height:120px;background:#0f172a;color:#d3e2ff;padding:12px;border-radius:10px;white-space:pre-wrap}

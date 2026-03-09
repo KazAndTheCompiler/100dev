@@ -29,7 +29,7 @@ body {
 /******************************************
 /* LAYOUT
 /*******************************************/
-nav,main,aside{
+/* nav,main,aside{
   float: left;
   width: 10%;
 }
@@ -38,8 +38,10 @@ main{
 }
 aside{
   width: 40%;
-} 
-
+}  */
+body{
+  display: flex;
+}
 
 /******************************************
 /* ADDITIONAL STYLES
